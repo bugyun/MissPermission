@@ -20,6 +20,7 @@ public class PermissionRequest {
     private List<String> rejectPermissionList = new ArrayList<>();
     private PermissionListener permissionListener;
     private WeakReference<Activity> activityWeakReference;
+    private int requestCode;
 
     public PermissionListener getPermissionListener() {
         return permissionListener;
@@ -43,7 +44,7 @@ public class PermissionRequest {
     }
 
     public void stop() {
-        DPermission.getInstance().removePermission(DPermission.PERMISSIONS_REQUEST_CODE);
+        DPermission.getInstance().removePermission(requestCode);
     }
 
     private void checkPermission() {
@@ -90,22 +91,39 @@ public class PermissionRequest {
             //所有权限都通过
             permissionListener.onSuccess();
         } else {
-            List<String> shouldShowRequestPermissionRationaleList = new ArrayList<>();
-            if (activityWeakReference.get() == null) {
-                permissionListener.onFailure(new PermissionException("activity 为空"));
-                return;
-            }
-            for (String permission : rejectPermissionList) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(activityWeakReference.get(), permission)) {
-                    shouldShowRequestPermissionRationaleList.add(permission);
-                }
-            }
+            //            List<String> shouldShowRequestPermissionRationaleList = new ArrayList<>();
+            //            if (activityWeakReference.get() == null) {
+            //                permissionListener.onFailure(new PermissionException("activity 为空"));
+            //                return;
+            //            }
+            //            for (String permission : rejectPermissionList) {
+            //                if (ActivityCompat.shouldShowRequestPermissionRationale(activityWeakReference.get(), permission)) {
+            //                    shouldShowRequestPermissionRationaleList.add(permission);
+            //                }
+            //            }
             //            if (shouldShowRequestPermissionRationaleList.size() > 0) {
             //                permissionListener.onRationale(shouldShowRequestPermissionRationaleList);//弹出提示框
             //            } else {
-            ActivityCompat.requestPermissions(activityWeakReference.get(), rejectPermissionList.toArray(new String[rejectPermissionList.size()]), DPermission.PERMISSIONS_REQUEST_CODE);
+            requestPermissionsAgain(rejectPermissionList);
             //            }
         }
+    }
+
+
+    public void requestPermissionsAgain(List<String> permissionLists) {
+        if (activityWeakReference.get() == null) {
+            permissionListener.onFailure(new PermissionException("activity 为空"));
+            return;
+        }
+        ActivityCompat.requestPermissions(activityWeakReference.get(), permissionLists.toArray(new String[permissionLists.size()]), requestCode);
+    }
+
+    public void setRequestCode(int requestCode) {
+        this.requestCode = requestCode;
+    }
+
+    public int getRequestCode() {
+        return requestCode;
     }
 
     public interface PermissionListener {
@@ -120,7 +138,12 @@ public class PermissionRequest {
          */
         int onChecked(boolean isGreater, List<String> agreeList, List<String> rejectList, PermissionRequest request);//检查结束
 
-        void onRationale(List<String> list);//原理的阐述
+        /**
+         * @param deniedPermissions
+         * @param alwaysDenied
+         * @param request
+         */
+        void onDenied(List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request);
 
         void onSuccess();//权限完成
 
@@ -129,22 +152,26 @@ public class PermissionRequest {
 
 
     public void onRequestPermissionsResult(String[] permissions, int[] grantResults) {
+        boolean isShowRequest = true;
         if (grantResults.length > 0) {
             List<String> deniedList = new ArrayList<>();
             //            List<String> agreeList = new ArrayList<>();
             // 遍历所有申请的权限，把被拒绝的权限放入集合
+
             for (int i = 0; i < grantResults.length; i++) {
                 int grantResult = grantResults[i];
-                if (grantResult == PackageManager.PERMISSION_GRANTED) {
-                    //                    agreeList.add(permissions[i]);
-                } else {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(activityWeakReference.get(), permissions[i])) {
+                        isShowRequest = false;
+                    }
                     deniedList.add(permissions[i]);
                 }
             }
             if (!deniedList.isEmpty()) {
-                permissionListener.onFailure(new PermissionException(deniedList));
+                permissionListener.onDenied(deniedList, isShowRequest, this);
             } else {
                 permissionListener.onSuccess();
+                stop();
             }
         }
     }
@@ -162,7 +189,7 @@ public class PermissionRequest {
         }
 
         @Override
-        public void onRationale(List<String> strings) {
+        public void onDenied(List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request) {
 
         }
 
@@ -178,8 +205,4 @@ public class PermissionRequest {
         }
     }
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
 }

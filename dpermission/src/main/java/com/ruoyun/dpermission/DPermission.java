@@ -11,7 +11,6 @@ import java.util.HashMap;
  */
 public class DPermission {
 
-    public static final int PERMISSIONS_REQUEST_CODE = 2000;
     public static final int NEXT_STEP = 0x10;
     public static final int STOP_STEP = 0x15;
     public static final int WAIT_STEP = 0x20;
@@ -44,8 +43,7 @@ public class DPermission {
     }
 
     private void requestPermission(PermissionRequest request, Activity activity) {
-        Log.e("zyh", "hashcode:" + request.hashCode());
-        requestList.put(PERMISSIONS_REQUEST_CODE, request);
+        requestList.put(request.getRequestCode(), request);
         request.start(activity);
     }
 
@@ -65,6 +63,11 @@ public class DPermission {
 
         public Builder setPermissionListener(PermissionRequest.PermissionListener listener) {
             request.setPermissionListener(listener);
+            return this;
+        }
+
+        public Builder setRequestCode(int requestCode) {
+            request.setRequestCode(requestCode);
             return this;
         }
 

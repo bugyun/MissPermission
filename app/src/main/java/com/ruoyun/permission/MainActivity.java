@@ -1,12 +1,15 @@
 package com.ruoyun.permission;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,13 +17,20 @@ import android.util.Log;
 import com.ruoyun.dpermission.DPermission;
 import com.ruoyun.dpermission.PermissionException;
 import com.ruoyun.dpermission.PermissionRequest;
+import com.ruoyun.dpermission.RequestCode;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import me.weyye.hipermission.HiPermission;
+import me.weyye.hipermission.PermissionCallback;
+import me.weyye.hipermission.PermissionItem;
 
 public class MainActivity extends AppCompatActivity {
 
 
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2000;
+    private static final String TAG = "zyh";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +41,42 @@ public class MainActivity extends AppCompatActivity {
         String manufacturer = android.os.Build.MANUFACTURER;
         Log.e("zyh", "制造商" + manufacturer);
 
-        testDPermission();
+                testDPermission();
+
+//        testHiPermisson();
+    }
+
+    private void testHiPermisson() {
+        List<PermissionItem> permissionItems = new ArrayList<PermissionItem>();
+        permissionItems.add(new PermissionItem(Manifest.permission.CAMERA));
+        permissionItems.add(new PermissionItem(Manifest.permission.SEND_SMS));
+        permissionItems.add(new PermissionItem(Manifest.permission.RECEIVE_SMS));
+        permissionItems.add(new PermissionItem(Manifest.permission.READ_SMS));
+        permissionItems.add(new PermissionItem(Manifest.permission.READ_CONTACTS));
+        permissionItems.add(new PermissionItem(Manifest.permission.ACCESS_FINE_LOCATION, "定位", R.drawable.permission_ic_location));
+        HiPermission.create(MainActivity.this).permissions(permissionItems).checkMutiPermission(new PermissionCallback() {
+            @Override
+            public void onClose() {
+                Log.i(TAG, "用户关闭权限申请");
+
+            }
+
+            @Override
+            public void onFinish() {
+                Log.i(TAG, "所有权限申请完成");
+
+            }
+
+            @Override
+            public void onDeny(String permission, int position) {
+                Log.i(TAG, "onDeny");
+            }
+
+            @Override
+            public void onGuarantee(String permission, int position) {
+                Log.i(TAG, "onGuarantee");
+            }
+        });
 
 
     }
@@ -42,13 +87,38 @@ public class MainActivity extends AppCompatActivity {
                 .setPermissionListener(new PermissionRequest.PermissionListener() {
                     @Override
                     public int onChecked(boolean isGreater, List<String> agreeList, List<String> rejectList, PermissionRequest request) {
-                        Log.i("zyh", "onChecked" + rejectList.size() + "agree:" + agreeList.size());
+                        Log.i("zyh", "onChecked: rejectList:" + rejectList.size() + "agree:" + agreeList.size());
                         return DPermission.NEXT_STEP;
                     }
 
                     @Override
-                    public void onRationale(List<String> list) {
-                        Log.i("zyh", "提示权限" + list.size());
+                    public void onDenied(final List<String> deniedPermissions, boolean alwaysDenied, final PermissionRequest request) {
+                        StringBuilder sBuilder = new StringBuilder();
+                        for (String deniedPermission : deniedPermissions) {
+                            if (deniedPermission.equals(Manifest.permission.WRITE_CONTACTS)) {
+                                sBuilder.append("联系人");
+                                sBuilder.append(",");
+                            }
+                            if (deniedPermission.equals(Manifest.permission.READ_SMS)) {
+                                sBuilder.append("短信");
+                                sBuilder.append(",");
+                            }
+                        }
+                        if (sBuilder.length() > 0) {
+                            sBuilder.deleteCharAt(sBuilder.length() - 1);
+                        }
+                        //Toast.makeText(context, "获取" + sBuilder.toString() + "权限失败", Toast.LENGTH_SHORT).show();
+                        if (alwaysDenied) {
+                            DialogUtil.showPermissionManagerDialog(MainActivity.this, sBuilder.toString());
+                        } else {
+                            new AlertDialog.Builder(MainActivity.this).setTitle("温馨提示").setMessage("我们需要这些权限才能正常使用该功能").setNegativeButton("取消", null).setPositiveButton("验证权限", new DialogInterface.OnClickListener() {
+                                @RequiresApi(api = Build.VERSION_CODES.M)
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    request.requestPermissionsAgain(deniedPermissions);
+                                }
+                            }).setCancelable(false).show();
+                        }
                     }
 
                     @Override
@@ -61,9 +131,13 @@ public class MainActivity extends AppCompatActivity {
                         Log.i("zyh", exception.getMessage());
                     }
                 })//
+                .setRequestCode(RequestCode.MORE)//
                 .addPermission(Manifest.permission.CAMERA)//
+                .addPermission(Manifest.permission.SEND_SMS)//
+                .addPermission(Manifest.permission.RECEIVE_SMS)//
                 .addPermission(Manifest.permission.READ_SMS)//
                 .addPermission(Manifest.permission.READ_CONTACTS)//
+                .addPermission(Manifest.permission.ACCESS_FINE_LOCATION)//
                 .create()//
                 .start(this);
     }
