@@ -1,8 +1,11 @@
 package com.ruoyun.permission;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +16,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
 
 import com.ruoyun.dpermission.DPermission;
 import com.ruoyun.dpermission.PermissionException;
@@ -23,8 +28,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.weyye.hipermission.HiPermission;
+import me.weyye.hipermission.PermissionAdapter;
 import me.weyye.hipermission.PermissionCallback;
 import me.weyye.hipermission.PermissionItem;
+import me.weyye.hipermission.PermissionView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,9 +48,9 @@ public class MainActivity extends AppCompatActivity {
         String manufacturer = android.os.Build.MANUFACTURER;
         Log.e("zyh", "制造商" + manufacturer);
 
-                testDPermission();
+        testDPermission();
 
-//        testHiPermisson();
+        //        testHiPermisson();
     }
 
     private void testHiPermisson() {
@@ -81,14 +88,55 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    Dialog mDialog;
+
     private void testDPermission() {
         DPermission.getInstance()//
                 .with()//
                 .setPermissionListener(new PermissionRequest.PermissionListener() {
                     @Override
-                    public int onChecked(boolean isGreater, List<String> agreeList, List<String> rejectList, PermissionRequest request) {
+                    public int onChecked(boolean isGreater, List<String> agreeList, List<String> rejectList, final PermissionRequest request) {
                         Log.i("zyh", "onChecked: rejectList:" + rejectList.size() + "agree:" + agreeList.size());
-                        return DPermission.NEXT_STEP;
+                        PermissionView contentView = new PermissionView(MainActivity.this);
+                        contentView.setGridViewColum(3);
+                        contentView.setTitle("标题");
+                        contentView.setMsg("内容");
+                        //这里没有使用RecyclerView，可以少引入一个库
+                        List<PermissionItem> permissionItems = new ArrayList<>();
+                        permissionItems.add(new PermissionItem(Manifest.permission.CAMERA, "照相机", R.drawable.permission_ic_camera));
+                        permissionItems.add(new PermissionItem(Manifest.permission.ACCESS_FINE_LOCATION, "定位", R.drawable.permission_ic_location));
+                        permissionItems.add(new PermissionItem(Manifest.permission.READ_CONTACTS, "通讯录", R.drawable.permission_ic_contacts));
+                        contentView.setGridViewAdapter(new PermissionAdapter(permissionItems));
+                        //用户没有设置，使用默认绿色主题
+                        int mStyleId = R.style.PermissionDefaultNormalStyle;
+                        int mFilterColor = getResources().getColor(R.color.permissionColorGreen);
+
+                        contentView.setStyleId(mStyleId);
+                        contentView.setFilterColor(mFilterColor);
+                        contentView.setBtnOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (mDialog != null && mDialog.isShowing()) {
+                                    mDialog.dismiss();
+                                }
+                                request.next();
+                            }
+                        });
+                        mDialog = new Dialog(MainActivity.this);
+                        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        mDialog.setContentView(contentView);
+
+                        mDialog.setCanceledOnTouchOutside(false);
+                        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        mDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                dialog.dismiss();
+                                request.stop();
+                            }
+                        });
+                        mDialog.show();
+                        return DPermission.WAIT_STEP;
                     }
 
                     @Override
