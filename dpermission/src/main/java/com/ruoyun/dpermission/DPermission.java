@@ -11,6 +11,11 @@ import java.util.HashMap;
  */
 public class DPermission {
 
+    public static final int PERMISSIONS_REQUEST_CODE = 2000;
+    public static final int NEXT_STEP = 0x10;
+    public static final int STOP_STEP = 0x15;
+    public static final int WAIT_STEP = 0x20;
+
     private static class SingletonHolder {
         private static final DPermission INSTANCE = new DPermission();
     }
@@ -38,9 +43,10 @@ public class DPermission {
         }
     }
 
-    private void requestPermission(PermissionRequest request) {
-        requestList.put(request.hashCode(), request);
-        request.start();
+    private void requestPermission(PermissionRequest request, Activity activity) {
+        Log.e("zyh", "hashcode:" + request.hashCode());
+        requestList.put(PERMISSIONS_REQUEST_CODE, request);
+        request.start(activity);
     }
 
     public void removePermission(int id) {
@@ -67,26 +73,18 @@ public class DPermission {
             return this;
         }
 
-        public Builder addActivity(Activity activity) {
-            request.addActivity(activity);
-            return this;
-        }
-
         public Builder create() {
             if (null == request.getPermissionListener()) {
-                request.setPermissionListener(new PermissionRequest.WarpperPermissionListener());
+                request.setPermissionListener(new PermissionRequest.WrapperPermissionListener());
             }
             return this;
         }
 
-        public void start() {
-            DPermission.getInstance().requestPermission(request);
+        public void start(Activity activity) {
+            DPermission.getInstance().requestPermission(request, activity);
         }
 
     }
-
-
-
 
 
 }

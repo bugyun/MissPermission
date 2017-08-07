@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.ruoyun.dpermission.DPermission;
+import com.ruoyun.dpermission.PermissionException;
 import com.ruoyun.dpermission.PermissionRequest;
 
 import java.util.List;
@@ -26,12 +27,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //测试
-        //        test(Manifest.permission.WRITE_CALENDAR);
-
-        //        testDPermission();
 
         String manufacturer = android.os.Build.MANUFACTURER;
         Log.e("zyh", "制造商" + manufacturer);
+
+        testDPermission();
+
 
     }
 
@@ -40,28 +41,31 @@ public class MainActivity extends AppCompatActivity {
                 .with()//
                 .setPermissionListener(new PermissionRequest.PermissionListener() {
                     @Override
-                    public void onPreExecute() {
-
+                    public int onChecked(boolean isGreater, List<String> agreeList, List<String> rejectList, PermissionRequest request) {
+                        Log.i("zyh", "onChecked" + rejectList.size() + "agree:" + agreeList.size());
+                        return DPermission.NEXT_STEP;
                     }
 
                     @Override
-                    public void rationale() {
-
+                    public void onRationale(List<String> list) {
+                        Log.i("zyh", "提示权限" + list.size());
                     }
 
                     @Override
-                    public void granted() {
-
+                    public void onSuccess() {
+                        Log.i("zyh", "成功");
                     }
 
                     @Override
-                    public void denied(List<String> deniedList) {
-
+                    public void onFailure(PermissionException exception) {
+                        Log.i("zyh", exception.getMessage());
                     }
-                }).addPermission("")//
-                .addActivity(this)//
+                })//
+                .addPermission(Manifest.permission.CAMERA)//
+                .addPermission(Manifest.permission.READ_SMS)//
+                .addPermission(Manifest.permission.READ_CONTACTS)//
                 .create()//
-                .start();
+                .start(this);
     }
 
 
@@ -111,33 +115,30 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-
     //requestPermissions(android.app.Activity, String[], int)
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //用户点击了接受，可以进行相应处理
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
-                } else {
-                    //用户点击了拒绝，可以进行相应处理
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
+        DPermission.getInstance().onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //        switch (requestCode) {
+        //            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
+        //                // If request is cancelled, the result arrays are empty.
+        //                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        //                    //用户点击了接受，可以进行相应处理
+        //                    // permission was granted, yay! Do the
+        //                    // contacts-related task you need to do.
+        //
+        //                } else {
+        //                    //用户点击了拒绝，可以进行相应处理
+        //                    // permission denied, boo! Disable the
+        //                    // functionality that depends on this permission.
+        //                }
+        //                return;
+        //            }
+        //
+        //            // other 'case' lines to check for other
+        //            // permissions this app might request
+        //        }
     }
 }

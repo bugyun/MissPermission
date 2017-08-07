@@ -1,11 +1,11 @@
 package com.ruoyun.dpermission;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +16,10 @@ import java.util.List;
 public class PermissionRequest {
 
     private List<String> permissionList = new ArrayList<>();
+    private List<String> agreePermissionList = new ArrayList<>();
+    private List<String> rejectPermissionList = new ArrayList<>();
     private PermissionListener permissionListener;
-    private Activity activity;
+    private WeakReference<Activity> activityWeakReference;
 
     public PermissionListener getPermissionListener() {
         return permissionListener;
@@ -31,103 +33,153 @@ public class PermissionRequest {
         permissionList.add(permission);
     }
 
-    public void start() {
-        if (permissionListener.onPreHint()) {//显示提示框
+    public void start(Activity activity) {
+        activityWeakReference = new WeakReference<Activity>(activity);
+        checkPermission();
+    }
+
+    public void next() {
+        requestPermission();
+    }
+
+    public void stop() {
+        DPermission.getInstance().removePermission(DPermission.PERMISSIONS_REQUEST_CODE);
+    }
+
+    private void checkPermission() {
+        if (permissionList.isEmpty()) {
+            permissionListener.onFailure(new PermissionException("请求权限为空"));
             return;
         }
-        requestPermission(activity, (String) permissionList.toArray()[0], hashCode());
-    }
 
-
-    private void requestPermission(Activity activity, String permission, int requestCode) {
-        if (!isGranted(activity, permission)) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
-                permissionListener.rationale();
-            } else {
-                ActivityCompat.requestPermissions(activity, new String[]{permission}, requestCode);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            for (String permission : permissionList) {
+                if (activityWeakReference.get() == null) {
+                    permissionListener.onFailure(new PermissionException("activity 为空"));
+                    return;
+                }
+                int checkSelfPermission = ActivityCompat.checkSelfPermission(activityWeakReference.get(), permission);
+                if (checkSelfPermission == PackageManager.PERMISSION_GRANTED) {//如果同意
+                    agreePermissionList.add(permission);
+                } else {//如果拒绝
+                    rejectPermissionList.add(permission);
+                }
+            }
+            switch (permissionListener.onChecked(true, agreePermissionList, rejectPermissionList, this)) {
+                case DPermission.NEXT_STEP:
+                    next();
+                    break;
+                case DPermission.STOP_STEP:
+                    stop();
+                    break;
+                case DPermission.WAIT_STEP:
+                    break;
+                default:
+                    stop();
+                    break;
             }
         } else {
-            //直接执行相应操作了
-            permissionListener.granted();
+            permissionListener.onChecked(false, agreePermissionList, rejectPermissionList, this);
+            stop();
         }
     }
 
-    public boolean isGranted(Context context, String permission) {
-        return !isMarshmallow() || isGranted_(context, permission);
-    }
-
-    private boolean isMarshmallow() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
-    }
-
-    private boolean isGranted_(Context context, String permission) {
-        int checkSelfPermission = ActivityCompat.checkSelfPermission(context, permission);
-        return checkSelfPermission == PackageManager.PERMISSION_GRANTED;
-    }
-
-    public void addActivity(Activity activity) {
-        this.activity = activity;
+    private void requestPermission() {
+        //判断集合
+        if (permissionList.size() == agreePermissionList.size()) {
+            //所有权限都通过
+            permissionListener.onSuccess();
+        } else {
+            List<String> shouldShowRequestPermissionRationaleList = new ArrayList<>();
+            if (activityWeakReference.get() == null) {
+                permissionListener.onFailure(new PermissionException("activity 为空"));
+                return;
+            }
+            for (String permission : rejectPermissionList) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(activityWeakReference.get(), permission)) {
+                    shouldShowRequestPermissionRationaleList.add(permission);
+                }
+            }
+            //            if (shouldShowRequestPermissionRationaleList.size() > 0) {
+            //                permissionListener.onRationale(shouldShowRequestPermissionRationaleList);//弹出提示框
+            //            } else {
+            ActivityCompat.requestPermissions(activityWeakReference.get(), rejectPermissionList.toArray(new String[rejectPermissionList.size()]), DPermission.PERMISSIONS_REQUEST_CODE);
+            //            }
+        }
     }
 
     public interface PermissionListener {
-        //            * @see #onPreExecute()
-        //     * @see #onPostExecute
-        //     * @see #publishProgress
+        /**
+         * @param isGreater  是否大于Build.VERSION_CODES.M
+         * @param agreeList
+         * @param rejectList
+         * @param request
+         * @return NEXT_STEP：直接下一步，不用等待
+         * STOP_STEP：直接停止，不执行下一步
+         * PAUSE_STEP：等待，等待命令唤起下一步
+         */
+        int onChecked(boolean isGreater, List<String> agreeList, List<String> rejectList, PermissionRequest request);//检查结束
 
-        boolean onPreHint();//申请前的弹窗
+        void onRationale(List<String> list);//原理的阐述
 
-        void rationale();//原理的阐述
+        void onSuccess();//权限完成
 
-        void granted();//权限完成
-
-        void denied(List<String> deniedList);//权限失败，参数：失败的权限
+        void onFailure(PermissionException exception);//失败
     }
 
 
     public void onRequestPermissionsResult(String[] permissions, int[] grantResults) {
         if (grantResults.length > 0) {
             List<String> deniedList = new ArrayList<>();
+            //            List<String> agreeList = new ArrayList<>();
             // 遍历所有申请的权限，把被拒绝的权限放入集合
             for (int i = 0; i < grantResults.length; i++) {
                 int grantResult = grantResults[i];
                 if (grantResult == PackageManager.PERMISSION_GRANTED) {
-                    permissionListener.granted();
+                    //                    agreeList.add(permissions[i]);
                 } else {
                     deniedList.add(permissions[i]);
                 }
             }
             if (!deniedList.isEmpty()) {
-                permissionListener.denied(deniedList);
+                permissionListener.onFailure(new PermissionException(deniedList));
+            } else {
+                permissionListener.onSuccess();
             }
         }
     }
 
-    public static class WarpperPermissionListener implements PermissionRequest.PermissionListener {
+    public static class WrapperPermissionListener implements PermissionRequest.PermissionListener {
+
         @Override
-        public boolean onPreHint() {
+        public int onChecked(boolean isGreater, List<String> agreeList, List<String> rejectList, PermissionRequest request) {
             //检测手机的类型
             if (RomUtil.isNeedShowHint()) {
 
             }
-            return true;
+            //            request.next();
+            return DPermission.NEXT_STEP;
         }
 
         @Override
-        public void rationale() {
-
-        }
-
-        @Override
-        public void granted() {
+        public void onRationale(List<String> strings) {
 
         }
 
         @Override
-        public void denied(List<String> deniedList) {
+        public void onSuccess() {
 
         }
 
+
+        @Override
+        public void onFailure(PermissionException exception) {
+
+        }
     }
 
-
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }
