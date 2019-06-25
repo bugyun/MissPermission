@@ -59,6 +59,7 @@ public class PermissionRequest {
                     permissionListener.onFailure(new PermissionException("activity 为空"));
                     return;
                 }
+                //ContextCompat
                 int checkSelfPermission = ActivityCompat.checkSelfPermission(activityWeakReference.get(), permission);
                 if (checkSelfPermission == PackageManager.PERMISSION_GRANTED) {//如果同意
                     agreePermissionList.add(permission);

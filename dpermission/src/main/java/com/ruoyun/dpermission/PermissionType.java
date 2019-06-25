@@ -62,7 +62,7 @@ public class PermissionType {
 
     public static String[] StoragePermission = {
             //8.storage权限组
-            Manifest.permission.READ_EXTERNAL_STORAGE,//
+            Manifest.permission.READ_EXTERNAL_STORAGE,//api16以上
             Manifest.permission.WRITE_EXTERNAL_STORAGE,//
     };
 

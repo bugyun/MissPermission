@@ -1,6 +1,7 @@
 package com.ruoyun.dpermission;
 
 import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import java.util.HashMap;
@@ -85,6 +86,10 @@ public class DPermission {
 
         public void start(Activity activity) {
             DPermission.getInstance().requestPermission(request, activity);
+        }
+
+        public void start(Fragment fragment) {
+            DPermission.getInstance().requestPermission(request, fragment.getActivity());
         }
 
     }

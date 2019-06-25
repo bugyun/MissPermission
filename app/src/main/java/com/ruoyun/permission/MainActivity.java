@@ -14,24 +14,17 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-
 import com.ruoyun.dpermission.DPermission;
 import com.ruoyun.dpermission.PermissionException;
 import com.ruoyun.dpermission.PermissionRequest;
 import com.ruoyun.dpermission.RequestCode;
+import me.weyye.hipermission.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import me.weyye.hipermission.HiPermission;
-import me.weyye.hipermission.PermissionAdapter;
-import me.weyye.hipermission.PermissionCallback;
-import me.weyye.hipermission.PermissionItem;
-import me.weyye.hipermission.PermissionView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         testDPermission();
 
+//        InstanceID.getInstance(this).getId();
         //        testHiPermisson();
     }
 
@@ -191,13 +185,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void test(String permission) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {//如果小于23的话
-            return;
-        }
-        if (TextUtils.isEmpty(permission)) {
-            return;
-        }
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {//如果小于23的话
+//            return;
+//        }
+//        if (TextUtils.isEmpty(permission)) {
+//            return;
+//        }
 
         // 检测是否有权限
         int permissionCheck = ContextCompat.checkSelfPermission(this, permission);
@@ -216,6 +211,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
+
+
 
 
         // Here, thisActivity is the current activity
