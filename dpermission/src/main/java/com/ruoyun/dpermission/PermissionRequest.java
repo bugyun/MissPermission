@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.PermissionChecker;
+import com.ruoyun.dpermission.manufacturer.IRomStrategy;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -19,23 +21,26 @@ public class PermissionRequest {
     private List<String> agreePermissionList = new ArrayList<>();
     private List<String> rejectPermissionList = new ArrayList<>();
     private PermissionListener permissionListener;
-    private WeakReference<Activity> activityWeakReference;
-    private int requestCode;
+    private IRomStrategy iRomStrategy;
+    private final WeakReference<Activity> activityWeakReference;
+    private int requestCode = 999898;
 
-    public PermissionListener getPermissionListener() {
-        return permissionListener;
+    private boolean isOver23;//是不是棉花糖，大于：true  小于 false
+
+    public void setRomStrategy(IRomStrategy iRomStrategy) {
+        this.iRomStrategy = iRomStrategy;
     }
 
-    public void setPermissionListener(PermissionListener permissionListener) {
-        this.permissionListener = permissionListener;
+    public PermissionRequest(Activity activity) {
+        activityWeakReference = new WeakReference<>(activity);
     }
 
     public void addPermission(String permission) {
         permissionList.add(permission);
     }
 
-    public void start(Activity activity) {
-        activityWeakReference = new WeakReference<Activity>(activity);
+    public void start(PermissionListener permissionListener) {
+        this.permissionListener = permissionListener;
         checkPermission();
     }
 
@@ -43,17 +48,13 @@ public class PermissionRequest {
         requestPermission();
     }
 
-    public void stop() {
-        DPermission.getInstance().removePermission(requestCode);
-    }
-
     private void checkPermission() {
         if (permissionList.isEmpty()) {
             permissionListener.onFailure(new PermissionException("请求权限为空"));
             return;
         }
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            isOver23 = true;
             for (String permission : permissionList) {
                 if (activityWeakReference.get() == null) {
                     permissionListener.onFailure(new PermissionException("activity 为空"));
@@ -67,56 +68,59 @@ public class PermissionRequest {
                     rejectPermissionList.add(permission);
                 }
             }
-            switch (permissionListener.onChecked(true, agreePermissionList, rejectPermissionList, this)) {
+            switch (permissionListener.onChecked(agreePermissionList, rejectPermissionList, this)) {
                 case DPermission.NEXT_STEP:
                     next();
                     break;
                 case DPermission.STOP_STEP:
-                    stop();
-                    break;
                 case DPermission.WAIT_STEP:
-                    break;
                 default:
-                    stop();
                     break;
             }
         } else {
-            permissionListener.onChecked(false, agreePermissionList, rejectPermissionList, this);
-            stop();
+            isOver23 = false;
+            /*
+             * 检测 23 版本以下 权限的方法 PermissionChecker.checkSelfPermission
+             * PERMISSION_GRANTED: 已授权
+             * PERMISSION_DENIED: 没有被授权
+             * PERMISSION_DENIED_APP_OP: 没有被授权
+             */
+            for (String permission : permissionList) {
+                if (activityWeakReference.get() == null) {
+                    permissionListener.onFailure(new PermissionException("activity 为空"));
+                    return;
+                }
+                int checkSelfPermission = PermissionChecker.checkSelfPermission(activityWeakReference.get(), permission);
+                if (checkSelfPermission == PermissionChecker.PERMISSION_GRANTED) {//已授权
+                    agreePermissionList.add(permission);
+                } else {//未授权
+                    rejectPermissionList.add(permission);
+                }
+            }
+            if (permissionList.size() == agreePermissionList.size()) {
+                permissionListener.onSuccess(); //所有权限都通过
+            } else {
+                permissionListener.onDenied(isOver23, rejectPermissionList, true, this);
+            }
         }
     }
 
     private void requestPermission() {
-        //判断集合
-        if (permissionList.size() == agreePermissionList.size()) {
+        if (permissionList.size() == agreePermissionList.size()) {//判断集合
             //所有权限都通过
             permissionListener.onSuccess();
         } else {
-            //            List<String> shouldShowRequestPermissionRationaleList = new ArrayList<>();
-            //            if (activityWeakReference.get() == null) {
-            //                permissionListener.onFailure(new PermissionException("activity 为空"));
-            //                return;
-            //            }
-            //            for (String permission : rejectPermissionList) {
-            //                if (ActivityCompat.shouldShowRequestPermissionRationale(activityWeakReference.get(), permission)) {
-            //                    shouldShowRequestPermissionRationaleList.add(permission);
-            //                }
-            //            }
-            //            if (shouldShowRequestPermissionRationaleList.size() > 0) {
-            //                permissionListener.onRationale(shouldShowRequestPermissionRationaleList);//弹出提示框
-            //            } else {
             requestPermissionsAgain(rejectPermissionList);
-            //            }
         }
     }
-
 
     public void requestPermissionsAgain(List<String> permissionLists) {
         if (activityWeakReference.get() == null) {
             permissionListener.onFailure(new PermissionException("activity 为空"));
             return;
         }
-        ActivityCompat.requestPermissions(activityWeakReference.get(), permissionLists.toArray(new String[permissionLists.size()]), requestCode);
+//        ActivityCompat.requestPermissions(activityWeakReference.get(), permissionLists.toArray(new String[permissionLists.size()]), requestCode);
+        ActivityCompat.requestPermissions(activityWeakReference.get(), permissionLists.toArray(new String[0]), requestCode);
     }
 
     public void setRequestCode(int requestCode) {
@@ -129,7 +133,6 @@ public class PermissionRequest {
 
     public interface PermissionListener {
         /**
-         * @param isGreater  是否大于Build.VERSION_CODES.M
          * @param agreeList
          * @param rejectList
          * @param request
@@ -137,14 +140,15 @@ public class PermissionRequest {
          * STOP_STEP：直接停止，不执行下一步
          * PAUSE_STEP：等待，等待命令唤起下一步
          */
-        int onChecked(boolean isGreater, List<String> agreeList, List<String> rejectList, PermissionRequest request);//检查结束
+        int onChecked(List<String> agreeList, List<String> rejectList, PermissionRequest request);//检查结束
 
         /**
+         * @param isOver23          是否大于Build.VERSION_CODES.M
          * @param deniedPermissions
          * @param alwaysDenied
          * @param request
          */
-        void onDenied(List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request);
+        void onDenied(boolean isOver23, List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request);
 
         void onSuccess();//权限完成
 
@@ -153,57 +157,26 @@ public class PermissionRequest {
 
 
     public void onRequestPermissionsResult(String[] permissions, int[] grantResults) {
-        boolean isShowRequest = true;
+        boolean alwaysDenied = false;
         if (grantResults.length > 0) {
             List<String> deniedList = new ArrayList<>();
             //            List<String> agreeList = new ArrayList<>();
             // 遍历所有申请的权限，把被拒绝的权限放入集合
-
             for (int i = 0; i < grantResults.length; i++) {
                 int grantResult = grantResults[i];
-                if (grantResult != PackageManager.PERMISSION_GRANTED) {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(activityWeakReference.get(), permissions[i])) {
-                        isShowRequest = false;
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {//没有授予权限
+                    //如果用户在过去拒绝了权限请求，并在权限请求系统对话框中选择了 Don't ask again 选项，此方法将返回 false。如果设备规范禁止应用具有该权限，此方法也会返回 false。
+                    if (!ActivityCompat.shouldShowRequestPermissionRationale(activityWeakReference.get(), permissions[i])) {
+                        alwaysDenied = true;
                     }
                     deniedList.add(permissions[i]);
                 }
             }
             if (!deniedList.isEmpty()) {
-                permissionListener.onDenied(deniedList, isShowRequest, this);
+                permissionListener.onDenied(isOver23, deniedList, alwaysDenied, this);
             } else {
                 permissionListener.onSuccess();
-                stop();
             }
         }
     }
-
-    public static class WrapperPermissionListener implements PermissionRequest.PermissionListener {
-
-        @Override
-        public int onChecked(boolean isGreater, List<String> agreeList, List<String> rejectList, PermissionRequest request) {
-            //检测手机的类型
-            if (RomUtil.isNeedShowHint()) {
-
-            }
-            //            request.next();
-            return DPermission.NEXT_STEP;
-        }
-
-        @Override
-        public void onDenied(List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request) {
-
-        }
-
-        @Override
-        public void onSuccess() {
-
-        }
-
-
-        @Override
-        public void onFailure(PermissionException exception) {
-
-        }
-    }
-
 }

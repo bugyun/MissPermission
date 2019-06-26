@@ -12,8 +12,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -85,11 +87,18 @@ public class MainActivity extends AppCompatActivity {
     Dialog mDialog;
 
     private void testDPermission() {
-        DPermission.getInstance()//
-                .with()//
-                .setPermissionListener(new PermissionRequest.PermissionListener() {
+        DPermission.with(MainActivity.this)//
+//                .setPermissionListener()//
+                .setRequestCode(RequestCode.MORE)//
+                .addPermission(Manifest.permission.CAMERA)//
+                .addPermission(Manifest.permission.SEND_SMS)//
+                .addPermission(Manifest.permission.RECEIVE_SMS)//
+                .addPermission(Manifest.permission.READ_SMS)//
+                .addPermission(Manifest.permission.READ_CONTACTS)//
+                .addPermission(Manifest.permission.ACCESS_FINE_LOCATION)//
+                .checkPermission(new PermissionRequest.PermissionListener() {
                     @Override
-                    public int onChecked(boolean isGreater, List<String> agreeList, List<String> rejectList, final PermissionRequest request) {
+                    public int onChecked(List<String> agreeList, List<String> rejectList, final PermissionRequest request) {
                         Log.i("zyh", "onChecked: rejectList:" + rejectList.size() + "agree:" + agreeList.size());
                         PermissionView contentView = new PermissionView(MainActivity.this);
                         contentView.setGridViewColum(3);
@@ -126,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onCancel(DialogInterface dialog) {
                                 dialog.dismiss();
-                                request.stop();
+//                                request.stop();
                             }
                         });
                         mDialog.show();
@@ -134,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onDenied(final List<String> deniedPermissions, boolean alwaysDenied, final PermissionRequest request) {
+                    public void onDenied(boolean isOver23, final List<String> deniedPermissions, boolean alwaysDenied, final PermissionRequest request) {
                         StringBuilder sBuilder = new StringBuilder();
                         for (String deniedPermission : deniedPermissions) {
                             if (deniedPermission.equals(Manifest.permission.WRITE_CONTACTS)) {
@@ -172,27 +181,29 @@ public class MainActivity extends AppCompatActivity {
                     public void onFailure(PermissionException exception) {
                         Log.i("zyh", exception.getMessage());
                     }
-                })//
-                .setRequestCode(RequestCode.MORE)//
-                .addPermission(Manifest.permission.CAMERA)//
-                .addPermission(Manifest.permission.SEND_SMS)//
-                .addPermission(Manifest.permission.RECEIVE_SMS)//
-                .addPermission(Manifest.permission.READ_SMS)//
-                .addPermission(Manifest.permission.READ_CONTACTS)//
-                .addPermission(Manifest.permission.ACCESS_FINE_LOCATION)//
-                .create()//
-                .start(this);
+                });
     }
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void test(String permission) {
-//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {//如果小于23的话
-//            return;
-//        }
-//        if (TextUtils.isEmpty(permission)) {
-//            return;
-//        }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {//如果小于23的话
+
+            /**
+             * PERMISSION_GRANTED: 已授权
+             * PERMISSION_DENIED: 没有被授权
+             * PERMISSION_DENIED_APP_OP: 没有被授权
+             */
+            if (PermissionChecker.checkSelfPermission(this, permission) == PermissionChecker.PERMISSION_GRANTED) {
+                //已授权
+            } else {
+                //未授权
+            }
+            return;
+        }
+        if (TextUtils.isEmpty(permission)) {
+            return;
+        }
 
         // 检测是否有权限
         int permissionCheck = ContextCompat.checkSelfPermission(this, permission);
@@ -211,8 +222,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
-
-
 
 
         // Here, thisActivity is the current activity
@@ -239,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        DPermission.getInstance().onRequestPermissionsResult(requestCode, permissions, grantResults);
+        DPermission.onRequestPermissionsResult(requestCode, permissions, grantResults);
         //        switch (requestCode) {
         //            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
         //                // If request is cancelled, the result arrays are empty.

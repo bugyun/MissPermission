@@ -12,6 +12,27 @@ public interface SystemType {
     int ABNORMALITY_ALL = 5;//都不正常
     int NORMAL_ALL = 6;//都正常
     //是否显示弹出框
+
+
+    /**
+     * Build.MANUFACTURER
+     */
+     static final String MANUFACTURER_VIVO = "vivo";
+     static final String MANUFACTURER_OPPO = "OPPO";
+     static final String MANUFACTURER_MEIZU = "Meizu";//魅族
+    //     static final String MANUFACTURER_ONEPLUS = "OnePlus";//一加
+//     static final String MANUFACTURER_HTC = "HTC";//HTC
+     static final String MANUFACTURER_XIAOMI = "Xiaomi";//小米
+     static final String MANUFACTURER_SAMSUNG = "samsung";//三星
+     static final String MANUFACTURER_HUAWEI = "Huawei";//华为
+
+
+     static final String MANUFACTURER_SONY = "Sony";//索尼
+     static final String MANUFACTURER_LG = "LG";
+     static final String MANUFACTURER_LETV = "Letv";//乐视
+     static final String MANUFACTURER_ZTE = "ZTE";//中兴
+     static final String MANUFACTURER_YULONG = "YuLong";//酷派
+     static final String MANUFACTURER_LENOVO = "LENOVO";//联想
 }
 
 
