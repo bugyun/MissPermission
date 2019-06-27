@@ -1,1 +1,1 @@
-include ':app', ':dpermission'
+include ':app', ':dpermission', ':MissPermissionHelper', ':MissPermission'

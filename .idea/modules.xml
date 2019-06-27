@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DPermission.iml" filepath="$PROJECT_DIR$/DPermission.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MissPermission/MissPermission.iml" filepath="$PROJECT_DIR$/MissPermission/MissPermission.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MissPermissionHelper/MissPermissionHelper.iml" filepath="$PROJECT_DIR$/MissPermissionHelper/MissPermissionHelper.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/dpermission/dpermission.iml" filepath="$PROJECT_DIR$/dpermission/dpermission.iml" />
     </modules>
