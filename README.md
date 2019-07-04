@@ -1,4 +1,4 @@
-# Permission
+# MissPermission
 android 权限库，超级简单好用！！
 ---
 ## MissPermission
@@ -43,7 +43,7 @@ MissPermission.with(context)//
                     }
 
                     @Override
-                    public void onSuccess() {
+                    public void onSuccess(PermissionRequest request) {
                         Log.i("zyh", "成功");
                     }
 
