@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void testDPermission() {
         MissPermission.with(MainActivity.this)//
-//                .setPermissionListener()//
                 .addPermission(Manifest.permission.CAMERA)//
                 .addPermission(Manifest.permission.SEND_SMS)//
                 .addPermission(Manifest.permission.RECEIVE_SMS)//
