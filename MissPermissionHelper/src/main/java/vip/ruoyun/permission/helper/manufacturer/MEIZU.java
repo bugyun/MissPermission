@@ -22,4 +22,9 @@ public class MEIZU implements IRomStrategy {
         return true;
     }
 
+    @Override
+    public boolean isNeedCheck() {
+        return true;
+    }
+
 }

@@ -1,4 +1,4 @@
-package vip.ruoyun.permission.helper;
+package vip.ruoyun.permission.helper.core;
 
 import android.os.Build;
 

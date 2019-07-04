@@ -22,4 +22,11 @@ public class HUAWEI implements IRomStrategy {
     public boolean isNeedShowHint() {
         return true;
     }
+
+    @Override
+    public boolean isNeedCheck() {
+        return false;
+    }
+
+
 }

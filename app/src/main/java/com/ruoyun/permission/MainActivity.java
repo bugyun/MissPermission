@@ -32,7 +32,7 @@ import me.weyye.hipermission.PermissionView;
 import vip.ruoyun.permission.core.MissPermission;
 import vip.ruoyun.permission.core.PermissionException;
 import vip.ruoyun.permission.core.PermissionRequest;
-import vip.ruoyun.permission.helper.PermissionHelper;
+import vip.ruoyun.permission.helper.MissHelper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -91,10 +91,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void tesHelper(){
-        PermissionHelper.doOpenCamera(this, new PermissionHelper.DoActionWapper() {
+    private void tesHelper() {
+        MissHelper.doOpenCamera(this, new MissHelper.DoActionWrapper() {
             @Override
-            public void doHandle(Context context) {
+            public void onSuccess(Context context) {
 
             }
         });
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onSuccess() {
+                    public void onSuccess(PermissionRequest request) {
                         Log.i("zyh", "成功");
                     }
 

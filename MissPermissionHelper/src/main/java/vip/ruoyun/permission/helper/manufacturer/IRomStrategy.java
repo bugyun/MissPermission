@@ -16,4 +16,6 @@ public interface IRomStrategy {
 
     boolean isNeedShowHint();
 
+    boolean isNeedCheck();
+
 }

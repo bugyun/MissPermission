@@ -1,4 +1,4 @@
-package vip.ruoyun.permission.helper;
+package vip.ruoyun.permission.helper.core;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
+
+import vip.ruoyun.permission.helper.R;
 
 /**
  * Created by fanpu on 2017/6/7.

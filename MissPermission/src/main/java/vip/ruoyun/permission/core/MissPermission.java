@@ -14,6 +14,7 @@ public class MissPermission {
     public static final int NEXT_STEP = 0x10;
     public static final int STOP_STEP = 0x15;
     public static final int WAIT_STEP = 0x20;
+
     private Builder builder;
 
     private static class SingletonHolder {

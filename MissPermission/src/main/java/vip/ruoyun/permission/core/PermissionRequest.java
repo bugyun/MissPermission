@@ -1,6 +1,7 @@
 package vip.ruoyun.permission.core;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -27,6 +28,10 @@ public class PermissionRequest {
 
     public boolean isOver23() {
         return isOver23;
+    }
+
+    public Context getContext() {
+        return activityWeakReference.get();
     }
 
     PermissionRequest(Activity activity) {
@@ -96,7 +101,7 @@ public class PermissionRequest {
                 }
             }
             if (permissionList.size() == agreePermissionList.size()) {
-                permissionListener.onSuccess(); //所有权限都通过
+                permissionListener.onSuccess(this); //所有权限都通过
             } else {
                 permissionListener.onDenied(isOver23, rejectPermissionList, true, this);
             }
@@ -106,7 +111,7 @@ public class PermissionRequest {
     private void requestPermission() {
         if (permissionList.size() == agreePermissionList.size()) {//判断集合
             //所有权限都通过
-            permissionListener.onSuccess();
+            permissionListener.onSuccess(this);
         } else {
             requestPermissionsAgain(rejectPermissionList);
         }
@@ -148,7 +153,7 @@ public class PermissionRequest {
          */
         void onDenied(boolean isOver23, List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request);
 
-        void onSuccess();//权限完成
+        void onSuccess(PermissionRequest request);//权限完成
 
         void onFailure(PermissionException exception);//失败
     }
@@ -173,7 +178,7 @@ public class PermissionRequest {
             if (!deniedList.isEmpty()) {
                 permissionListener.onDenied(isOver23, deniedList, alwaysDenied, this);
             } else {
-                permissionListener.onSuccess();
+                permissionListener.onSuccess(this);
             }
         }
     }

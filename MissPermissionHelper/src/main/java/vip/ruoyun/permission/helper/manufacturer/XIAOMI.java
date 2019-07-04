@@ -22,4 +22,10 @@ public class XIAOMI implements IRomStrategy {
     public boolean isNeedShowHint() {
         return true;
     }
+
+
+    @Override
+    public boolean isNeedCheck() {
+        return true;
+    }
 }

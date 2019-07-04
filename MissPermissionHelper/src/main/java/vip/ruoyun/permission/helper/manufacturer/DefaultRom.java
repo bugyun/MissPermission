@@ -20,4 +20,10 @@ public class DefaultRom implements IRomStrategy {
         return false;
     }
 
+    @Override
+    public boolean isNeedCheck() {
+        return false;
+    }
+
+
 }
