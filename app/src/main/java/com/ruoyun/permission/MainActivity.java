@@ -19,14 +19,18 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import com.ruoyun.dpermission.DPermission;
-import com.ruoyun.dpermission.PermissionException;
-import com.ruoyun.dpermission.PermissionRequest;
-import com.ruoyun.dpermission.RequestCode;
-import me.weyye.hipermission.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import me.weyye.hipermission.HiPermission;
+import me.weyye.hipermission.PermissionAdapter;
+import me.weyye.hipermission.PermissionCallback;
+import me.weyye.hipermission.PermissionItem;
+import me.weyye.hipermission.PermissionView;
+import vip.ruoyun.permission.core.MissPermission;
+import vip.ruoyun.permission.core.PermissionException;
+import vip.ruoyun.permission.core.PermissionRequest;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -87,9 +91,8 @@ public class MainActivity extends AppCompatActivity {
     Dialog mDialog;
 
     private void testDPermission() {
-        DPermission.with(MainActivity.this)//
+        MissPermission.with(MainActivity.this)//
 //                .setPermissionListener()//
-                .setRequestCode(RequestCode.MORE)//
                 .addPermission(Manifest.permission.CAMERA)//
                 .addPermission(Manifest.permission.SEND_SMS)//
                 .addPermission(Manifest.permission.RECEIVE_SMS)//
@@ -139,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
                         mDialog.show();
-                        return DPermission.WAIT_STEP;
+                        return MissPermission.WAIT_STEP;
                     }
 
                     @Override
@@ -248,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        DPermission.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        MissPermission.onRequestPermissionsResult(requestCode, permissions, grantResults);
         //        switch (requestCode) {
         //            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
         //                // If request is cancelled, the result arrays are empty.

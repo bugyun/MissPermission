@@ -6,7 +6,7 @@ package vip.ruoyun.permission.core;
 
 public class PermissionException extends Exception {
 
-    public PermissionException(String message) {
+    PermissionException(String message) {
         super(message);
     }
 }

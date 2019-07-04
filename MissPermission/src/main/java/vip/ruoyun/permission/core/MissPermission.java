@@ -29,9 +29,8 @@ public class MissPermission {
     }
 
     public static Builder with(Activity activity) {
-        MissPermission dPermission = MissPermission.getInstance();
         Builder builder = new Builder(activity);
-        dPermission.builder = builder;
+        getInstance().builder = builder;
         return builder;
     }
 
@@ -49,7 +48,7 @@ public class MissPermission {
 
         private PermissionRequest request;
 
-        public Builder(Activity activity) {
+        Builder(Activity activity) {
             request = new PermissionRequest(activity);
         }
 

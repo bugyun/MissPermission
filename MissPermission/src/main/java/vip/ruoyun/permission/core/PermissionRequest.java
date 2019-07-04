@@ -21,19 +21,23 @@ public class PermissionRequest {
     private List<String> rejectPermissionList = new ArrayList<>();
     private PermissionListener permissionListener;
     private final WeakReference<Activity> activityWeakReference;
-    private int requestCode = 999898;
+    private int requestCode = 9898;
 
     private boolean isOver23;//是不是棉花糖，大于：true  小于 false
 
-    public PermissionRequest(Activity activity) {
+    public boolean isOver23() {
+        return isOver23;
+    }
+
+    PermissionRequest(Activity activity) {
         activityWeakReference = new WeakReference<>(activity);
     }
 
-    public void addPermission(String permission) {
+    void addPermission(String permission) {
         permissionList.add(permission);
     }
 
-    public void start(PermissionListener permissionListener) {
+    void start(PermissionListener permissionListener) {
         this.permissionListener = permissionListener;
         checkPermission();
     }
@@ -117,11 +121,11 @@ public class PermissionRequest {
         ActivityCompat.requestPermissions(activityWeakReference.get(), permissionLists.toArray(new String[0]), requestCode);
     }
 
-    public void setRequestCode(int requestCode) {
+    void setRequestCode(int requestCode) {
         this.requestCode = requestCode;
     }
 
-    public int getRequestCode() {
+    int getRequestCode() {
         return requestCode;
     }
 
@@ -150,7 +154,7 @@ public class PermissionRequest {
     }
 
 
-    public void onRequestPermissionsResult(String[] permissions, int[] grantResults) {
+    void onRequestPermissionsResult(String[] permissions, int[] grantResults) {
         boolean alwaysDenied = false;
         if (grantResults.length > 0) {
             List<String> deniedList = new ArrayList<>();
