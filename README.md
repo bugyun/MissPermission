@@ -1,15 +1,15 @@
 # Permission
 android 权限库，超级简单好用！！
-
+---
 ## MissPermission
 可以单独使用，如果配合 PermissionHelper 体验更佳~
 
-## 使用
+### 配置
 ```xml
 implementation 'vip.ruoyun.permission:miss-core:1.0.0'
 ```
 
-## 使用方法
+### 使用方法
 
 ```java
 MissPermission.with(context)//
@@ -54,10 +54,34 @@ MissPermission.with(context)//
                 });
 ```
 
+需要在 使用方法的 Activity 中重写如下方法:
+```java
+@Override
+public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    MissPermission.onRequestPermissionsResult(requestCode, permissions, grantResults);
+}
+```
+
+---
+
 ## PermissionHelper
 简化操作帮助类，很少的代码就可以获取权限。
 
+### 配置
 ```xml
-'vip.ruoyun.permission:miss-helper:1.0.0'
+implementation 'vip.ruoyun.permission:miss-helper:1.0.0'
 ```
+
+### 使用
+```java
+PermissionHelper.doOpenCamera(this, new PermissionHelper.DoActionWapper() {
+    @Override
+    public void doHandle(Context context) {
+
+    }
+});
+```
+
+
 

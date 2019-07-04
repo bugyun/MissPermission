@@ -2,6 +2,7 @@ package com.ruoyun.permission;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -31,6 +32,7 @@ import me.weyye.hipermission.PermissionView;
 import vip.ruoyun.permission.core.MissPermission;
 import vip.ruoyun.permission.core.PermissionException;
 import vip.ruoyun.permission.core.PermissionRequest;
+import vip.ruoyun.permission.helper.PermissionHelper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -86,6 +88,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+
+    private void tesHelper(){
+        PermissionHelper.doOpenCamera(this, new PermissionHelper.DoActionWapper() {
+            @Override
+            public void doHandle(Context context) {
+
+            }
+        });
     }
 
     Dialog mDialog;

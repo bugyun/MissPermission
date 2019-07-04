@@ -48,14 +48,24 @@ public class PermissionHelper {
 
     public interface DoAction {
         void doHandle(Context context);
+
+        void onDenied(Context context);
+    }
+
+    public abstract static class DoActionWapper implements DoAction {
+
+        @Override
+        public void onDenied(Context context) {
+
+        }
     }
 
 
-    public static void doOpenCamera(final Fragment fragment, final DoAction doAction) {
+    public static void doOpenCamera(final Fragment fragment, final DoActionWapper doAction) {
         doOpenCamera(fragment.getActivity(), doAction);
     }
 
-    public static void doOpenCamera(final Activity activity, final DoAction doAction) {
+    public static void doOpenCamera(final Activity activity, final DoActionWapper doAction) {
         MissPermission.with(activity).addPermission(Manifest.permission.CAMERA).checkPermission(new PermissionRequest.PermissionListener() {
 
 
@@ -73,6 +83,7 @@ public class PermissionHelper {
                 } else {
                     DialogUtil.showPermissionManagerDialog(activity, "相机");
                 }
+                doAction.onDenied(activity);
             }
 
             @Override
@@ -87,6 +98,7 @@ public class PermissionHelper {
             @Override
             public void onFailure(PermissionException exception) {
                 DialogUtil.showPermissionManagerDialog(activity, "相机");
+                doAction.onDenied(activity);
             }
         });
     }
