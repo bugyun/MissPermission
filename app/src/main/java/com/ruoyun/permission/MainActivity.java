@@ -112,8 +112,8 @@ public class MainActivity extends AppCompatActivity {
                 .addPermission(Manifest.permission.ACCESS_FINE_LOCATION)//
                 .checkPermission(new PermissionRequest.PermissionListener() {
                     @Override
-                    public int onChecked(List<String> agreeList, List<String> rejectList, final PermissionRequest request) {
-                        Log.i("zyh", "onChecked: rejectList:" + rejectList.size() + "agree:" + agreeList.size());
+                    public int onChecked(List<String> agreePermissions, List<String> deniedPermissions, final PermissionRequest request) {
+                        Log.i("zyh", "onChecked: rejectList:" + deniedPermissions.size() + "agree:" + agreePermissions.size());
                         PermissionView contentView = new PermissionView(MainActivity.this);
                         contentView.setGridViewColum(3);
                         contentView.setTitle("标题");
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onDenied(boolean isOver23, final List<String> deniedPermissions, boolean alwaysDenied, final PermissionRequest request) {
+                    public void onDenied(final List<String> deniedPermissions, boolean alwaysDenied, final PermissionRequest request) {
                         StringBuilder sBuilder = new StringBuilder();
                         for (String deniedPermission : deniedPermissions) {
                             if (deniedPermission.equals(Manifest.permission.WRITE_CONTACTS)) {

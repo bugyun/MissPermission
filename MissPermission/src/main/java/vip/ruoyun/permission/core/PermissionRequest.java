@@ -24,7 +24,7 @@ public class PermissionRequest {
     private final WeakReference<Activity> activityWeakReference;
     private int requestCode = 9898;
 
-    private boolean isOver23;//是不是棉花糖，大于：true  小于 false
+    private boolean isOver23;//是不是棉花糖，大于：true  小于 false Build.VERSION_CODES.M
 
     public boolean isOver23() {
         return isOver23;
@@ -103,7 +103,7 @@ public class PermissionRequest {
             if (permissionList.size() == agreePermissionList.size()) {
                 permissionListener.onSuccess(this); //所有权限都通过
             } else {
-                permissionListener.onDenied(isOver23, rejectPermissionList, true, this);
+                permissionListener.onDenied(rejectPermissionList, true, this);
             }
         }
     }
@@ -136,22 +136,21 @@ public class PermissionRequest {
 
     public interface PermissionListener {
         /**
-         * @param agreeList
-         * @param rejectList
+         * @param agreePermissions
+         * @param deniedPermissions
          * @param request
          * @return NEXT_STEP：直接下一步，不用等待
          * STOP_STEP：直接停止，不执行下一步
          * PAUSE_STEP：等待，等待命令唤起下一步
          */
-        int onChecked(List<String> agreeList, List<String> rejectList, PermissionRequest request);//检查结束
+        int onChecked(List<String> agreePermissions, List<String> deniedPermissions, PermissionRequest request);//检查结束
 
         /**
-         * @param isOver23          是否大于Build.VERSION_CODES.M
          * @param deniedPermissions
          * @param alwaysDenied
          * @param request
          */
-        void onDenied(boolean isOver23, List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request);
+        void onDenied(List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request);
 
         void onSuccess(PermissionRequest request);//权限完成
 
@@ -176,7 +175,7 @@ public class PermissionRequest {
                 }
             }
             if (!deniedList.isEmpty()) {
-                permissionListener.onDenied(isOver23, deniedList, alwaysDenied, this);
+                permissionListener.onDenied(deniedList, alwaysDenied, this);
             } else {
                 permissionListener.onSuccess(this);
             }

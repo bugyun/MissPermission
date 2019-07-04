@@ -23,7 +23,7 @@ MissPermission.with(context)//
                        rejectList: 拒绝的权限
                     */
                     @Override
-                    public int onChecked(List<String> agreeList, List<String> rejectList, PermissionRequest request) {
+                    public int onChecked(List<String> agreePermissions, List<String> deniedPermissions, PermissionRequest request) {
                         //3 种返回方式，
                         //MissPermission.NEXT_STEP  直接下一步，不用等待
                         //MissPermission.STOP_STEP  直接停止，不执行下一步
@@ -38,7 +38,7 @@ MissPermission.with(context)//
                        alwaysDenied: 是否总是拒绝
                     */
                     @Override
-                    public void onDenied(boolean isOver23, final List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request) {
+                    public void onDenied(List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request) {
 
                     }
 

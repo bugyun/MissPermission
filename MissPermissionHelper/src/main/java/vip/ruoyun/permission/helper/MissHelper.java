@@ -69,13 +69,13 @@ public class MissHelper {
                 .addPermission(Manifest.permission.CAMERA)
                 .checkPermission(new PermissionRequest.PermissionListener() {
                     @Override
-                    public int onChecked(List<String> agreeList, List<String> rejectList, PermissionRequest request) {
-                        missHelperConfiguration.getAction().checkedAction(request.getContext(), rejectList, request);
+                    public int onChecked(List<String> agreePermissions, List<String> deniedPermissions, PermissionRequest request) {
+                        missHelperConfiguration.getAction().checkedAction(request.getContext(), deniedPermissions, request);
                         return MissPermission.WAIT_STEP;
                     }
 
                     @Override
-                    public void onDenied(boolean isOver23, List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request) {
+                    public void onDenied(List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request) {
                         missHelperConfiguration.getAction().deniedAction(request.getContext(), deniedPermissions, alwaysDenied, request);
                         doAction.onFailure(request.getContext());
                     }
