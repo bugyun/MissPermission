@@ -1,7 +1,10 @@
 package vip.ruoyun.permission.helper.check;
 
+import android.Manifest;
 import android.content.Context;
 import android.location.LocationManager;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 /**
@@ -11,6 +14,17 @@ import android.util.Log;
  * Depiction:
  */
 public class LocationChecker {
+
+
+    public static final String[] NEED_PERMISSION = {
+            Manifest.permission.ACCESS_FINE_LOCATION,//
+            Manifest.permission.ACCESS_COARSE_LOCATION,//
+    };
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    public static final String[] dd = {
+            Manifest.permission.ACCESS_BACKGROUND_LOCATION,//后台定位权限
+    };
 
 
     /**
