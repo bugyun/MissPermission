@@ -103,15 +103,15 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        MissHelper.checkCalendar();
-        MissHelper.checkCallLog();
-        MissHelper.checkContacts();
-        MissHelper.checkLocation();
-        MissHelper.checkMicrophone();
-        MissHelper.checkPhone();
-        MissHelper.checkSensors();
-        MissHelper.checkSms();
-        MissHelper.checkStorage();
+//        MissHelper.checkCalendar();
+//        MissHelper.checkCallLog();
+//        MissHelper.checkContacts();
+//        MissHelper.checkLocation();
+//        MissHelper.checkMicrophone();
+//        MissHelper.checkPhone();
+//        MissHelper.checkSensors();
+//        MissHelper.checkSms();
+//        MissHelper.checkStorage();
 
         boolean isHasReadCalendarPermission = MissHelper.check(this, new String[]{Manifest.permission.READ_CALENDAR});
         if (isHasReadCalendarPermission) {
