@@ -2,7 +2,7 @@
 android 权限库，超级简单好用！！
 ---
 ## MissPermission
-可以单独使用，如果配合 PermissionHelper 体验更佳~
+可以单独使用，如果配合 MissHelper 体验更佳~
 
 ### 配置
 ```xml
@@ -65,7 +65,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 
 ---
 
-## PermissionHelper
+## MissHelper
 简化操作帮助类，很少的代码就可以获取权限。
 
 ### 配置
@@ -74,14 +74,51 @@ implementation 'vip.ruoyun.permission:miss-helper:1.0.0'
 ```
 
 ### 使用
+
+#### 单纯检查是否有权限
 ```java
-PermissionHelper.doOpenCamera(this, new PermissionHelper.DoActionWapper() {
+boolean isHasReadCalendarPermission = MissHelper.check(this, new String[]{Manifest.permission.READ_CALENDAR});
+if (isHasReadCalendarPermission) {
+    //有权限
+} else {
+    //没有权限
+}
+```
+
+#### 检查是否有权限
+```java
+MissHelper.checkCamera();
+MissHelper.checkCalendar();
+MissHelper.checkCallLog();
+MissHelper.checkContacts();
+MissHelper.checkLocation();
+MissHelper.checkMicrophone();
+MissHelper.checkPhone();
+MissHelper.checkSensors();
+MissHelper.checkSms();
+MissHelper.checkStorage();
+```
+
+#### 回调方法
+```java
+MissHelper.checkCamera(this, new MissHelper.DoActionWrapper() {
     @Override
-    public void doHandle(Context context) {
+    public void onSuccess(Context context) {
+
+    }
+
+    @Override
+    public void onFailure(Context context) {
+
+    }
+});
+//简写,省略 onFailure
+MissHelper.checkCamera(this, new MissHelper.DoActionWrapper() {
+    @Override
+    public void onSuccess(Context context) {
 
     }
 });
 ```
-
 
 
