@@ -7,22 +7,24 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
+import vip.ruoyun.permission.helper.core.IChecker;
+import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
+
 /**
  * Created by ruoyun on 2019-06-25.
  * Author:若云
  * Mail:zyhdvlp@gmail.com
  * Depiction:
  */
-public class LocationChecker {
+public class LocationChecker implements IChecker {
 
-
-    public static final String[] NEED_PERMISSION = {
+    public final String[] NEED_PERMISSION = {
             Manifest.permission.ACCESS_FINE_LOCATION,//
             Manifest.permission.ACCESS_COARSE_LOCATION,//
     };
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
-    public static final String[] dd = {
+    public final String[] dd = {
             Manifest.permission.ACCESS_BACKGROUND_LOCATION,//后台定位权限
     };
 
@@ -44,6 +46,11 @@ public class LocationChecker {
 //        boolean ok = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
 
+        return false;
+    }
+
+    @Override
+    public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
         return false;
     }
 }

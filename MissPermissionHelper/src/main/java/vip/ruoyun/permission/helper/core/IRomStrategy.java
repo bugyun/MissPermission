@@ -1,4 +1,4 @@
-package vip.ruoyun.permission.helper.manufacturer;
+package vip.ruoyun.permission.helper.core;
 
 import android.content.Intent;
 

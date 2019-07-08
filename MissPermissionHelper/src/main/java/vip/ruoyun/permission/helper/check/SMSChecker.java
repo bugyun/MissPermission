@@ -1,6 +1,10 @@
 package vip.ruoyun.permission.helper.check;
 
 import android.Manifest;
+import android.content.Context;
+
+import vip.ruoyun.permission.helper.core.IChecker;
+import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
 
 /**
  * Created by ruoyun on 2019-06-25.
@@ -8,9 +12,9 @@ import android.Manifest;
  * Mail:zyhdvlp@gmail.com
  * Depiction:
  */
-public class SMSChecker {
+public class SMSChecker implements IChecker {
 
-    public static final String[] NEED_PERMISSION = {
+    public final String[] NEED_PERMISSION = {
             Manifest.permission.SEND_SMS,//
             Manifest.permission.RECEIVE_SMS,//
             Manifest.permission.READ_SMS,//
@@ -18,9 +22,8 @@ public class SMSChecker {
             Manifest.permission.RECEIVE_MMS,//
     };
 
-    public static boolean check() {
-
-
+    @Override
+    public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
         return false;
     }
 }

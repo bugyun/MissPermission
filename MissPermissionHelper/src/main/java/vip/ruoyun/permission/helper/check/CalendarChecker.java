@@ -1,6 +1,10 @@
 package vip.ruoyun.permission.helper.check;
 
 import android.Manifest;
+import android.content.Context;
+
+import vip.ruoyun.permission.helper.core.IChecker;
+import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
 
 /**
  * Created by ruoyun on 2019-06-25.
@@ -8,9 +12,9 @@ import android.Manifest;
  * Mail:zyhdvlp@gmail.com
  * Depiction:
  */
-public class CalendarChecker {
+public class CalendarChecker implements IChecker {
 
-    public static final String[] FM_PERMISSION = {
+    public final String[] NEED_PERMISSION = {
             Manifest.permission.READ_CALENDAR,  //必选
             Manifest.permission.WRITE_CALENDAR,  //必选
     };
@@ -19,8 +23,11 @@ public class CalendarChecker {
     public void testIntent() {
 
 
-
     }
 
 
+    @Override
+    public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
+        return false;
+    }
 }

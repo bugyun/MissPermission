@@ -3,6 +3,7 @@ package vip.ruoyun.permission.helper.check;
 import android.Manifest;
 import android.content.Context;
 
+import vip.ruoyun.permission.helper.core.IChecker;
 import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
 
 /**
@@ -11,9 +12,9 @@ import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
  * Mail:zyhdvlp@gmail.com
  * Depiction:
  */
-public class CameraChecker {
+public class CameraChecker implements IChecker {
 
-    public static final String[] FM_PERMISSION = {
+    public String[] NEED_PERMISSION = {
             Manifest.permission.CAMERA,  //必选
     };
 
@@ -23,7 +24,7 @@ public class CameraChecker {
 //        MediaStore.ACTION_VIDEO_CAPTURE
     }
 
-    public static boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
+    public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
         if (configuration.getRomStrategy().isNeedCheck()) {
             //检查
 

@@ -92,12 +92,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void tesHelper() {
-        MissHelper.doOpenCamera(this, new MissHelper.DoActionWrapper() {
+        MissHelper.checkCamera(this, new MissHelper.DoActionWrapper() {
             @Override
             public void onSuccess(Context context) {
 
             }
         });
+
+        MissHelper.
     }
 
     Dialog mDialog;

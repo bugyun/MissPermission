@@ -3,6 +3,9 @@ package vip.ruoyun.permission.core;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by ruoyun on 2019-06-27.
  * Author:若云
@@ -66,6 +69,16 @@ public class MissPermission {
 
         public Builder addPermission(String permission) {
             request.addPermission(permission);
+            return this;
+        }
+
+        public Builder addPermissions(List<String> permissions) {
+            request.addPermissions(permissions);
+            return this;
+        }
+
+        public Builder addPermissions(String[] permissions) {
+            request.addPermissions(Arrays.asList(permissions));
             return this;
         }
 

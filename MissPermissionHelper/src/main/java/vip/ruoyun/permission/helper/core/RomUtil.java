@@ -6,7 +6,6 @@ import java.util.HashMap;
 
 import vip.ruoyun.permission.helper.manufacturer.DefaultRom;
 import vip.ruoyun.permission.helper.manufacturer.HUAWEI;
-import vip.ruoyun.permission.helper.manufacturer.IRomStrategy;
 import vip.ruoyun.permission.helper.manufacturer.MEIZU;
 import vip.ruoyun.permission.helper.manufacturer.OPPO;
 import vip.ruoyun.permission.helper.manufacturer.VIVO;

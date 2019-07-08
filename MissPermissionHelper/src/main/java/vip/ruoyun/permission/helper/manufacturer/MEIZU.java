@@ -2,6 +2,8 @@ package vip.ruoyun.permission.helper.manufacturer;
 
 import android.content.Intent;
 
+import vip.ruoyun.permission.helper.core.IRomStrategy;
+
 /**
  * Created by ruoyun on 2019-06-25.
  * Author:若云

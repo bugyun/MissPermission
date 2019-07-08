@@ -1,6 +1,5 @@
 package vip.ruoyun.permission.helper;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -15,7 +14,17 @@ import java.util.List;
 import vip.ruoyun.permission.core.MissPermission;
 import vip.ruoyun.permission.core.PermissionException;
 import vip.ruoyun.permission.core.PermissionRequest;
+import vip.ruoyun.permission.helper.check.CalendarChecker;
+import vip.ruoyun.permission.helper.check.CallLogChecker;
 import vip.ruoyun.permission.helper.check.CameraChecker;
+import vip.ruoyun.permission.helper.check.ContactsChecker;
+import vip.ruoyun.permission.helper.check.LocationChecker;
+import vip.ruoyun.permission.helper.check.MicrophoneChecker;
+import vip.ruoyun.permission.helper.check.PhoneCheck;
+import vip.ruoyun.permission.helper.check.SMSChecker;
+import vip.ruoyun.permission.helper.check.SensorsChecker;
+import vip.ruoyun.permission.helper.check.StorageChecker;
+import vip.ruoyun.permission.helper.core.IChecker;
 import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
 
 public class MissHelper {
@@ -60,13 +69,59 @@ public class MissHelper {
     }
 
 
-    public static void doOpenCamera(final Fragment fragment, final DoActionWrapper doAction) {
-        doOpenCamera(fragment.getActivity(), doAction);
+    public static void checkCalendar(final Activity activity, final DoActionWrapper doAction) {
+        checkPermission(activity, doAction, new CalendarChecker());
     }
 
-    public static void doOpenCamera(final Activity activity, final DoActionWrapper doAction) {
+    public static void checkCallLog(final Activity activity, final DoActionWrapper doAction) {
+        checkPermission(activity, doAction, new CallLogChecker());
+    }
+
+    public static void checkCamera(final Fragment fragment, final DoActionWrapper doAction) {
+        checkCamera(fragment.getActivity(), doAction);
+    }
+
+    public static void checkCamera(final Activity activity, final DoActionWrapper doAction) {
+        checkPermission(activity, doAction, new CameraChecker());
+    }
+
+    public static void checkContacts(final Activity activity, final DoActionWrapper doAction) {
+        checkPermission(activity, doAction, new ContactsChecker());
+    }
+
+    public static void checkLocation(final Activity activity, final DoActionWrapper doAction) {
+        checkPermission(activity, doAction, new LocationChecker());
+    }
+
+
+    public static void checkMicrophone(final Activity activity, final DoActionWrapper doAction) {
+        checkPermission(activity, doAction, new MicrophoneChecker());
+    }
+
+    public static void checkPhone(final Activity activity, final DoActionWrapper doAction) {
+        checkPermission(activity, doAction, new PhoneCheck());
+    }
+
+    public static void checkSensors(final Activity activity, final DoActionWrapper doAction) {
+        checkPermission(activity, doAction, new SensorsChecker());
+    }
+
+    public static void checkSms(final Fragment fragment, final DoActionWrapper doAction) {
+        checkSms(fragment.getActivity(), doAction);
+
+    }
+
+    public static void checkSms(final Activity activity, final DoActionWrapper doAction) {
+        checkPermission(activity, doAction, new SMSChecker());
+    }
+
+    public static void checkStorage(final Activity activity, final DoActionWrapper doAction) {
+        checkPermission(activity, doAction, new StorageChecker());
+    }
+
+    private static void checkPermission(final Activity activity, final DoActionWrapper doAction, final IChecker iChecker) {
         MissPermission.with(activity)
-                .addPermission(Manifest.permission.CAMERA)
+                .addPermissions(iChecker.NEED_PERMISSION)
                 .checkPermission(new PermissionRequest.PermissionListener() {
                     @Override
                     public int onChecked(List<String> agreePermissions, List<String> deniedPermissions, PermissionRequest request) {
@@ -82,11 +137,67 @@ public class MissHelper {
 
                     @Override
                     public void onSuccess(PermissionRequest request) {
-                        if (CameraChecker.isCheckEnable(activity, missHelperConfiguration)) {
+                        if (iChecker.isCheckEnable(activity, missHelperConfiguration)) {
                             doAction.onSuccess(activity);
                         } else {
-                            missHelperConfiguration.getAction().deniedAction(activity, Arrays.asList(CameraChecker.NEED_PERMISSION), true, request);
+                            missHelperConfiguration.getAction().deniedAction(activity, Arrays.asList(iChecker.NEED_PERMISSION), true, request);
                         }
+                    }
+
+                    @Override
+                    public void onFailure(PermissionException exception) {
+                        doAction.onFailure(activity);
+                    }
+                });
+    }
+
+    public static void checkPermissions(final Activity activity, final DoActionWrapper doAction, List<String> permissions) {
+        MissPermission.with(activity)
+                .addPermissions(permissions)
+                .checkPermission(new PermissionRequest.PermissionListener() {
+                    @Override
+                    public int onChecked(List<String> agreePermissions, List<String> deniedPermissions, PermissionRequest request) {
+                        missHelperConfiguration.getAction().checkedAction(request.getContext(), deniedPermissions, request);
+                        return MissPermission.WAIT_STEP;
+                    }
+
+                    @Override
+                    public void onDenied(List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request) {
+                        missHelperConfiguration.getAction().deniedAction(request.getContext(), deniedPermissions, alwaysDenied, request);
+                        doAction.onFailure(request.getContext());
+                    }
+
+                    @Override
+                    public void onSuccess(PermissionRequest request) {
+                        doAction.onSuccess(activity);
+                    }
+
+                    @Override
+                    public void onFailure(PermissionException exception) {
+                        doAction.onFailure(activity);
+                    }
+                });
+    }
+
+    public static void checkPermissions(final Activity activity, final DoActionWrapper doAction, String[] permissions) {
+        MissPermission.with(activity)
+                .addPermissions(permissions)
+                .checkPermission(new PermissionRequest.PermissionListener() {
+                    @Override
+                    public int onChecked(List<String> agreePermissions, List<String> deniedPermissions, PermissionRequest request) {
+                        missHelperConfiguration.getAction().checkedAction(request.getContext(), deniedPermissions, request);
+                        return MissPermission.WAIT_STEP;
+                    }
+
+                    @Override
+                    public void onDenied(List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request) {
+                        missHelperConfiguration.getAction().deniedAction(request.getContext(), deniedPermissions, alwaysDenied, request);
+                        doAction.onFailure(request.getContext());
+                    }
+
+                    @Override
+                    public void onSuccess(PermissionRequest request) {
+                        doAction.onSuccess(activity);
                     }
 
                     @Override

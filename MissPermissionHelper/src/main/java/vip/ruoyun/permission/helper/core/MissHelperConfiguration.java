@@ -1,7 +1,5 @@
 package vip.ruoyun.permission.helper.core;
 
-import vip.ruoyun.permission.helper.manufacturer.IRomStrategy;
-
 public class MissHelperConfiguration {
 
     private BaseAction action;
