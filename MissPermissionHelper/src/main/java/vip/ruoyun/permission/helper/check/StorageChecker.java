@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.os.Build;
 
+import vip.ruoyun.permission.helper.R;
 import vip.ruoyun.permission.helper.core.IChecker;
 import vip.ruoyun.permission.helper.core.IRomStrategy;
 import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
@@ -16,11 +17,14 @@ import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
  */
 public class StorageChecker implements IChecker {
 
-    private IRomStrategy iRomStrategy;
-    private final String[] NEED_PERMISSION;
+    public static final String PERMISSION_NAME = "日历";
 
-    public StorageChecker(IRomStrategy iRomStrategy) {
-        this.iRomStrategy = iRomStrategy;
+    static final int PERMISSION_ICONRES = R.drawable.miss_permission_ic_calendar;
+
+    private IRomStrategy iRomStrategy;
+    public static final String[] NEED_PERMISSION;
+
+    static {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             NEED_PERMISSION = new String[]{
                     Manifest.permission.READ_EXTERNAL_STORAGE,//
@@ -31,6 +35,11 @@ public class StorageChecker implements IChecker {
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,//
             };
         }
+    }
+
+    public StorageChecker(IRomStrategy iRomStrategy) {
+        this.iRomStrategy = iRomStrategy;
+
     }
 
     @Override
@@ -45,7 +54,7 @@ public class StorageChecker implements IChecker {
 
     @Override
     public int getPermissionIconRes() {
-        return 0;
+        return R.drawable.miss_permission_ic_storage;
     }
 
     @Override

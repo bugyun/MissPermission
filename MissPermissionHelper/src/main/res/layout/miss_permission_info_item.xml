@@ -15,5 +15,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="60.0dip"
-        android:gravity="center" />
+        android:gravity="center"
+        android:textColor="@color/MissHelperColorGreen" />
 </FrameLayout>

@@ -12,6 +12,9 @@ import vip.ruoyun.permission.helper.core.IRomStrategy;
  */
 public class DefaultRom implements IRomStrategy {
 
+    public static final String MANUFACTURER = "DEFAULT";
+
+
     @Override
     public Intent settingIntent() throws Exception {
         return null;
@@ -27,8 +30,4 @@ public class DefaultRom implements IRomStrategy {
         return false;
     }
 
-    @Override
-    public String getManufacturerName() {
-        return "DEFAULT";
-    }
 }

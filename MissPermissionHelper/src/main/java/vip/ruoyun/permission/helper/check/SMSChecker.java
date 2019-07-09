@@ -2,7 +2,12 @@ package vip.ruoyun.permission.helper.check;
 
 import android.Manifest;
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.Telephony;
+import android.text.TextUtils;
 
+import vip.ruoyun.permission.helper.R;
 import vip.ruoyun.permission.helper.core.IChecker;
 import vip.ruoyun.permission.helper.core.IRomStrategy;
 import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
@@ -15,13 +20,17 @@ import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
  */
 public class SMSChecker implements IChecker {
 
+    public static final String PERMISSION_NAME = "日历";
+
+    static final int PERMISSION_ICONRES = R.drawable.miss_permission_ic_calendar;
+
     private IRomStrategy iRomStrategy;
 
     public SMSChecker(IRomStrategy iRomStrategy) {
         this.iRomStrategy = iRomStrategy;
     }
 
-    private final String[] NEED_PERMISSION = {
+    public static final String[] NEED_PERMISSION = {
             Manifest.permission.SEND_SMS,//
             Manifest.permission.RECEIVE_SMS,//
             Manifest.permission.READ_SMS,//
@@ -29,9 +38,41 @@ public class SMSChecker implements IChecker {
             Manifest.permission.RECEIVE_MMS,//
     };
 
+    /**
+     * 有的手机 返回是有权限，不弹权限框，但是需要在获取的时候才能 获取这个权限，要事先检测一次
+     * <p>
+     * 华为手机，会弹出请求权限的弹框
+     *
+     * @param context
+     * @param configuration
+     * @return
+     */
     @Override
     public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
-        return false;
+        Cursor cursor = context.getContentResolver().query(Uri.parse("content://sms/"), null, null,
+                null, null);
+        if (cursor != null) {
+            if (isNumberIndexInfoIsNull(cursor, cursor.getColumnIndex(Telephony.Sms.DATE))) {
+                cursor.close();
+                return false;
+            }
+            cursor.close();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    private static boolean isNumberIndexInfoIsNull(Cursor cursor, int numberIndex) {
+        if (cursor.getCount() > 0) {
+            if (cursor.moveToNext()) {
+                return TextUtils.isEmpty(cursor.getString(numberIndex));
+            }
+            return false;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -41,7 +82,7 @@ public class SMSChecker implements IChecker {
 
     @Override
     public int getPermissionIconRes() {
-        return 0;
+        return R.drawable.miss_permission_ic_sms;
     }
 
     @Override

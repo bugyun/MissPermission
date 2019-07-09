@@ -17,6 +17,7 @@
         android:layout_marginTop="25.0dip"
         android:gravity="center"
         android:text=""
+        android:textColor="@color/MissHelperColorGreen"
         android:textSize="20.0sp" />
 
     <TextView
@@ -28,6 +29,7 @@
         android:layout_marginRight="10dp"
         android:gravity="center"
         android:text=""
+        android:textColor="@color/MissHelperColorGreen"
         android:textSize="12.0sp" />
 
     <!--<LinearLayout-->

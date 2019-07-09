@@ -151,6 +151,7 @@ public class MissHelper {
                             doAction.onSuccess(activity);
                         } else {
                             missHelperConfiguration.getAction().deniedAction(activity, Arrays.asList(iChecker.getPermissions()), true, request);
+                            doAction.onFailure(request.getContext());
                         }
                     }
 
@@ -224,6 +225,37 @@ public class MissHelper {
                         doAction.onFailure(activity);
                     }
                 });
+    }
+
+    public static void checkPermissions(final Activity activity, final DoActionWrapper doAction, final IChecker... iCheckers) {
+        checkNotNullConfiguration();
+        MissPermission.Builder builder = MissPermission.with(activity);
+        for (IChecker iChecker : iCheckers) {
+            builder.addPermissions(iChecker.getPermissions());
+        }
+        builder.checkPermission(new PermissionRequest.PermissionListener() {
+            @Override
+            public int onChecked(List<String> agreePermissions, List<String> deniedPermissions, PermissionRequest request) {
+                missHelperConfiguration.getAction().checkedAction(request.getContext(), deniedPermissions, request, iCheckers);
+                return MissPermission.WAIT_STEP;
+            }
+
+            @Override
+            public void onDenied(List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request) {
+                missHelperConfiguration.getAction().deniedAction(request.getContext(), deniedPermissions, alwaysDenied, request);
+                doAction.onFailure(request.getContext());
+            }
+
+            @Override
+            public void onSuccess(PermissionRequest request) {
+                doAction.onSuccess(activity);
+            }
+
+            @Override
+            public void onFailure(PermissionException exception) {
+                doAction.onFailure(activity);
+            }
+        });
     }
 
 

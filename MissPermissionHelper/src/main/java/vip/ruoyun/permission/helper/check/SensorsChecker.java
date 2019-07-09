@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.os.Build;
 
+import vip.ruoyun.permission.helper.R;
 import vip.ruoyun.permission.helper.core.IChecker;
 import vip.ruoyun.permission.helper.core.IRomStrategy;
 import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
@@ -15,6 +16,10 @@ import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
  * Depiction:
  */
 public class SensorsChecker implements IChecker {
+
+    public static final String PERMISSION_NAME = "日历";
+
+    static final int PERMISSION_ICONRES = R.drawable.miss_permission_ic_calendar;
 
     private IRomStrategy iRomStrategy;
     private final String[] NEED_PERMISSION;
@@ -42,7 +47,7 @@ public class SensorsChecker implements IChecker {
 
     @Override
     public int getPermissionIconRes() {
-        return 0;
+        return R.drawable.miss_permission_ic_sensors;
     }
 
     @Override

@@ -3,6 +3,7 @@ package vip.ruoyun.permission.helper.check;
 import android.Manifest;
 import android.content.Context;
 
+import vip.ruoyun.permission.helper.R;
 import vip.ruoyun.permission.helper.core.IChecker;
 import vip.ruoyun.permission.helper.core.IRomStrategy;
 import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
@@ -15,13 +16,18 @@ import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
  */
 public class ContactsChecker implements IChecker {
 
+    public static final String PERMISSION_NAME = "日历";
+
+    static final int PERMISSION_ICONRES = R.drawable.miss_permission_ic_calendar;
+
+
     private IRomStrategy iRomStrategy;
 
     public ContactsChecker(IRomStrategy iRomStrategy) {
         this.iRomStrategy = iRomStrategy;
     }
 
-    public final String[] NEED_PERMISSION = {
+    public static final String[] NEED_PERMISSION = {
             Manifest.permission.READ_CONTACTS,//
             Manifest.permission.WRITE_CONTACTS,//
             Manifest.permission.GET_ACCOUNTS,//
@@ -29,7 +35,7 @@ public class ContactsChecker implements IChecker {
 
     @Override
     public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
-        return false;
+        return true;
     }
 
     @Override
@@ -39,7 +45,7 @@ public class ContactsChecker implements IChecker {
 
     @Override
     public int getPermissionIconRes() {
-        return 0;
+        return R.drawable.miss_permission_ic_contacts;
     }
 
     @Override

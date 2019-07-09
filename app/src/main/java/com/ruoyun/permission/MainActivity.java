@@ -20,6 +20,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +34,17 @@ import vip.ruoyun.permission.core.MissPermission;
 import vip.ruoyun.permission.core.PermissionException;
 import vip.ruoyun.permission.core.PermissionRequest;
 import vip.ruoyun.permission.helper.MissHelper;
+import vip.ruoyun.permission.helper.check.SMSChecker;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2000;
     private static final String TAG = "zyh";
+
+
+    Button buttonCamera;
+    Button buttonAll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +52,77 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //测试
 
+        buttonCamera = findViewById(R.id.buttonCamera);
+        buttonAll = findViewById(R.id.buttonAll);
+        buttonCamera.setOnClickListener(this);
+        buttonAll.setOnClickListener(this);
         String manufacturer = android.os.Build.MANUFACTURER;
         Log.e("zyh", "制造商" + manufacturer);
 
-        testDPermission();
+
+//        tesHelper();
 
 //        InstanceID.getInstance(this).getId();
         //        testHiPermisson();
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.buttonCamera:
+                if (MissHelper.check(this, SMSChecker.NEED_PERMISSION)) {
+                    Log.e("zyh", "有权限");
+                } else {
+                    Log.e("zyh", "没有权限");
+                }
+
+//                MissHelper.checkContacts(this, new MissHelper.DoActionWrapper() {
+//                    @Override
+//                    public void onSuccess(Context context) {
+//                        Log.e("zyh", "onSuccess");
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Context context) {
+//                        Log.e("zyh", "onFailure");
+//                    }
+//                });
+
+                MissHelper.checkSms(this, new MissHelper.DoActionWrapper() {
+                    @Override
+                    public void onSuccess(Context context) {
+                        Log.e("zyh", "onSuccess");
+                    }
+
+                    @Override
+                    public void onFailure(Context context) {
+                        Log.e("zyh", "onFailure");
+                    }
+                });
+
+//                testDPermission();
+
+                break;
+            case R.id.buttonAll:
+
+//                SMSChecker SMSChecker = new SMSChecker();
+
+//                MissHelper.checkPermissions(this, new MissHelper.DoActionWrapper() {
+//                    @Override
+//                    public void onSuccess(Context context) {
+//                        Log.e("zyh", "onSuccess");
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Context context) {
+//                        Log.e("zyh", "onFailure");
+//                    }
+//                }, SMSChecker);
+
+                break;
+        }
+
     }
 
     private void testHiPermisson() {
@@ -95,12 +165,12 @@ public class MainActivity extends AppCompatActivity {
         MissHelper.checkCamera(this, new MissHelper.DoActionWrapper() {
             @Override
             public void onSuccess(Context context) {
-
+                Log.e("zyh", "onSuccess");
             }
 
             @Override
             public void onFailure(Context context) {
-
+                Log.e("zyh", "onFailure");
             }
         });
 //        MissHelper.checkCalendar();
@@ -125,12 +195,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void testDPermission() {
         MissPermission.with(MainActivity.this)//
-                .addPermission(Manifest.permission.CAMERA)//
+//                .addPermission(Manifest.permission.CAMERA)//
                 .addPermission(Manifest.permission.SEND_SMS)//
                 .addPermission(Manifest.permission.RECEIVE_SMS)//
                 .addPermission(Manifest.permission.READ_SMS)//
-                .addPermission(Manifest.permission.READ_CONTACTS)//
-                .addPermission(Manifest.permission.ACCESS_FINE_LOCATION)//
+//                .addPermission(Manifest.permission.READ_CONTACTS)//
+//                .addPermission(Manifest.permission.ACCESS_FINE_LOCATION)//
                 .checkPermission(new PermissionRequest.PermissionListener() {
                     @Override
                     public int onChecked(List<String> agreePermissions, List<String> deniedPermissions, final PermissionRequest request) {
@@ -304,4 +374,5 @@ public class MainActivity extends AppCompatActivity {
         //            // permissions this app might request
         //        }
     }
+
 }

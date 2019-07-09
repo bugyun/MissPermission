@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import vip.ruoyun.permission.core.PermissionRequest;
+import vip.ruoyun.permission.helper.R;
 import vip.ruoyun.permission.helper.ui.DialogUtil;
 import vip.ruoyun.permission.helper.ui.MissPermissionView;
 import vip.ruoyun.permission.helper.ui.PermissionAdapter;
@@ -28,20 +29,23 @@ public class DefaultAction implements BaseAction {
 
     @Override
     public void checkedAction(Context context, List<String> rejectList, final PermissionRequest request, IChecker... checkers) {
+        if (rejectList.size() == 0) {
+            request.next();
+            return;
+        }
         mDialog = new Dialog(context);
         MissPermissionView contentView = new MissPermissionView(context);
         List<IChecker> permissionItems = new ArrayList<>(Arrays.asList(checkers));
         contentView.setGridViewColum(permissionItems.size() < 3 ? permissionItems.size() : 3);
         contentView.setGridViewAdapter(new PermissionAdapter(permissionItems));
-        contentView.setTitle("标题");
-        contentView.setMsg("内容");
+        contentView.setTitle("亲爱的上帝");
+        contentView.setMsg("为了保护世界的和平，开启这些权限吧！\n你我一起拯救世界");
         //这里没有使用RecyclerView，可以少引入一个库
         //用户没有设置，使用默认绿色主题
-//        int mStyleId = R.style.PermissionDefaultNormalStyle;
-//        int mFilterColor = getResources().getColor(R.color.permissionColorGreen);
-
-//        contentView.setStyleId(mStyleId);
-//        contentView.setFilterColor(mFilterColor);
+        int mStyleId = R.style.PermissionDefaultNormalStyle;
+        int mFilterColor = context.getResources().getColor(R.color.MissHelperColorGreen);
+        contentView.setStyleId(mStyleId);
+        contentView.setFilterColor(mFilterColor);
         contentView.setBtnOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
