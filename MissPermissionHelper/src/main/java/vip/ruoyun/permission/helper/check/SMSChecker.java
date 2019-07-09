@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 
 import vip.ruoyun.permission.helper.core.IChecker;
+import vip.ruoyun.permission.helper.core.IRomStrategy;
 import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
 
 /**
@@ -14,7 +15,13 @@ import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
  */
 public class SMSChecker implements IChecker {
 
-    public final String[] NEED_PERMISSION = {
+    private IRomStrategy iRomStrategy;
+
+    public SMSChecker(IRomStrategy iRomStrategy) {
+        this.iRomStrategy = iRomStrategy;
+    }
+
+    private final String[] NEED_PERMISSION = {
             Manifest.permission.SEND_SMS,//
             Manifest.permission.RECEIVE_SMS,//
             Manifest.permission.READ_SMS,//
@@ -25,5 +32,20 @@ public class SMSChecker implements IChecker {
     @Override
     public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
         return false;
+    }
+
+    @Override
+    public String getPermissionName() {
+        return "信息";
+    }
+
+    @Override
+    public int getPermissionIconRes() {
+        return 0;
+    }
+
+    @Override
+    public String[] getPermissions() {
+        return NEED_PERMISSION;
     }
 }

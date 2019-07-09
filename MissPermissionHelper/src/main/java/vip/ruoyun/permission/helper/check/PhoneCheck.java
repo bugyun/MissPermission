@@ -2,8 +2,10 @@ package vip.ruoyun.permission.helper.check;
 
 import android.Manifest;
 import android.content.Context;
+import android.os.Build;
 
 import vip.ruoyun.permission.helper.core.IChecker;
+import vip.ruoyun.permission.helper.core.IRomStrategy;
 import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
 
 /**
@@ -14,23 +16,66 @@ import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
  */
 public class PhoneCheck implements IChecker {
 
-//    CallLogChecker
+    private IRomStrategy iRomStrategy;
+    //    CallLogChecker
+    private final String[] NEED_PERMISSION;
 
-    public final String[] NEED_PERMISSION = {
-            Manifest.permission.READ_PHONE_STATE,//
-            Manifest.permission.READ_PHONE_NUMBERS,//
-            Manifest.permission.CALL_PHONE,//
-            Manifest.permission.CALL_PHONE,//
-            Manifest.permission.ANSWER_PHONE_CALLS,//
-            Manifest.permission.WRITE_CALL_LOG,//
-            Manifest.permission.ADD_VOICEMAIL,//
-            Manifest.permission.USE_SIP,//
-            Manifest.permission.PROCESS_OUTGOING_CALLS,//
-    };
+    public PhoneCheck(IRomStrategy iRomStrategy) {
+        this.iRomStrategy = iRomStrategy;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NEED_PERMISSION = new String[]{
+                    Manifest.permission.READ_PHONE_STATE,//
+                    Manifest.permission.READ_PHONE_NUMBERS,//
+                    Manifest.permission.CALL_PHONE,//
+                    Manifest.permission.CALL_PHONE,//
+                    Manifest.permission.ANSWER_PHONE_CALLS,//
+                    Manifest.permission.WRITE_CALL_LOG,//
+                    Manifest.permission.ADD_VOICEMAIL,//
+                    Manifest.permission.USE_SIP,//
+                    Manifest.permission.PROCESS_OUTGOING_CALLS,//
+            };
+
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            NEED_PERMISSION = new String[]{
+                    Manifest.permission.READ_PHONE_STATE,//
+                    Manifest.permission.CALL_PHONE,//
+                    Manifest.permission.CALL_PHONE,//
+                    Manifest.permission.WRITE_CALL_LOG,//
+                    Manifest.permission.ADD_VOICEMAIL,//
+                    Manifest.permission.USE_SIP,//
+                    Manifest.permission.PROCESS_OUTGOING_CALLS,//
+            };
+        } else {
+            NEED_PERMISSION = new String[]{
+                    Manifest.permission.READ_PHONE_STATE,//
+                    Manifest.permission.CALL_PHONE,//
+                    Manifest.permission.CALL_PHONE,//
+                    Manifest.permission.ADD_VOICEMAIL,//
+                    Manifest.permission.USE_SIP,//
+                    Manifest.permission.PROCESS_OUTGOING_CALLS,//
+            };
+        }
+
+    }
 
     @Override
     public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
         return false;
+    }
+
+    @Override
+    public String getPermissionName() {
+        return "设备信息";
+    }
+
+    @Override
+    public int getPermissionIconRes() {
+        return 0;
+    }
+
+    @Override
+    public String[] getPermissions() {
+        return NEED_PERMISSION;
     }
 }
 

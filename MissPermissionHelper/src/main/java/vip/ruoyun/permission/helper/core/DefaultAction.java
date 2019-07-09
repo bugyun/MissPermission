@@ -10,45 +10,49 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.view.Window;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import vip.ruoyun.permission.core.PermissionRequest;
+import vip.ruoyun.permission.helper.ui.DialogUtil;
+import vip.ruoyun.permission.helper.ui.MissPermissionView;
+import vip.ruoyun.permission.helper.ui.PermissionAdapter;
 
 public class DefaultAction implements BaseAction {
 
     private Dialog mDialog;
 
     @Override
-    public void checkedAction(Context context, List<String> rejectList, final PermissionRequest request) {
+    public void checkedAction(Context context, List<String> rejectList, final PermissionRequest request, IChecker... checkers) {
         mDialog = new Dialog(context);
-//        PermissionView contentView = new PermissionView(context);
-//        contentView.setGridViewColum(3);
-//        contentView.setTitle("标题");
-//        contentView.setMsg("内容");
-//        //这里没有使用RecyclerView，可以少引入一个库
-//        List<PermissionItem> permissionItems = new ArrayList<>();
-//        permissionItems.add(new PermissionItem(Manifest.permission.CAMERA, "照相机", R.drawable.permission_ic_camera));
-//        permissionItems.add(new PermissionItem(Manifest.permission.ACCESS_FINE_LOCATION, "定位", R.drawable.permission_ic_location));
-//        permissionItems.add(new PermissionItem(Manifest.permission.READ_CONTACTS, "通讯录", R.drawable.permission_ic_contacts));
-//        contentView.setGridViewAdapter(new PermissionAdapter(permissionItems));
-//        //用户没有设置，使用默认绿色主题
+        MissPermissionView contentView = new MissPermissionView(context);
+        List<IChecker> permissionItems = new ArrayList<>(Arrays.asList(checkers));
+        contentView.setGridViewColum(permissionItems.size() < 3 ? permissionItems.size() : 3);
+        contentView.setGridViewAdapter(new PermissionAdapter(permissionItems));
+        contentView.setTitle("标题");
+        contentView.setMsg("内容");
+        //这里没有使用RecyclerView，可以少引入一个库
+        //用户没有设置，使用默认绿色主题
 //        int mStyleId = R.style.PermissionDefaultNormalStyle;
 //        int mFilterColor = getResources().getColor(R.color.permissionColorGreen);
-//
+
 //        contentView.setStyleId(mStyleId);
 //        contentView.setFilterColor(mFilterColor);
-//        contentView.setBtnOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (mDialog != null && mDialog.isShowing()) {
-//                    mDialog.dismiss();
-//                }
-//                request.next();
-//            }
-//        });
-//        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        mDialog.setContentView(contentView);
+        contentView.setBtnOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mDialog != null && mDialog.isShowing()) {
+                    mDialog.dismiss();
+                }
+                request.next();
+            }
+        });
+        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mDialog.setContentView(contentView);
 
         mDialog.setCanceledOnTouchOutside(false);
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -56,7 +60,6 @@ public class DefaultAction implements BaseAction {
             @Override
             public void onCancel(DialogInterface dialog) {
                 dialog.dismiss();
-//                                request.stop();
             }
         });
         mDialog.show();
@@ -91,4 +94,6 @@ public class DefaultAction implements BaseAction {
             }).setCancelable(false).show();
         }
     }
+
+
 }

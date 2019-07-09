@@ -27,5 +27,8 @@ public class DefaultRom implements IRomStrategy {
         return false;
     }
 
-
+    @Override
+    public String getManufacturerName() {
+        return "DEFAULT";
+    }
 }

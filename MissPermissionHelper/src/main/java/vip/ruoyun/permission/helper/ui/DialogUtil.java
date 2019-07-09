@@ -1,4 +1,4 @@
-package vip.ruoyun.permission.helper.core;
+package vip.ruoyun.permission.helper.ui;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;

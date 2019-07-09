@@ -10,12 +10,14 @@ import android.content.Intent;
  */
 public interface IRomStrategy {
 
-    String MANUFACTURER = "DEFAULT";
+    String MANUFACTURER = "";
 
     Intent settingIntent() throws Exception;
 
     boolean isNeedShowHint();
 
     boolean isNeedCheck();
+
+    String getManufacturerName();
 
 }

@@ -8,7 +8,7 @@ import vip.ruoyun.permission.core.PermissionRequest;
 
 public interface BaseAction {
 
-    void checkedAction(Context context, List<String> rejectList, PermissionRequest request);
+    void checkedAction(Context context, List<String> rejectList, PermissionRequest request, IChecker... checkers);
 
     void deniedAction(Context context, List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request);
 }

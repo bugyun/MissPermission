@@ -2,8 +2,10 @@ package vip.ruoyun.permission.helper.check;
 
 import android.Manifest;
 import android.content.Context;
+import android.os.Build;
 
 import vip.ruoyun.permission.helper.core.IChecker;
+import vip.ruoyun.permission.helper.core.IRomStrategy;
 import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
 
 /**
@@ -14,15 +16,43 @@ import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
  */
 public class CallLogChecker implements IChecker {
 
-    public final String[] NEED_PERMISSION = {
-            Manifest.permission.READ_CALL_LOG,  //必选
-            Manifest.permission.WRITE_CALL_LOG,  //必选
-            Manifest.permission.PROCESS_OUTGOING_CALLS,  //必选
-    };
+    private final String[] NEED_PERMISSION;
+
+    private IRomStrategy iRomStrategy;
+
+    public CallLogChecker(IRomStrategy iRomStrategy) {
+        this.iRomStrategy = iRomStrategy;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            NEED_PERMISSION = new String[]{
+                    Manifest.permission.READ_CALL_LOG,  //必选
+                    Manifest.permission.WRITE_CALL_LOG,  //必选
+                    Manifest.permission.PROCESS_OUTGOING_CALLS,  //必选
+            };
+        } else {
+            NEED_PERMISSION = new String[]{
+                    Manifest.permission.PROCESS_OUTGOING_CALLS,  //必选
+            };
+        }
+    }
 
 
     @Override
     public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
         return false;
+    }
+
+    @Override
+    public String getPermissionName() {
+        return "通话记录";
+    }
+
+    @Override
+    public int getPermissionIconRes() {
+        return 0;
+    }
+
+    @Override
+    public String[] getPermissions() {
+        return NEED_PERMISSION;
     }
 }

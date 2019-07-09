@@ -2,8 +2,10 @@ package vip.ruoyun.permission.helper.check;
 
 import android.Manifest;
 import android.content.Context;
+import android.os.Build;
 
 import vip.ruoyun.permission.helper.core.IChecker;
+import vip.ruoyun.permission.helper.core.IRomStrategy;
 import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
 
 /**
@@ -14,12 +16,37 @@ import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
  */
 public class SensorsChecker implements IChecker {
 
-    public final String[] NEED_PERMISSION = {
-            Manifest.permission.BODY_SENSORS,//
-    };
+    private IRomStrategy iRomStrategy;
+    private final String[] NEED_PERMISSION;
+
+    public SensorsChecker(IRomStrategy iRomStrategy) {
+        this.iRomStrategy = iRomStrategy;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+            NEED_PERMISSION = new String[]{
+                    Manifest.permission.BODY_SENSORS,//
+            };
+        } else {
+            NEED_PERMISSION = new String[]{};
+        }
+    }
 
     @Override
     public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
         return false;
+    }
+
+    @Override
+    public String getPermissionName() {
+        return "传感器";
+    }
+
+    @Override
+    public int getPermissionIconRes() {
+        return 0;
+    }
+
+    @Override
+    public String[] getPermissions() {
+        return NEED_PERMISSION;
     }
 }

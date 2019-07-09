@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 
 import vip.ruoyun.permission.helper.core.IChecker;
+import vip.ruoyun.permission.helper.core.IRomStrategy;
 import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
 
 /**
@@ -14,7 +15,14 @@ import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
  */
 public class CameraChecker implements IChecker {
 
-    public String[] NEED_PERMISSION = {
+
+    private IRomStrategy iRomStrategy;
+
+    public CameraChecker(IRomStrategy iRomStrategy) {
+        this.iRomStrategy = iRomStrategy;
+    }
+
+    private String[] NEED_PERMISSION = {
             Manifest.permission.CAMERA,  //必选
     };
 
@@ -32,6 +40,21 @@ public class CameraChecker implements IChecker {
             return true;
         }
         return true;
+    }
+
+    @Override
+    public String getPermissionName() {
+        return "相机";
+    }
+
+    @Override
+    public int getPermissionIconRes() {
+        return 0;
+    }
+
+    @Override
+    public String[] getPermissions() {
+        return NEED_PERMISSION;
     }
 }
 

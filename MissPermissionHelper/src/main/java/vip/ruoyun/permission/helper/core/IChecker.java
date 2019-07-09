@@ -4,9 +4,12 @@ import android.content.Context;
 
 public interface IChecker {
 
-    String[] NEED_PERMISSION = {};
-
     boolean isCheckEnable(Context context, MissHelperConfiguration configuration);
 
+    String getPermissionName();
+
+    int getPermissionIconRes();
+
+    String[] getPermissions();
 
 }

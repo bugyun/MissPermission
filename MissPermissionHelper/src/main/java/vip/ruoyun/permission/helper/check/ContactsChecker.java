@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 
 import vip.ruoyun.permission.helper.core.IChecker;
+import vip.ruoyun.permission.helper.core.IRomStrategy;
 import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
 
 /**
@@ -14,19 +15,35 @@ import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
  */
 public class ContactsChecker implements IChecker {
 
+    private IRomStrategy iRomStrategy;
+
+    public ContactsChecker(IRomStrategy iRomStrategy) {
+        this.iRomStrategy = iRomStrategy;
+    }
+
     public final String[] NEED_PERMISSION = {
             Manifest.permission.READ_CONTACTS,//
             Manifest.permission.WRITE_CONTACTS,//
             Manifest.permission.GET_ACCOUNTS,//
     };
 
-
-    public static boolean read() {
+    @Override
+    public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
         return false;
     }
 
     @Override
-    public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
-        return false;
+    public String getPermissionName() {
+        return "联系人";
+    }
+
+    @Override
+    public int getPermissionIconRes() {
+        return 0;
+    }
+
+    @Override
+    public String[] getPermissions() {
+        return NEED_PERMISSION;
     }
 }

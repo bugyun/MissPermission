@@ -46,6 +46,10 @@ public class PermissionRequest {
         permissionList.addAll(permissions);
     }
 
+    public List<String> getPermissionList() {
+        return permissionList;
+    }
+
     void start(PermissionListener permissionListener) {
         this.permissionListener = permissionListener;
         checkPermission();

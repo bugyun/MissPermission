@@ -4,10 +4,10 @@ import android.Manifest;
 import android.content.Context;
 import android.location.LocationManager;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import vip.ruoyun.permission.helper.core.IChecker;
+import vip.ruoyun.permission.helper.core.IRomStrategy;
 import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
 
 /**
@@ -18,16 +18,25 @@ import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
  */
 public class LocationChecker implements IChecker {
 
-    public final String[] NEED_PERMISSION = {
-            Manifest.permission.ACCESS_FINE_LOCATION,//
-            Manifest.permission.ACCESS_COARSE_LOCATION,//
-    };
 
-    @RequiresApi(api = Build.VERSION_CODES.Q)
-    public final String[] dd = {
-            Manifest.permission.ACCESS_BACKGROUND_LOCATION,//后台定位权限
-    };
+    private IRomStrategy iRomStrategy;
+    private final String[] NEED_PERMISSION;
 
+    public LocationChecker(IRomStrategy iRomStrategy) {
+        this.iRomStrategy = iRomStrategy;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            NEED_PERMISSION = new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION,//
+                    Manifest.permission.ACCESS_COARSE_LOCATION,//
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION,//后台定位权限
+            };
+        } else {
+            NEED_PERMISSION = new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION,//
+                    Manifest.permission.ACCESS_COARSE_LOCATION,//
+            };
+        }
+    }
 
     /**
      * 检测权限
@@ -52,5 +61,20 @@ public class LocationChecker implements IChecker {
     @Override
     public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
         return false;
+    }
+
+    @Override
+    public String getPermissionName() {
+        return "定位";
+    }
+
+    @Override
+    public int getPermissionIconRes() {
+        return 0;
+    }
+
+    @Override
+    public String[] getPermissions() {
+        return NEED_PERMISSION;
     }
 }
