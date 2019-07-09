@@ -5,7 +5,6 @@ import android.content.Context;
 
 import vip.ruoyun.permission.helper.R;
 import vip.ruoyun.permission.helper.core.IChecker;
-import vip.ruoyun.permission.helper.core.IRomStrategy;
 import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
 
 /**
@@ -18,12 +17,6 @@ public class CameraChecker implements IChecker {
     public static final String PERMISSION_NAME = "日历";
 
     static final int PERMISSION_ICONRES = R.drawable.miss_permission_ic_calendar;
-
-    private IRomStrategy iRomStrategy;
-
-    public CameraChecker(IRomStrategy iRomStrategy) {
-        this.iRomStrategy = iRomStrategy;
-    }
 
     private String[] NEED_PERMISSION = {
             Manifest.permission.CAMERA,  //必选

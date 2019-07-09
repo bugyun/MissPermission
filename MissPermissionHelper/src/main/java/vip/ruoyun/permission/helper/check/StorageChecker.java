@@ -6,7 +6,6 @@ import android.os.Build;
 
 import vip.ruoyun.permission.helper.R;
 import vip.ruoyun.permission.helper.core.IChecker;
-import vip.ruoyun.permission.helper.core.IRomStrategy;
 import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
 
 /**
@@ -21,7 +20,6 @@ public class StorageChecker implements IChecker {
 
     static final int PERMISSION_ICONRES = R.drawable.miss_permission_ic_calendar;
 
-    private IRomStrategy iRomStrategy;
     public static final String[] NEED_PERMISSION;
 
     static {
@@ -37,14 +35,9 @@ public class StorageChecker implements IChecker {
         }
     }
 
-    public StorageChecker(IRomStrategy iRomStrategy) {
-        this.iRomStrategy = iRomStrategy;
-
-    }
-
     @Override
     public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
-        return false;
+        return true;
     }
 
     @Override

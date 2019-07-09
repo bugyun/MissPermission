@@ -14,8 +14,8 @@ import android.view.View;
 import android.view.Window;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import vip.ruoyun.permission.core.PermissionRequest;
 import vip.ruoyun.permission.helper.R;
@@ -28,14 +28,14 @@ public class DefaultAction implements BaseAction {
     private Dialog mDialog;
 
     @Override
-    public void checkedAction(Context context, List<String> rejectList, final PermissionRequest request, IChecker... checkers) {
+    public void checkedAction(Context context, Set<String> rejectList, final PermissionRequest request, List<IChecker> iCheckers) {
         if (rejectList.size() == 0) {
             request.next();
             return;
         }
         mDialog = new Dialog(context);
         MissPermissionView contentView = new MissPermissionView(context);
-        List<IChecker> permissionItems = new ArrayList<>(Arrays.asList(checkers));
+        List<IChecker> permissionItems = new ArrayList<>(iCheckers);
         contentView.setGridViewColum(permissionItems.size() < 3 ? permissionItems.size() : 3);
         contentView.setGridViewAdapter(new PermissionAdapter(permissionItems));
         contentView.setTitle("亲爱的上帝");
@@ -70,7 +70,7 @@ public class DefaultAction implements BaseAction {
     }
 
     @Override
-    public void deniedAction(Context context, final List<String> deniedPermissions, boolean alwaysDenied, final PermissionRequest request) {
+    public void deniedAction(Context context, final Set<String> deniedPermissions, boolean alwaysDenied, final PermissionRequest request) {
         StringBuilder sBuilder = new StringBuilder();
         for (String deniedPermission : deniedPermissions) {
             if (deniedPermission.equals(Manifest.permission.WRITE_CONTACTS)) {

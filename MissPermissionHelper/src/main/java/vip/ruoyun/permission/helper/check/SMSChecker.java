@@ -6,10 +6,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.Telephony;
 import android.text.TextUtils;
+import android.util.Log;
 
 import vip.ruoyun.permission.helper.R;
 import vip.ruoyun.permission.helper.core.IChecker;
-import vip.ruoyun.permission.helper.core.IRomStrategy;
 import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
 
 /**
@@ -23,12 +23,6 @@ public class SMSChecker implements IChecker {
     public static final String PERMISSION_NAME = "日历";
 
     static final int PERMISSION_ICONRES = R.drawable.miss_permission_ic_calendar;
-
-    private IRomStrategy iRomStrategy;
-
-    public SMSChecker(IRomStrategy iRomStrategy) {
-        this.iRomStrategy = iRomStrategy;
-    }
 
     public static final String[] NEED_PERMISSION = {
             Manifest.permission.SEND_SMS,//
@@ -49,6 +43,9 @@ public class SMSChecker implements IChecker {
      */
     @Override
     public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
+        if (!configuration.getRomStrategy().isNeedCheck()) {
+            return true;
+        }
         Cursor cursor = context.getContentResolver().query(Uri.parse("content://sms/"), null, null,
                 null, null);
         if (cursor != null) {
@@ -67,6 +64,7 @@ public class SMSChecker implements IChecker {
     private static boolean isNumberIndexInfoIsNull(Cursor cursor, int numberIndex) {
         if (cursor.getCount() > 0) {
             if (cursor.moveToNext()) {
+                Log.e("zyh", cursor.getString(numberIndex));
                 return TextUtils.isEmpty(cursor.getString(numberIndex));
             }
             return false;

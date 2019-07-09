@@ -6,7 +6,6 @@ import android.os.Build;
 
 import vip.ruoyun.permission.helper.R;
 import vip.ruoyun.permission.helper.core.IChecker;
-import vip.ruoyun.permission.helper.core.IRomStrategy;
 import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
 
 /**
@@ -21,11 +20,9 @@ public class SensorsChecker implements IChecker {
 
     static final int PERMISSION_ICONRES = R.drawable.miss_permission_ic_calendar;
 
-    private IRomStrategy iRomStrategy;
     private final String[] NEED_PERMISSION;
 
-    public SensorsChecker(IRomStrategy iRomStrategy) {
-        this.iRomStrategy = iRomStrategy;
+    public SensorsChecker() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
             NEED_PERMISSION = new String[]{
                     Manifest.permission.BODY_SENSORS,//
@@ -37,7 +34,7 @@ public class SensorsChecker implements IChecker {
 
     @Override
     public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
-        return false;
+        return true;
     }
 
     @Override

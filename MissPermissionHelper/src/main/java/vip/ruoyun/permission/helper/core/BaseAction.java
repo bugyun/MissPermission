@@ -3,12 +3,13 @@ package vip.ruoyun.permission.helper.core;
 import android.content.Context;
 
 import java.util.List;
+import java.util.Set;
 
 import vip.ruoyun.permission.core.PermissionRequest;
 
 public interface BaseAction {
 
-    void checkedAction(Context context, List<String> rejectList, PermissionRequest request, IChecker... checkers);
+    void checkedAction(Context context, Set<String> rejectList, PermissionRequest request, List<IChecker> iCheckers);
 
-    void deniedAction(Context context, List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request);
+    void deniedAction(Context context, Set<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request);
 }

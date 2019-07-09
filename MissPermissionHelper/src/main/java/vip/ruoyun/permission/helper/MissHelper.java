@@ -7,9 +7,13 @@ import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.PermissionChecker;
+import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import vip.ruoyun.permission.core.MissPermission;
 import vip.ruoyun.permission.core.PermissionException;
@@ -36,6 +40,10 @@ public class MissHelper {
 
     private static void init(MissHelperConfiguration configuration) {
         missHelperConfiguration = configuration;
+    }
+
+    public static MissHelperConfiguration getMissHelperConfiguration() {
+        return missHelperConfiguration;
     }
 
     /**
@@ -71,12 +79,12 @@ public class MissHelper {
 
     public static void checkCalendar(final Activity activity, final DoActionWrapper doAction) {
         checkNotNullConfiguration();
-        checkPermission(activity, doAction, new CalendarChecker(missHelperConfiguration.getRomStrategy()));
+        checkPermission(activity, doAction, new CalendarChecker());
     }
 
     public static void checkCallLog(final Activity activity, final DoActionWrapper doAction) {
         checkNotNullConfiguration();
-        checkPermission(activity, doAction, new CallLogChecker(missHelperConfiguration.getRomStrategy()));
+        checkPermission(activity, doAction, new CallLogChecker());
     }
 
     public static void checkCamera(final Fragment fragment, final DoActionWrapper doAction) {
@@ -85,33 +93,33 @@ public class MissHelper {
 
     public static void checkCamera(final Activity activity, final DoActionWrapper doAction) {
         checkNotNullConfiguration();
-        checkPermission(activity, doAction, new CameraChecker(missHelperConfiguration.getRomStrategy()));
+        checkPermission(activity, doAction, new CameraChecker());
     }
 
     public static void checkContacts(final Activity activity, final DoActionWrapper doAction) {
         checkNotNullConfiguration();
-        checkPermission(activity, doAction, new ContactsChecker(missHelperConfiguration.getRomStrategy()));
+        checkPermission(activity, doAction, new ContactsChecker());
     }
 
     public static void checkLocation(final Activity activity, final DoActionWrapper doAction) {
         checkNotNullConfiguration();
-        checkPermission(activity, doAction, new LocationChecker(missHelperConfiguration.getRomStrategy()));
+        checkPermission(activity, doAction, new LocationChecker());
     }
 
 
     public static void checkMicrophone(final Activity activity, final DoActionWrapper doAction) {
         checkNotNullConfiguration();
-        checkPermission(activity, doAction, new MicrophoneChecker(missHelperConfiguration.getRomStrategy()));
+        checkPermission(activity, doAction, new MicrophoneChecker());
     }
 
     public static void checkPhone(final Activity activity, final DoActionWrapper doAction) {
         checkNotNullConfiguration();
-        checkPermission(activity, doAction, new PhoneCheck(missHelperConfiguration.getRomStrategy()));
+        checkPermission(activity, doAction, new PhoneCheck());
     }
 
     public static void checkSensors(final Activity activity, final DoActionWrapper doAction) {
         checkNotNullConfiguration();
-        checkPermission(activity, doAction, new SensorsChecker(missHelperConfiguration.getRomStrategy()));
+        checkPermission(activity, doAction, new SensorsChecker());
     }
 
     public static void checkSms(final Fragment fragment, final DoActionWrapper doAction) {
@@ -121,12 +129,12 @@ public class MissHelper {
 
     public static void checkSms(final Activity activity, final DoActionWrapper doAction) {
         checkNotNullConfiguration();
-        checkPermission(activity, doAction, new SMSChecker(missHelperConfiguration.getRomStrategy()));
+        checkPermission(activity, doAction, new SMSChecker());
     }
 
     public static void checkStorage(final Activity activity, final DoActionWrapper doAction) {
         checkNotNullConfiguration();
-        checkPermission(activity, doAction, new StorageChecker(missHelperConfiguration.getRomStrategy()));
+        checkPermission(activity, doAction, new StorageChecker());
     }
 
     private static void checkPermission(final Activity activity, final DoActionWrapper doAction, final IChecker iChecker) {
@@ -134,13 +142,13 @@ public class MissHelper {
                 .addPermissions(iChecker.getPermissions())
                 .checkPermission(new PermissionRequest.PermissionListener() {
                     @Override
-                    public int onChecked(List<String> agreePermissions, List<String> deniedPermissions, PermissionRequest request) {
-                        missHelperConfiguration.getAction().checkedAction(request.getContext(), deniedPermissions, request, iChecker);
+                    public int onChecked(Set<String> agreePermissions, Set<String> deniedPermissions, PermissionRequest request) {
+                        missHelperConfiguration.getAction().checkedAction(request.getContext(), deniedPermissions, request, Collections.singletonList(iChecker));
                         return MissPermission.WAIT_STEP;
                     }
 
                     @Override
-                    public void onDenied(List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request) {
+                    public void onDenied(Set<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request) {
                         missHelperConfiguration.getAction().deniedAction(request.getContext(), deniedPermissions, alwaysDenied, request);
                         doAction.onFailure(request.getContext());
                     }
@@ -150,7 +158,7 @@ public class MissHelper {
                         if (iChecker.isCheckEnable(activity, missHelperConfiguration)) {
                             doAction.onSuccess(activity);
                         } else {
-                            missHelperConfiguration.getAction().deniedAction(activity, Arrays.asList(iChecker.getPermissions()), true, request);
+                            missHelperConfiguration.getAction().deniedAction(activity, new HashSet<String>(Arrays.asList(iChecker.getPermissions())), true, request);
                             doAction.onFailure(request.getContext());
                         }
                     }
@@ -169,86 +177,83 @@ public class MissHelper {
         }
     }
 
-    public static void checkPermissions(final Activity activity, final DoActionWrapper doAction, List<String> permissions) {
-        checkNotNullConfiguration();
-        MissPermission.with(activity)
-                .addPermissions(permissions)
-                .checkPermission(new PermissionRequest.PermissionListener() {
-                    @Override
-                    public int onChecked(List<String> agreePermissions, List<String> deniedPermissions, PermissionRequest request) {
-                        missHelperConfiguration.getAction().checkedAction(request.getContext(), deniedPermissions, request);
-                        return MissPermission.WAIT_STEP;
-                    }
-
-                    @Override
-                    public void onDenied(List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request) {
-                        missHelperConfiguration.getAction().deniedAction(request.getContext(), deniedPermissions, alwaysDenied, request);
-                        doAction.onFailure(request.getContext());
-                    }
-
-                    @Override
-                    public void onSuccess(PermissionRequest request) {
-                        doAction.onSuccess(activity);
-                    }
-
-                    @Override
-                    public void onFailure(PermissionException exception) {
-                        doAction.onFailure(activity);
-                    }
-                });
-    }
-
-    public static void checkPermissions(final Activity activity, final DoActionWrapper doAction, String[] permissions) {
-        checkNotNullConfiguration();
-        MissPermission.with(activity)
-                .addPermissions(permissions)
-                .checkPermission(new PermissionRequest.PermissionListener() {
-                    @Override
-                    public int onChecked(List<String> agreePermissions, List<String> deniedPermissions, PermissionRequest request) {
-                        missHelperConfiguration.getAction().checkedAction(request.getContext(), deniedPermissions, request);
-                        return MissPermission.WAIT_STEP;
-                    }
-
-                    @Override
-                    public void onDenied(List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request) {
-                        missHelperConfiguration.getAction().deniedAction(request.getContext(), deniedPermissions, alwaysDenied, request);
-                        doAction.onFailure(request.getContext());
-                    }
-
-                    @Override
-                    public void onSuccess(PermissionRequest request) {
-                        doAction.onSuccess(activity);
-                    }
-
-                    @Override
-                    public void onFailure(PermissionException exception) {
-                        doAction.onFailure(activity);
-                    }
-                });
-    }
-
-    public static void checkPermissions(final Activity activity, final DoActionWrapper doAction, final IChecker... iCheckers) {
+    public static void checkMorePermissions(final Activity activity, final DoActionWrapper doAction, int... permissionType) {
         checkNotNullConfiguration();
         MissPermission.Builder builder = MissPermission.with(activity);
-        for (IChecker iChecker : iCheckers) {
-            builder.addPermissions(iChecker.getPermissions());
+        final ArrayList<IChecker> checkers = new ArrayList<>();
+        IChecker iChecker = null;
+        for (int type : permissionType) {
+            switch (type) {
+                case PermissionType.CALENDAR:
+                    iChecker = new CalendarChecker();
+                    break;
+                case PermissionType.CALL_LOG:
+                    iChecker = new CallLogChecker();
+                    break;
+                case PermissionType.CAMERA:
+                    iChecker = new CameraChecker();
+                    break;
+                case PermissionType.CONTACTS:
+                    iChecker = new ContactsChecker();
+                    break;
+                case PermissionType.LOCATION:
+                    iChecker = new LocationChecker();
+                    break;
+                case PermissionType.RECORD_AUDIO:
+                    iChecker = new MicrophoneChecker();
+                    break;
+                case PermissionType.PHONE:
+                    iChecker = new PhoneCheck();
+                    break;
+                case PermissionType.SENSORS:
+                    iChecker = new SensorsChecker();
+                    break;
+                case PermissionType.SMS:
+                    iChecker = new SMSChecker();
+                    break;
+                case PermissionType.STORAGE:
+                    iChecker = new StorageChecker();
+                    break;
+            }
+            if (iChecker != null) {
+                checkers.add(iChecker);
+                builder.addPermissions(iChecker.getPermissions());
+            }
+        }
+        for (IChecker checker : checkers) {
+            builder.addPermissions(checker.getPermissions());
         }
         builder.checkPermission(new PermissionRequest.PermissionListener() {
             @Override
-            public int onChecked(List<String> agreePermissions, List<String> deniedPermissions, PermissionRequest request) {
-                missHelperConfiguration.getAction().checkedAction(request.getContext(), deniedPermissions, request, iCheckers);
+            public int onChecked(Set<String> agreePermissions, Set<String> deniedPermissions, PermissionRequest request) {
+                missHelperConfiguration.getAction().checkedAction(request.getContext(), deniedPermissions, request, checkers);
                 return MissPermission.WAIT_STEP;
             }
 
             @Override
-            public void onDenied(List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request) {
+            public void onDenied(Set<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request) {
                 missHelperConfiguration.getAction().deniedAction(request.getContext(), deniedPermissions, alwaysDenied, request);
+                for (String item : deniedPermissions) {
+                    Log.e("zyh", "onDenied" + item);
+                }
                 doAction.onFailure(request.getContext());
             }
 
             @Override
             public void onSuccess(PermissionRequest request) {
-                doAction.onSuccess(activity);
+                Log.e("zyh", "onSuccess....isCheckEnable");
+                Set<String> deniedPermissions = new HashSet<>();
+                for (IChecker checker : checkers) {
+                    if (!checker.isCheckEnable(activity, missHelperConfiguration)) {
+                        deniedPermissions.addAll(Arrays.asList(checker.getPermissions()));
+                    }
+                }
+                if (deniedPermissions.isEmpty()) {
+                    doAction.onSuccess(activity);
+                } else {
+                    missHelperConfiguration.getAction().deniedAction(activity, deniedPermissions, true, request);
+                    doAction.onFailure(request.getContext());
+                }
             }
 
             @Override
@@ -272,4 +277,19 @@ public class MissHelper {
 
         }
     }
+
+
+    public interface PermissionType {
+        int CALENDAR = 100;
+        int CALL_LOG = 200;
+        int CAMERA = 300;
+        int CONTACTS = 400;
+        int LOCATION = 500;
+        int RECORD_AUDIO = 600;
+        int PHONE = 700;
+        int SENSORS = 800;
+        int SMS = 900;
+        int STORAGE = 1000;
+    }
+
 }

@@ -5,7 +5,6 @@ import android.content.Context;
 
 import vip.ruoyun.permission.helper.R;
 import vip.ruoyun.permission.helper.core.IChecker;
-import vip.ruoyun.permission.helper.core.IRomStrategy;
 import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
 
 /**
@@ -15,13 +14,6 @@ import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
  * Depiction:
  */
 public class CalendarChecker implements IChecker {
-
-    private IRomStrategy iRomStrategy;
-
-
-    public CalendarChecker(IRomStrategy iRomStrategy) {
-        this.iRomStrategy = iRomStrategy;
-    }
 
     public static final String[] NEED_PERMISSION = {
             Manifest.permission.READ_CALENDAR,  //必选
@@ -34,7 +26,7 @@ public class CalendarChecker implements IChecker {
 
     @Override
     public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
-        return false;
+        return true;
     }
 
     public String getPermissionName() {

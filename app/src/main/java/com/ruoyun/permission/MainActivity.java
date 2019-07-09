@@ -24,6 +24,7 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import me.weyye.hipermission.HiPermission;
 import me.weyye.hipermission.PermissionAdapter;
@@ -105,21 +106,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.buttonAll:
+                MissHelper.checkMorePermissions(this, new MissHelper.DoActionWrapper() {
+                    @Override
+                    public void onSuccess(Context context) {
+                        Log.e("zyh", "onSuccess");
+                    }
 
-//                SMSChecker SMSChecker = new SMSChecker();
-
-//                MissHelper.checkPermissions(this, new MissHelper.DoActionWrapper() {
-//                    @Override
-//                    public void onSuccess(Context context) {
-//                        Log.e("zyh", "onSuccess");
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Context context) {
-//                        Log.e("zyh", "onFailure");
-//                    }
-//                }, SMSChecker);
-
+                    @Override
+                    public void onFailure(Context context) {
+                        Log.e("zyh", "onFailure");
+                    }
+                }, MissHelper.PermissionType.CALENDAR, MissHelper.PermissionType.CAMERA, MissHelper.PermissionType.SMS);
                 break;
         }
 
@@ -203,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                .addPermission(Manifest.permission.ACCESS_FINE_LOCATION)//
                 .checkPermission(new PermissionRequest.PermissionListener() {
                     @Override
-                    public int onChecked(List<String> agreePermissions, List<String> deniedPermissions, final PermissionRequest request) {
+                    public int onChecked(Set<String> agreePermissions, Set<String> deniedPermissions, final PermissionRequest request) {
                         Log.i("zyh", "onChecked: rejectList:" + deniedPermissions.size() + "agree:" + agreePermissions.size());
                         PermissionView contentView = new PermissionView(MainActivity.this);
                         contentView.setGridViewColum(3);
@@ -248,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
                     @Override
-                    public void onDenied(final List<String> deniedPermissions, boolean alwaysDenied, final PermissionRequest request) {
+                    public void onDenied(final Set<String> deniedPermissions, boolean alwaysDenied, final PermissionRequest request) {
                         StringBuilder sBuilder = new StringBuilder();
                         for (String deniedPermission : deniedPermissions) {
                             if (deniedPermission.equals(Manifest.permission.WRITE_CONTACTS)) {

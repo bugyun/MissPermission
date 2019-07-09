@@ -8,7 +8,6 @@ import android.util.Log;
 
 import vip.ruoyun.permission.helper.R;
 import vip.ruoyun.permission.helper.core.IChecker;
-import vip.ruoyun.permission.helper.core.IRomStrategy;
 import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
 
 /**
@@ -22,11 +21,9 @@ public class LocationChecker implements IChecker {
 
     static final int PERMISSION_ICONRES = R.drawable.miss_permission_ic_calendar;
 
-    private IRomStrategy iRomStrategy;
     private final String[] NEED_PERMISSION;
 
-    public LocationChecker(IRomStrategy iRomStrategy) {
-        this.iRomStrategy = iRomStrategy;
+    public LocationChecker() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
             NEED_PERMISSION = new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION,//
@@ -64,7 +61,7 @@ public class LocationChecker implements IChecker {
 
     @Override
     public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
-        return false;
+        return true;
     }
 
     @Override

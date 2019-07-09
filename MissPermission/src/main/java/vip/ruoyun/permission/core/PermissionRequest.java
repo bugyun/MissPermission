@@ -8,8 +8,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.PermissionChecker;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by fanpu on 2017/8/4.
@@ -17,9 +18,9 @@ import java.util.List;
  */
 public class PermissionRequest {
 
-    private List<String> permissionList = new ArrayList<>();
-    private List<String> agreePermissionList = new ArrayList<>();
-    private List<String> rejectPermissionList = new ArrayList<>();
+    private Set<String> permissionList = new HashSet<>();
+    private Set<String> agreePermissionList = new HashSet<>();
+    private Set<String> rejectPermissionList = new HashSet<>();
     private PermissionListener permissionListener;
     private final WeakReference<Activity> activityWeakReference;
     private int requestCode = 9898;
@@ -46,7 +47,7 @@ public class PermissionRequest {
         permissionList.addAll(permissions);
     }
 
-    public List<String> getPermissionList() {
+    public Set<String> getPermissionList() {
         return permissionList;
     }
 
@@ -125,7 +126,7 @@ public class PermissionRequest {
         }
     }
 
-    public void requestPermissionsAgain(List<String> permissionLists) {
+    public void requestPermissionsAgain(Set<String> permissionLists) {
         if (activityWeakReference.get() == null) {
             permissionListener.onFailure(new PermissionException("activity 为空"));
             return;
@@ -151,14 +152,14 @@ public class PermissionRequest {
          * STOP_STEP：直接停止，不执行下一步
          * PAUSE_STEP：等待，等待命令唤起下一步
          */
-        int onChecked(List<String> agreePermissions, List<String> deniedPermissions, PermissionRequest request);//检查结束
+        int onChecked(Set<String> agreePermissions, Set<String> deniedPermissions, PermissionRequest request);//检查结束
 
         /**
          * @param deniedPermissions
          * @param alwaysDenied
          * @param request
          */
-        void onDenied(List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request);
+        void onDenied(Set<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request);
 
         void onSuccess(PermissionRequest request);//权限完成
 
@@ -169,7 +170,7 @@ public class PermissionRequest {
     void onRequestPermissionsResult(String[] permissions, int[] grantResults) {
         boolean alwaysDenied = false;
         if (grantResults.length > 0) {
-            List<String> deniedList = new ArrayList<>();
+            Set<String> deniedList = new HashSet<>();
             //            List<String> agreeList = new ArrayList<>();
             // 遍历所有申请的权限，把被拒绝的权限放入集合
             for (int i = 0; i < grantResults.length; i++) {

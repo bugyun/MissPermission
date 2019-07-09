@@ -4,9 +4,9 @@ import android.Manifest;
 import android.content.Context;
 import android.os.Build;
 
+import vip.ruoyun.permission.helper.MissHelper;
 import vip.ruoyun.permission.helper.R;
 import vip.ruoyun.permission.helper.core.IChecker;
-import vip.ruoyun.permission.helper.core.IRomStrategy;
 import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
 
 /**
@@ -24,10 +24,7 @@ public class CallLogChecker implements IChecker {
 
     private final String[] NEED_PERMISSION;
 
-    private IRomStrategy iRomStrategy;
-
-    public CallLogChecker(IRomStrategy iRomStrategy) {
-        this.iRomStrategy = iRomStrategy;
+    public CallLogChecker() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             NEED_PERMISSION = new String[]{
                     Manifest.permission.READ_CALL_LOG,  //必选
@@ -44,7 +41,10 @@ public class CallLogChecker implements IChecker {
 
     @Override
     public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
-        return false;
+        MissHelper.getMissHelperConfiguration().getRomStrategy().isNeedCheck();
+
+
+        return true;
     }
 
     @Override
