@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.PermissionChecker;
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -143,7 +142,7 @@ public class MissHelper {
                 .checkPermission(new PermissionRequest.PermissionListener() {
                     @Override
                     public int onChecked(Set<String> agreePermissions, Set<String> deniedPermissions, PermissionRequest request) {
-                        missHelperConfiguration.getAction().checkedAction(request.getContext(), deniedPermissions, request, Collections.singletonList(iChecker));
+                        missHelperConfiguration.getAction().checkedAction(request.getContext(), deniedPermissions, request, Collections.singleton(iChecker));
                         return MissPermission.WAIT_STEP;
                     }
 
@@ -180,7 +179,7 @@ public class MissHelper {
     public static void checkMorePermissions(final Activity activity, final DoActionWrapper doAction, int... permissionType) {
         checkNotNullConfiguration();
         MissPermission.Builder builder = MissPermission.with(activity);
-        final ArrayList<IChecker> checkers = new ArrayList<>();
+        final Set<IChecker> checkers = new HashSet<>();
         IChecker iChecker = null;
         for (int type : permissionType) {
             switch (type) {

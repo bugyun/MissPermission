@@ -28,7 +28,7 @@ public class DefaultAction implements BaseAction {
     private Dialog mDialog;
 
     @Override
-    public void checkedAction(Context context, Set<String> rejectList, final PermissionRequest request, List<IChecker> iCheckers) {
+    public void checkedAction(Context context, Set<String> rejectList, final PermissionRequest request, Set<IChecker> iCheckers) {
         if (rejectList.size() == 0) {
             request.next();
             return;
