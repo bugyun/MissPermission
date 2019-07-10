@@ -23,7 +23,7 @@ MissPermission.with(context)//
                        rejectList: 拒绝的权限
                     */
                     @Override
-                    public int onChecked(List<String> agreePermissions, List<String> deniedPermissions, PermissionRequest request) {
+                    public int onChecked(Set<String> agreePermissions, Set<String> deniedPermissions, PermissionRequest request) {
                         //3 种返回方式，
                         //MissPermission.NEXT_STEP  直接下一步，不用等待
                         //MissPermission.STOP_STEP  直接停止，不执行下一步
@@ -38,7 +38,7 @@ MissPermission.with(context)//
                        alwaysDenied: 是否总是拒绝
                     */
                     @Override
-                    public void onDenied(List<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request) {
+                    public void onDenied(Set<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request) {
 
                     }
 
@@ -120,5 +120,21 @@ MissHelper.checkCamera(this, new MissHelper.DoActionWrapper() {
     }
 });
 ```
+
+#### 多权限检查
+```java
+MissHelper.checkMorePermissions(this, new MissHelper.DoActionWrapper() {
+    @Override
+    public void onSuccess(Context context) {
+        Log.e("zyh", "onSuccess");
+    }
+
+    @Override
+    public void onFailure(Context context) {
+        Log.e("zyh", "onFailure");
+    }
+}, MissHelper.PermissionType.CALENDAR, MissHelper.PermissionType.CAMERA, MissHelper.PermissionType.SMS);
+```
+
 
 
