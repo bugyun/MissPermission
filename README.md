@@ -16,8 +16,8 @@ implementation 'vip.ruoyun.permission:miss-core:1.0.0'
     ...
     //添加自己要使用的权限，如果不添加，那么请求这个权限会一直不成功
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     ...
 </manifest>
