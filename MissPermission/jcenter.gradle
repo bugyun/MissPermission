@@ -13,8 +13,8 @@ publish {
     groupId = 'vip.ruoyun.permission'    //jcenter group
     artifactId = 'miss-core'   //项目名称 name
     publishVersion = '1.0.0'//版本号 version
-    desc = 'Android x5 内核 WebView 的 Helper'//描述
-    website = 'https://github.com/bugyun/WeBer' // github 网址
+    desc = 'Android 权限请求库 MissPermission'//描述
+    website = 'https://github.com/bugyun/MissPermission' // github 网址
 }
 
 //   ./gradlew clean build bintrayUpload -PbintrayUser=bintray.user -PbintrayKey=bintray.apikey -PdryRun=false
