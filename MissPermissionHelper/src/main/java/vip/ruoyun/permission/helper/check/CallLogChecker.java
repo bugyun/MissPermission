@@ -40,7 +40,7 @@ public class CallLogChecker implements IChecker {
 
     @Override
     public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
-        MissHelper.getMissHelperConfiguration().getRomStrategy().isNeedCheck();
+        configuration.getRomStrategy().isNeedCheck();
 
 
         return true;
