@@ -11,7 +11,7 @@ implementation 'vip.ruoyun.permission:miss-core:1.0.0'
 
 ### 准备工作
 在 AndroidManifest.xml 文件中添加权限
-```
+```xml
 <manifest>
     ...
     //添加自己要使用的权限，如果不添加，那么请求这个权限会一直不成功
