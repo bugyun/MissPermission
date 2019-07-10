@@ -30,9 +30,9 @@ import vip.ruoyun.permission.helper.check.StorageChecker;
 import vip.ruoyun.permission.helper.core.IChecker;
 import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
 
-public class MissHelper {
+public class MissPermissionHelper {
 
-    private MissHelper() {
+    private MissPermissionHelper() {
     }
 
     private static MissHelperConfiguration missHelperConfiguration;

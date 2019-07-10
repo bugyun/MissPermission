@@ -2,7 +2,7 @@
 android 权限库，超级简单好用！！
 ---
 ## MissPermission
-可以单独使用，如果配合 MissHelper 体验更佳~
+可以单独使用，如果配合 MissPermissionHelper 体验更佳~
 
 ### 配置
 ```xml
@@ -65,7 +65,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 
 ---
 
-## MissHelper
+## MissPermissionHelper
 简化操作帮助类，很少的代码就可以获取权限。
 
 ### 配置
@@ -77,7 +77,7 @@ implementation 'vip.ruoyun.permission:miss-helper:1.0.0'
 
 #### 单纯检查是否有权限
 ```java
-boolean isHasReadCalendarPermission = MissHelper.check(this, new String[]{Manifest.permission.READ_CALENDAR});
+boolean isHasReadCalendarPermission = MissPermissionHelper.check(this, new String[]{Manifest.permission.READ_CALENDAR});
 if (isHasReadCalendarPermission) {
     //有权限
 } else {
@@ -87,21 +87,21 @@ if (isHasReadCalendarPermission) {
 
 #### 检查是否有权限
 ```java
-MissHelper.checkCamera();
-MissHelper.checkCalendar();
-MissHelper.checkCallLog();
-MissHelper.checkContacts();
-MissHelper.checkLocation();
-MissHelper.checkMicrophone();
-MissHelper.checkPhone();
-MissHelper.checkSensors();
-MissHelper.checkSms();
-MissHelper.checkStorage();
+MissPermissionHelper.checkCamera();
+MissPermissionHelper.checkCalendar();
+MissPermissionHelper.checkCallLog();
+MissPermissionHelper.checkContacts();
+MissPermissionHelper.checkLocation();
+MissPermissionHelper.checkMicrophone();
+MissPermissionHelper.checkPhone();
+MissPermissionHelper.checkSensors();
+MissPermissionHelper.checkSms();
+MissPermissionHelper.checkStorage();
 ```
 
 #### 回调方法
 ```java
-MissHelper.checkCamera(this, new MissHelper.DoActionWrapper() {
+MissPermissionHelper.checkCamera(this, new MissPermissionHelper.DoActionWrapper() {
     @Override
     public void onSuccess(Context context) {
 
@@ -113,7 +113,7 @@ MissHelper.checkCamera(this, new MissHelper.DoActionWrapper() {
     }
 });
 //简写,省略 onFailure
-MissHelper.checkCamera(this, new MissHelper.DoActionWrapper() {
+MissPermissionHelper.checkCamera(this, new MissPermissionHelper.DoActionWrapper() {
     @Override
     public void onSuccess(Context context) {
 
@@ -123,7 +123,7 @@ MissHelper.checkCamera(this, new MissHelper.DoActionWrapper() {
 
 #### 多权限检查
 ```java
-MissHelper.checkMorePermissions(this, new MissHelper.DoActionWrapper() {
+MissPermissionHelper.checkMorePermissions(this, new MissPermissionHelper.DoActionWrapper() {
     @Override
     public void onSuccess(Context context) {
         Log.e("zyh", "onSuccess");
@@ -133,7 +133,7 @@ MissHelper.checkMorePermissions(this, new MissHelper.DoActionWrapper() {
     public void onFailure(Context context) {
         Log.e("zyh", "onFailure");
     }
-}, MissHelper.PermissionType.CALENDAR, MissHelper.PermissionType.CAMERA, MissHelper.PermissionType.SMS);
+}, MissPermissionHelper.PermissionType.CALENDAR, MissPermissionHelper.PermissionType.CAMERA, MissPermissionHelper.PermissionType.SMS);
 ```
 
 

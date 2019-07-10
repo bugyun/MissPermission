@@ -34,7 +34,7 @@ import me.weyye.hipermission.PermissionView;
 import vip.ruoyun.permission.core.MissPermission;
 import vip.ruoyun.permission.core.PermissionException;
 import vip.ruoyun.permission.core.PermissionRequest;
-import vip.ruoyun.permission.helper.MissHelper;
+import vip.ruoyun.permission.helper.MissPermissionHelper;
 import vip.ruoyun.permission.helper.check.SMSChecker;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonCamera:
-                if (MissHelper.check(this, SMSChecker.NEED_PERMISSION)) {
+                if (MissPermissionHelper.check(this, SMSChecker.NEED_PERMISSION)) {
                     Log.e("zyh", "有权限");
                 } else {
                     Log.e("zyh", "没有权限");
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                    }
 //                });
 
-                MissHelper.checkSms(this, new MissHelper.DoActionWrapper() {
+                MissPermissionHelper.checkSms(this, new MissPermissionHelper.DoActionWrapper() {
                     @Override
                     public void onSuccess(Context context) {
                         Log.e("zyh", "onSuccess");
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.buttonAll:
-                MissHelper.checkMorePermissions(this, new MissHelper.DoActionWrapper() {
+                MissPermissionHelper.checkMorePermissions(this, new MissPermissionHelper.DoActionWrapper() {
                     @Override
                     public void onSuccess(Context context) {
                         Log.e("zyh", "onSuccess");
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onFailure(Context context) {
                         Log.e("zyh", "onFailure");
                     }
-                }, MissHelper.PermissionType.CALENDAR, MissHelper.PermissionType.CAMERA, MissHelper.PermissionType.SMS);
+                }, MissPermissionHelper.PermissionType.CALENDAR, MissPermissionHelper.PermissionType.CAMERA, MissPermissionHelper.PermissionType.SMS);
                 break;
         }
 
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void tesHelper() {
-        MissHelper.checkCamera(this, new MissHelper.DoActionWrapper() {
+        MissPermissionHelper.checkCamera(this, new MissPermissionHelper.DoActionWrapper() {
             @Override
             public void onSuccess(Context context) {
                 Log.e("zyh", "onSuccess");
@@ -170,17 +170,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.e("zyh", "onFailure");
             }
         });
-//        MissHelper.checkCalendar();
-//        MissHelper.checkCallLog();
-//        MissHelper.checkContacts();
-//        MissHelper.checkLocation();
-//        MissHelper.checkMicrophone();
-//        MissHelper.checkPhone();
-//        MissHelper.checkSensors();
-//        MissHelper.checkSms();
-//        MissHelper.checkStorage();
+//        MissPermissionHelper.checkCalendar();
+//        MissPermissionHelper.checkCallLog();
+//        MissPermissionHelper.checkContacts();
+//        MissPermissionHelper.checkLocation();
+//        MissPermissionHelper.checkMicrophone();
+//        MissPermissionHelper.checkPhone();
+//        MissPermissionHelper.checkSensors();
+//        MissPermissionHelper.checkSms();
+//        MissPermissionHelper.checkStorage();
 
-        boolean isHasReadCalendarPermission = MissHelper.check(this, new String[]{Manifest.permission.READ_CALENDAR});
+        boolean isHasReadCalendarPermission = MissPermissionHelper.check(this, new String[]{Manifest.permission.READ_CALENDAR});
         if (isHasReadCalendarPermission) {
             //有权限
         } else {

@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.os.Build;
 
-import vip.ruoyun.permission.helper.MissHelper;
 import vip.ruoyun.permission.helper.R;
 import vip.ruoyun.permission.helper.core.IChecker;
 import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
