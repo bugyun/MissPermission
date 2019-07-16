@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -21,6 +22,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+
+import com.ruoyun.permission.utils.AvoidOnResultManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,8 +54,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //测试
 
+        //测试
         buttonCamera = findViewById(R.id.buttonCamera);
         buttonAll = findViewById(R.id.buttonAll);
         buttonCamera.setOnClickListener(this);
@@ -60,11 +63,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String manufacturer = android.os.Build.MANUFACTURER;
         Log.e("zyh", "制造商" + manufacturer);
 
-
 //        tesHelper();
 
 //        InstanceID.getInstance(this).getId();
         //        testHiPermisson();
+
+        Intent intent = new Intent();
+        AvoidOnResultManager.startActivityForResult(this, intent, new AvoidOnResultManager.ActivityCallback() {
+            @Override
+            public void onActivityResult(int resultCode, Intent data) {
+                //新界面
+                //val intent = Intent()
+                //intent.putExtra("text",text.text.toString())
+                //setResult(Activity.RESULT_OK,intent)
+                //finish();
+
+            }
+        });
+        String[] permissions = {};
+        AvoidOnResultManager.requestPermissions(this, permissions, new AvoidOnResultManager.PermissionsCallBack() {
+            @Override
+            public void onRequestPermissionsResult(@NonNull String[] permissions, @NonNull int[] grantResults) {
+
+            }
+        });
     }
 
 
