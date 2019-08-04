@@ -36,7 +36,6 @@ import me.weyye.hipermission.PermissionView;
 import vip.ruoyun.permission.core.MissPermission;
 import vip.ruoyun.permission.core.PermissionException;
 import vip.ruoyun.permission.core.PermissionRequest;
-import vip.ruoyun.permission.helper.MissPermissionHelper;
 import vip.ruoyun.permission.helper.check.SMSChecker;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -99,17 +98,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Log.e("zyh", "没有权限");
                 }
 
-//                MissHelper.checkContacts(this, new MissHelper.DoActionWrapper() {
-//                    @Override
-//                    public void onSuccess(Context context) {
-//                        Log.e("zyh", "onSuccess");
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Context context) {
-//                        Log.e("zyh", "onFailure");
-//                    }
-//                });
 
                 MissPermissionHelper.checkSms(this, new MissPermissionHelper.DoActionWrapper() {
                     @Override

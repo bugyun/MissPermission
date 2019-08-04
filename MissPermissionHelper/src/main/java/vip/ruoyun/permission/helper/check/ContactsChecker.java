@@ -1,11 +1,8 @@
 package vip.ruoyun.permission.helper.check;
 
 import android.Manifest;
-import android.content.Context;
 
 import vip.ruoyun.permission.helper.R;
-import vip.ruoyun.permission.helper.core.IChecker;
-import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
 
 /**
  * Created by ruoyun on 2019-06-25.
@@ -13,35 +10,15 @@ import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
  * Mail:zyhdvlp@gmail.com
  * Depiction:
  */
-public class ContactsChecker implements IChecker {
+public class ContactsChecker {
 
-    public static final String PERMISSION_NAME = "日历";
+    public static final String PERMISSION_NAME = "联系人";
 
-    static final int PERMISSION_ICONRES = R.drawable.miss_permission_ic_calendar;
+    public static final int PERMISSION_ICON_RES = R.drawable.miss_permission_ic_contacts;
 
     public static final String[] NEED_PERMISSION = {
             Manifest.permission.READ_CONTACTS,//
             Manifest.permission.WRITE_CONTACTS,//
             Manifest.permission.GET_ACCOUNTS,//
     };
-
-    @Override
-    public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
-        return true;
-    }
-
-    @Override
-    public String getPermissionName() {
-        return "联系人";
-    }
-
-    @Override
-    public int getPermissionIconRes() {
-        return R.drawable.miss_permission_ic_contacts;
-    }
-
-    @Override
-    public String[] getPermissions() {
-        return NEED_PERMISSION;
-    }
 }

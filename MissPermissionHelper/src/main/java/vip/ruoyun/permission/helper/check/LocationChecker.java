@@ -7,8 +7,6 @@ import android.os.Build;
 import android.util.Log;
 
 import vip.ruoyun.permission.helper.R;
-import vip.ruoyun.permission.helper.core.IChecker;
-import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
 
 /**
  * Created by ruoyun on 2019-06-25.
@@ -16,10 +14,10 @@ import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
  * Mail:zyhdvlp@gmail.com
  * Depiction:
  */
-public class LocationChecker implements IChecker {
-    public static final String PERMISSION_NAME = "日历";
+public class LocationChecker {
+    public static final String PERMISSION_NAME = "定位";
 
-    static final int PERMISSION_ICONRES = R.drawable.miss_permission_ic_calendar;
+    public static final int PERMISSION_ICON_RES = R.drawable.miss_permission_ic_location;
 
     private final String[] NEED_PERMISSION;
 
@@ -28,8 +26,8 @@ public class LocationChecker implements IChecker {
             NEED_PERMISSION = new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION,//
                     Manifest.permission.ACCESS_COARSE_LOCATION,//
-//                    Manifest.permission.ACCESS_BACKGROUND_LOCATION,//后台定位权限
-                    "android.permission.ACCESS_BACKGROUND_LOCATION",
+//                    Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+                    "android.permission.ACCESS_BACKGROUND_LOCATION",//后台定位权限
             };
         } else {
             NEED_PERMISSION = new String[]{
@@ -57,25 +55,5 @@ public class LocationChecker implements IChecker {
 
 
         return false;
-    }
-
-    @Override
-    public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
-        return true;
-    }
-
-    @Override
-    public String getPermissionName() {
-        return "定位";
-    }
-
-    @Override
-    public int getPermissionIconRes() {
-        return R.drawable.miss_permission_ic_location;
-    }
-
-    @Override
-    public String[] getPermissions() {
-        return NEED_PERMISSION;
     }
 }
