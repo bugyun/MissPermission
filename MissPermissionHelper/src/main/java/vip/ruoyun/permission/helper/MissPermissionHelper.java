@@ -35,7 +35,6 @@ public class MissPermissionHelper {
     public static class Builder {
 
         private PermissionRequest request;
-        private IAction baseAction = new DefaultAction();
 
         private Builder(FragmentActivity activity) {
             request = new PermissionRequest(activity);
@@ -61,42 +60,38 @@ public class MissPermissionHelper {
         }
 
         public Builder showprompt(boolean showprompt) {
-//            this.showprompt = showprompt;
+            request.setShowPrompt(showprompt);
             return this;
         }
 
-        public Builder style(String title) {
-//            this.title = title;
+        public Builder title(String title) {
+            request.setTitle(title);
             return this;
         }
 
         public Builder msg(String msg) {
-//            this.msg = msg;
+            request.setMsg(msg);
             return this;
         }
 
-        public Builder mFilterColor(int mFilterColor) {
-//            this.mFilterColor = mFilterColor;
+        public Builder filterColor(int filterColor) {
+            request.setFilterColor(filterColor);
             return this;
         }
 
-        public Builder mStyleResId(int mStyleResId) {
-//            this.mStyleResId = mStyleResId;
+        public Builder styleResId(int styleResId) {
+            request.setStyleResId(styleResId);
             return this;
         }
 
-        public Builder ischeck(boolean ischeck) {
-//            this.ischeck = ischeck;
+        public Builder ischeck(boolean isCheck) {
+            request.setIsCheck(isCheck);
             return this;
         }
 
-        public Builder missPermission(boolean ischeck) {
-//            this.ischeck = ischeck;
+        public Builder isAction(IAction iAction) {
+            request.setBaseAction(iAction);
             return this;
-        }
-
-        public void go() {
-
         }
     }
 

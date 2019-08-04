@@ -12,10 +12,12 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.Window;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import vip.ruoyun.permission.helper.ui.DialogUtil;
 import vip.ruoyun.permission.helper.ui.MissPermissionView;
+import vip.ruoyun.permission.helper.ui.PermissionAdapter;
 
 public class DefaultAction implements IAction {
 
@@ -29,15 +31,16 @@ public class DefaultAction implements IAction {
         }
         mDialog = new Dialog(request.getContext());
         MissPermissionView contentView = new MissPermissionView(request.getContext());
-//        List<IChecker> permissionItems = new ArrayList<>(permissionGroups);
-//        contentView.setGridViewColum(permissionItems.size() < 3 ? permissionItems.size() : 3);
-//        contentView.setGridViewAdapter(new PermissionAdapter(permissionItems));
+        contentView.setGridViewColum(permissionGroups.size() < 3 ? permissionGroups.size() : 3);
+        contentView.setGridViewAdapter(new PermissionAdapter(new ArrayList<>(permissionGroups)));
         contentView.setTitle("亲爱的上帝");
         contentView.setMsg("为了保护世界的和平，开启这些权限吧！\n你我一起拯救世界");
         //这里没有使用RecyclerView，可以少引入一个库
         //用户没有设置，使用默认绿色主题
         int mStyleId = R.style.PermissionDefaultNormalStyle;
         int mFilterColor = request.getContext().getResources().getColor(R.color.MissHelperColorGreen);
+        contentView.setTitle(request.getTitle());
+        contentView.setMsg(request.getMsg());
         contentView.setStyleId(mStyleId);
         contentView.setFilterColor(mFilterColor);
         contentView.setBtnOnClickListener(new View.OnClickListener() {

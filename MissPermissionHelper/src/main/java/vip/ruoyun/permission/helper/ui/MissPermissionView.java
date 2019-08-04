@@ -44,7 +44,7 @@ public class MissPermissionView extends FrameLayout {
     }
 
     private void initView() {
-        View permissionView = View.inflate(getContext(), R.layout.miss_dialog_request_permission, this);
+        View permissionView = View.inflate(getContext(), R.layout.miss_permission_dialog_request_permission, this);
         mTvTitle = (TextView) permissionView.findViewById(R.id.tvTitle);
         mLlRoot = (LinearLayout) permissionView.findViewById(R.id.llRoot);
         mTvDesc = (TextView) permissionView.findViewById(R.id.tvDesc);

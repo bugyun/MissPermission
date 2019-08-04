@@ -6,8 +6,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 
+import vip.ruoyun.helper.avoid.AvoidOnResultHelper;
 import vip.ruoyun.permission.helper.R;
 
 /**
@@ -16,13 +19,18 @@ import vip.ruoyun.permission.helper.R;
 
 public class DialogUtil {
 
-    public static void showPermissionManagerDialog(final Context context, String str) {
+    public static void showPermissionManagerDialog(final FragmentActivity context, String str) {
         new AlertDialog.Builder(context).setTitle("获取" + str + "权限被禁用").setMessage("请在 设置-应用管理-" + context.getString(R.string.app_name) + "-权限管理 (将" + str + "权限打开)").setNegativeButton("取消", null).setPositiveButton("去设置", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 intent.setData(Uri.parse("package:" + context.getPackageName()));
-                context.startActivity(intent);
+                AvoidOnResultHelper.startActivityForResult(context, intent, new AvoidOnResultHelper.ActivityCallback() {
+                    @Override
+                    public void onActivityResult(int resultCode, Intent data) {
+                        Log.e("DialogUtil", "返回值为" + resultCode);
+                    }
+                });
                 //                JumPermissionManagement.GoToSetting(context);
             }
         }).show();

@@ -43,8 +43,10 @@ public class MissPermission {
     }
 
     public static void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (MissPermission.getInstance().builder.request.getRequestCode() == requestCode) {
-            MissPermission.getInstance().builder.request.onRequestPermissionsResult(permissions, grantResults);
+        if (MissPermission.getInstance().builder != null) {
+            if (MissPermission.getInstance().builder.request.getRequestCode() == requestCode) {
+                MissPermission.getInstance().builder.request.onRequestPermissionsResult(permissions, grantResults);
+            }
         }
     }
 

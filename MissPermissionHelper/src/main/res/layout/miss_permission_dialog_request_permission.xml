@@ -6,7 +6,7 @@
     android:layout_gravity="center"
     android:layout_marginLeft="16.0dip"
     android:layout_marginRight="16.0dip"
-    android:background="@drawable/miss_shape_bg_white"
+    android:background="@drawable/miss_permission_shape_bg_white"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -14,23 +14,23 @@
         android:id="@+id/tvTitle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25.0dip"
+        android:layout_marginTop="25dp"
         android:gravity="center"
         android:text=""
         android:textColor="@color/MissHelperColorGreen"
-        android:textSize="20.0sp" />
+        android:textSize="20dp" />
 
     <TextView
         android:id="@+id/tvDesc"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="24.0dip"
+        android:layout_marginTop="24dp"
         android:layout_marginRight="10dp"
         android:gravity="center"
         android:text=""
         android:textColor="@color/MissHelperColorGreen"
-        android:textSize="12.0sp" />
+        android:textSize="12dp" />
 
     <!--<LinearLayout-->
     <!--android:id="@+id/permission_container"-->
@@ -48,27 +48,28 @@
         android:id="@+id/gvPermission"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="24.0dip"
-        android:layout_marginTop="24.0dip"
-        android:layout_marginRight="24.0dip"
+        android:layout_marginLeft="24dip"
+        android:layout_marginTop="24dip"
+        android:verticalSpacing="10dp"
+        android:layout_marginRight="24dip"
         android:numColumns="3" />
 
-    <!--<View-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="1.0dip"-->
-    <!--android:layout_marginTop="30.0dip"-->
-    <!--android:src="#ffdddddd"/>-->
+<!--    <View-->
+<!--    android:layout_width="fill_parent"-->
+<!--    android:layout_height="1.0dip"-->
+<!--    android:layout_marginTop="30.0dip"-->
+<!--    android:src="#ffdddddd"/>-->
 
     <Button
         android:id="@+id/goto_settings"
         android:layout_width="fill_parent"
         android:layout_height="44dp"
-        android:layout_marginLeft="16.0dip"
-        android:layout_marginTop="12.0dip"
-        android:layout_marginRight="16.0dip"
-        android:layout_marginBottom="12.0dip"
-        android:background="@drawable/miss_shape_btn_next"
+        android:layout_marginLeft="16dip"
+        android:layout_marginTop="12dip"
+        android:layout_marginRight="16dip"
+        android:layout_marginBottom="12dip"
+        android:background="@drawable/miss_permission_shape_btn_next"
         android:text="@string/miss_permission_btn_next"
         android:textColor="@android:color/white"
-        android:textSize="16.0sp" />
+        android:textSize="16.0dp" />
 </LinearLayout>

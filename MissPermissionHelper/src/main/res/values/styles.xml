@@ -5,8 +5,8 @@
         <item name="MissHelperTitleColor">#737373</item>
         <item name="MissHelperMsgColor">#737373</item>
         <item name="MissHelperItemTextColor">#737373</item>
-        <item name="MissHelperButtonBackground">@drawable/miss_shape_btn_next</item>
-        <item name="MissHelperBackground">@drawable/miss_shape_bg_white</item>
+        <item name="MissHelperButtonBackground">@drawable/miss_permission_shape_btn_next</item>
+        <item name="MissHelperBackground">@drawable/miss_permission_shape_bg_white</item>
         <item name="MissHelperButtonTextColor">@android:color/white</item>
     </style>
 </resources>

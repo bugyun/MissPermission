@@ -35,12 +35,12 @@ public class PermissionRequest implements AvoidOnResultHelper.PermissionsCallBac
     private final WeakReference<FragmentActivity> activityWeakReference;
 
     //ui
-    private boolean showprompt;
+    private boolean showPrompt;
     private String title;
     private String msg;
-    private int mFilterColor = 0;
-    private int mStyleResId = -1;
-    private boolean ischeck;
+    private int filterColor = 0;
+    private int styleResId = -1;
+    private boolean isCheck;
     private IAction baseAction = new DefaultAction();
 
     PermissionRequest(FragmentActivity activity) {
@@ -84,7 +84,7 @@ public class PermissionRequest implements AvoidOnResultHelper.PermissionsCallBac
                 }
             }
             //展示提示框,要请求的权限
-            if (showprompt) {
+            if (showPrompt) {
                 //判断权限组
                 baseAction.checkedAction(this, permissionGroups);
             } else {
@@ -212,5 +212,62 @@ public class PermissionRequest implements AvoidOnResultHelper.PermissionsCallBac
 
     public PermissionException getException() {
         return exception;
+    }
+
+
+    public boolean isShowPrompt() {
+        return showPrompt;
+    }
+
+    public void setShowPrompt(boolean showPrompt) {
+        this.showPrompt = showPrompt;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public int getFilterColor() {
+        return filterColor;
+    }
+
+    public void setFilterColor(int filterColor) {
+        this.filterColor = filterColor;
+    }
+
+    public int getStyleResId() {
+        return styleResId;
+    }
+
+    public void setStyleResId(int styleResId) {
+        this.styleResId = styleResId;
+    }
+
+    public boolean isCheck() {
+        return isCheck;
+    }
+
+    public void setIsCheck(boolean isCheck) {
+        this.isCheck = isCheck;
+    }
+
+    public IAction getBaseAction() {
+        return baseAction;
+    }
+
+    public void setBaseAction(IAction baseAction) {
+        this.baseAction = baseAction;
     }
 }

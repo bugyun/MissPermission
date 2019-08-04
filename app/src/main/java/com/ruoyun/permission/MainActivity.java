@@ -2,9 +2,7 @@ package com.ruoyun.permission;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -23,8 +21,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
-import com.ruoyun.permission.utils.AvoidOnResultManager;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +32,7 @@ import me.weyye.hipermission.PermissionView;
 import vip.ruoyun.permission.core.MissPermission;
 import vip.ruoyun.permission.core.PermissionException;
 import vip.ruoyun.permission.core.PermissionRequest;
+import vip.ruoyun.permission.helper.MissPermissionHelper;
 import vip.ruoyun.permission.helper.check.SMSChecker;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -66,25 +63,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        InstanceID.getInstance(this).getId();
         //        testHiPermisson();
 
-        Intent intent = new Intent();
-        AvoidOnResultManager.startActivityForResult(this, intent, new AvoidOnResultManager.ActivityCallback() {
-            @Override
-            public void onActivityResult(int resultCode, Intent data) {
-                //新界面
-                //val intent = Intent()
-                //intent.putExtra("text",text.text.toString())
-                //setResult(Activity.RESULT_OK,intent)
-                //finish();
+//        Intent intent = new Intent();
+//        AvoidOnResultManager.startActivityForResult(this, intent, new AvoidOnResultManager.ActivityCallback() {
+//            @Override
+//            public void onActivityResult(int resultCode, Intent data) {
+        //新界面
+        //val intent = Intent()
+        //intent.putExtra("text",text.text.toString())
+        //setResult(Activity.RESULT_OK,intent)
+        //finish();
 
-            }
-        });
-        String[] permissions = {};
-        AvoidOnResultManager.requestPermissions(this, permissions, new AvoidOnResultManager.PermissionsCallBack() {
-            @Override
-            public void onRequestPermissionsResult(@NonNull String[] permissions, @NonNull int[] grantResults) {
-
-            }
-        });
+//            }
+//        });
+//        String[] permissions = {};
+//        AvoidOnResultManager.requestPermissions(this, permissions, new AvoidOnResultManager.PermissionsCallBack() {
+//            @Override
+//            public void onRequestPermissionsResult(@NonNull String[] permissions, @NonNull int[] grantResults) {
+//
+//            }
+//        });
     }
 
 
@@ -99,33 +96,62 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
 
-                MissPermissionHelper.checkSms(this, new MissPermissionHelper.DoActionWrapper() {
-                    @Override
-                    public void onSuccess(Context context) {
-                        Log.e("zyh", "onSuccess");
-                    }
+//                MissPermissionHelper.checkSms(this, new MissPermissionHelper.DoActionWrapper() {
+//                    @Override
+//                    public void onSuccess(Context context) {
+//                        Log.e("zyh", "onSuccess");
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Context context) {
+//                        Log.e("zyh", "onFailure");
+//                    }
+//                });
 
-                    @Override
-                    public void onFailure(Context context) {
-                        Log.e("zyh", "onFailure");
-                    }
-                });
 
+                MissPermissionHelper.with(this)
+                        .addPermission(Manifest.permission.SEND_SMS)//
+                        .addPermission(Manifest.permission.RECEIVE_SMS)//
+                        .addPermission(Manifest.permission.READ_SMS)//
+                        .addPermission(Manifest.permission.ACCESS_FINE_LOCATION)//
+                        .addPermission(Manifest.permission.CAMERA)//
+                        .addPermission(Manifest.permission.READ_CONTACTS)//
+                        .addPermission(Manifest.permission.WRITE_CALENDAR)//
+                        .addPermission(Manifest.permission.READ_CALL_LOG)//
+                        .addPermission(Manifest.permission.READ_CONTACTS)//
+                        .addPermission(Manifest.permission.RECORD_AUDIO)//
+                        .addPermission(Manifest.permission.BODY_SENSORS)//
+                        .addPermission(Manifest.permission.SEND_SMS)//
+                        .addPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)//
+                        .msg("为了您正常使用应用,需要以下权限")
+                        .title("亲爱的用户")
+                        .showprompt(true)
+                        .checkPermission(new vip.ruoyun.permission.helper.PermissionRequest.PermissionListener() {
+                            @Override
+                            public void onSuccess(vip.ruoyun.permission.helper.PermissionRequest request) {
+
+                            }
+
+                            @Override
+                            public void onFailure(vip.ruoyun.permission.helper.PermissionRequest request) {
+
+                            }
+                        });
 //                testDPermission();
 
                 break;
             case R.id.buttonAll:
-                MissPermissionHelper.checkMorePermissions(this, new MissPermissionHelper.DoActionWrapper() {
-                    @Override
-                    public void onSuccess(Context context) {
-                        Log.e("zyh", "onSuccess");
-                    }
-
-                    @Override
-                    public void onFailure(Context context) {
-                        Log.e("zyh", "onFailure");
-                    }
-                }, MissPermissionHelper.PermissionType.CALENDAR, MissPermissionHelper.PermissionType.CAMERA, MissPermissionHelper.PermissionType.SMS);
+//                MissPermissionHelper.checkMorePermissions(this, new MissPermissionHelper.DoActionWrapper() {
+//                    @Override
+//                    public void onSuccess(Context context) {
+//                        Log.e("zyh", "onSuccess");
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Context context) {
+//                        Log.e("zyh", "onFailure");
+//                    }
+//                }, MissPermissionHelper.PermissionType.CALENDAR, MissPermissionHelper.PermissionType.CAMERA, MissPermissionHelper.PermissionType.SMS);
                 break;
         }
 
@@ -168,17 +194,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void tesHelper() {
-        MissPermissionHelper.checkCamera(this, new MissPermissionHelper.DoActionWrapper() {
-            @Override
-            public void onSuccess(Context context) {
-                Log.e("zyh", "onSuccess");
-            }
-
-            @Override
-            public void onFailure(Context context) {
-                Log.e("zyh", "onFailure");
-            }
-        });
+//        MissPermissionHelper.checkCamera(this, new MissPermissionHelper.DoActionWrapper() {
+//            @Override
+//            public void onSuccess(Context context) {
+//                Log.e("zyh", "onSuccess");
+//            }
+//
+//            @Override
+//            public void onFailure(Context context) {
+//                Log.e("zyh", "onFailure");
+//            }
+//        });
 //        MissPermissionHelper.checkCalendar();
 //        MissPermissionHelper.checkCallLog();
 //        MissPermissionHelper.checkContacts();

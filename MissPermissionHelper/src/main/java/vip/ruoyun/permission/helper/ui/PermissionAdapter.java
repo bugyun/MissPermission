@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import vip.ruoyun.permission.helper.R;
 import vip.ruoyun.permission.helper.PermissionGroup;
+import vip.ruoyun.permission.helper.R;
 
 /**
  * Created by Administrator on 2017/5/10 0010.
