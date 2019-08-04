@@ -141,14 +141,14 @@ public class MissPermissionHelper {
                 .addPermissions(iChecker.getPermissions())
                 .checkPermission(new PermissionRequest.PermissionListener() {
                     @Override
-                    public int onChecked(Set<String> agreePermissions, Set<String> deniedPermissions, PermissionRequest request) {
-                        missHelperConfiguration.getAction().checkedAction(request.getContext(), deniedPermissions, request, Collections.singleton(iChecker));
+                    public int onChecked(PermissionRequest request) {
+                        missHelperConfiguration.getAction().checkedAction(request.getContext(), request, Collections.singleton(iChecker));
                         return MissPermission.WAIT_STEP;
                     }
 
                     @Override
-                    public void onDenied(Set<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request) {
-                        missHelperConfiguration.getAction().deniedAction(request.getContext(), deniedPermissions, alwaysDenied, request);
+                    public void onDenied(PermissionRequest request) {
+                        missHelperConfiguration.getAction().deniedAction(request.getContext(), request);
                         doAction.onFailure(request.getContext());
                     }
 
@@ -157,7 +157,7 @@ public class MissPermissionHelper {
                         if (iChecker.isCheckEnable(activity, missHelperConfiguration)) {
                             doAction.onSuccess(activity);
                         } else {
-                            missHelperConfiguration.getAction().deniedAction(activity, new HashSet<String>(Arrays.asList(iChecker.getPermissions())), true, request);
+                            missHelperConfiguration.getAction().deniedAction(activity, request);
                             doAction.onFailure(request.getContext());
                         }
                     }
@@ -224,15 +224,15 @@ public class MissPermissionHelper {
         }
         builder.checkPermission(new PermissionRequest.PermissionListener() {
             @Override
-            public int onChecked(Set<String> agreePermissions, Set<String> deniedPermissions, PermissionRequest request) {
-                missHelperConfiguration.getAction().checkedAction(request.getContext(), deniedPermissions, request, checkers);
+            public int onChecked(PermissionRequest request) {
+                missHelperConfiguration.getAction().checkedAction(request.getContext(), request, checkers);
                 return MissPermission.WAIT_STEP;
             }
 
             @Override
-            public void onDenied(Set<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request) {
-                missHelperConfiguration.getAction().deniedAction(request.getContext(), deniedPermissions, alwaysDenied, request);
-                for (String item : deniedPermissions) {
+            public void onDenied(PermissionRequest request) {
+                missHelperConfiguration.getAction().deniedAction(request.getContext(), request);
+                for (String item : request.getDeniedPermissionList()) {
                     Log.e("zyh", "onDenied" + item);
                 }
                 doAction.onFailure(request.getContext());
@@ -250,7 +250,7 @@ public class MissPermissionHelper {
                 if (deniedPermissions.isEmpty()) {
                     doAction.onSuccess(activity);
                 } else {
-                    missHelperConfiguration.getAction().deniedAction(activity, deniedPermissions, true, request);
+                    missHelperConfiguration.getAction().deniedAction(activity, request);
                     doAction.onFailure(request.getContext());
                 }
             }

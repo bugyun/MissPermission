@@ -33,11 +33,11 @@ MissPermission.with(context)//
                 .checkPermission(new PermissionRequest.PermissionListener() {
                     /**
                        为了适应每种机型弹框提示需要。
-                       agreeList: 同意权限
-                       rejectList: 拒绝的权限
+                       request.getAgreePermissionList();//同意的权限
+                       request.getDeniedPermissionList();//拒绝的权限
                     */
                     @Override
-                    public int onChecked(Set<String> agreePermissions, Set<String> deniedPermissions, PermissionRequest request) {
+                    public int onChecked(PermissionRequest request) {
                         //3 种返回方式，
                         //MissPermission.NEXT_STEP  直接下一步，不用等待
                         //MissPermission.STOP_STEP  直接停止，不执行下一步
@@ -47,12 +47,14 @@ MissPermission.with(context)//
 
                     /**
                        拒绝权限 可以进行提示操作
-                       isOver23: SDK是否是大约 M
-                       deniedPermissions: 拒绝的权限
-                       alwaysDenied: 是否总是拒绝
+                       request.isOver23: SDK是否是大约 M
+                       request.deniedPermissions: 拒绝的权限
+                       request.alwaysDenied: 是否总是拒绝
                     */
                     @Override
-                    public void onDenied(Set<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request) {
+                    public void onDenied(PermissionRequest request) {
+                        if (request.isAlwaysDenied()) {//是否总是拒绝
+                        }
 
                     }
 
@@ -76,6 +78,17 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
     MissPermission.onRequestPermissionsResult(requestCode, permissions, grantResults);
 }
 ```
+### PermissionRequest 方法说明
+
+```java
+request.getPermissionList();//此请求的所有权限
+request.getDeniedPermissionList();//拒绝的权限
+request.getAgreePermissionList();//同意的权限
+request.getContext();//上下文
+request.isAlwaysDenied();//是否总是拒绝
+request.isOver23();//sdk 是否超过 23 (6.0)
+request.requestPermissionsAgain();//再次请求权限
+```
 
 ---
 
@@ -84,7 +97,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 
 ### 配置
 ```xml
-implementation 'vip.ruoyun.permission:miss-helper:1.0.0'
+implementation 'vip.ruoyun.permission:miss-helper:1.0.1'
 ```
 
 ### 使用

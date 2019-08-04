@@ -18,39 +18,24 @@ import java.util.Set;
  */
 public class PermissionRequest {
 
-    private Set<String> permissionList = new HashSet<>();
-    private Set<String> agreePermissionList = new HashSet<>();
-    private Set<String> rejectPermissionList = new HashSet<>();
-    private PermissionListener permissionListener;
-    private final WeakReference<Activity> activityWeakReference;
-    private int requestCode = 9898;
+    //
+    private Set<String> permissionList = new HashSet<>();//请求的权限
+    private Set<String> agreePermissionList = new HashSet<>();//同意的权限
+    private Set<String> deniedPermissionList = new HashSet<>();//拒绝的权限
 
+    private boolean alwaysDenied = false;//是否总是拒绝
     private boolean isOver23;//是不是棉花糖，大于：true  小于 false Build.VERSION_CODES.M
 
-    public boolean isOver23() {
-        return isOver23;
-    }
-
-    public Context getContext() {
-        return activityWeakReference.get();
-    }
+    //
+    private int requestCode = 9898;
+    private PermissionListener permissionListener;
+    private final WeakReference<Activity> activityWeakReference;
 
     PermissionRequest(Activity activity) {
         activityWeakReference = new WeakReference<>(activity);
     }
 
-    void addPermission(String permission) {
-        permissionList.add(permission);
-    }
-
-    void addPermissions(List<String> permissions) {
-        permissionList.addAll(permissions);
-    }
-
-    public Set<String> getPermissionList() {
-        return permissionList;
-    }
-
+    //开始
     void start(PermissionListener permissionListener) {
         this.permissionListener = permissionListener;
         checkPermission();
@@ -77,10 +62,10 @@ public class PermissionRequest {
                 if (checkSelfPermission == PackageManager.PERMISSION_GRANTED) {//如果同意
                     agreePermissionList.add(permission);
                 } else {//如果拒绝
-                    rejectPermissionList.add(permission);
+                    deniedPermissionList.add(permission);
                 }
             }
-            switch (permissionListener.onChecked(agreePermissionList, rejectPermissionList, this)) {
+            switch (permissionListener.onChecked(this)) {
                 case MissPermission.NEXT_STEP:
                     next();
                     break;
@@ -106,13 +91,13 @@ public class PermissionRequest {
                 if (checkSelfPermission == PermissionChecker.PERMISSION_GRANTED) {//已授权
                     agreePermissionList.add(permission);
                 } else {//未授权
-                    rejectPermissionList.add(permission);
+                    deniedPermissionList.add(permission);
                 }
             }
             if (permissionList.size() == agreePermissionList.size()) {
                 permissionListener.onSuccess(this); //所有权限都通过
             } else {
-                permissionListener.onDenied(rejectPermissionList, true, this);
+                permissionListener.onDenied(this);
             }
         }
     }
@@ -122,17 +107,76 @@ public class PermissionRequest {
             //所有权限都通过
             permissionListener.onSuccess(this);
         } else {
-            requestPermissionsAgain(rejectPermissionList);
+            requestPermissionsAgain();
         }
     }
 
-    public void requestPermissionsAgain(Set<String> permissionLists) {
+    public void requestPermissionsAgain() {
         if (activityWeakReference.get() == null) {
             permissionListener.onFailure(new PermissionException("activity 为空"));
             return;
         }
 //        ActivityCompat.requestPermissions(activityWeakReference.get(), permissionLists.toArray(new String[permissionLists.size()]), requestCode);
-        ActivityCompat.requestPermissions(activityWeakReference.get(), permissionLists.toArray(new String[0]), requestCode);
+        ActivityCompat.requestPermissions(activityWeakReference.get(), deniedPermissionList.toArray(new String[0]), requestCode);
+    }
+
+
+    public interface PermissionListener {
+        /**
+         * @param request
+         * @return NEXT_STEP：直接下一步，不用等待
+         * STOP_STEP：直接停止，不执行下一步
+         * PAUSE_STEP：等待，等待命令唤起下一步
+         */
+        int onChecked(PermissionRequest request);//检查结束
+
+        /**
+         * @param request
+         */
+        void onDenied(PermissionRequest request);
+
+        void onSuccess(PermissionRequest request);//权限完成
+
+        void onFailure(PermissionException exception);//失败
+    }
+
+    /**
+     * @param permissions  请求的权限列表
+     * @param grantResults 请求权限的结果列表
+     */
+    void onRequestPermissionsResult(String[] permissions, int[] grantResults) {
+        if (grantResults.length > 0) {
+            Set<String> deniedList = new HashSet<>();
+            // 遍历所有申请的权限，把被拒绝的权限放入集合
+            for (int i = 0; i < grantResults.length; i++) {
+                int grantResult = grantResults[i];
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {//没有授予权限
+                    //如果用户在过去拒绝了权限请求，并在权限请求系统对话框中选择了 Don't ask again 选项，此方法将返回 false。如果设备规范禁止应用具有该权限，此方法也会返回 false。
+                    if (!ActivityCompat.shouldShowRequestPermissionRationale(activityWeakReference.get(), permissions[i])) {
+                        alwaysDenied = true;
+                    }
+                    deniedList.add(permissions[i]);
+                } else {
+                    agreePermissionList.add(permissions[i]);
+                }
+            }
+            deniedPermissionList = deniedList;
+            if (!deniedList.isEmpty()) {
+                permissionListener.onDenied(this);
+            } else {
+                permissionListener.onSuccess(this);
+            }
+        }
+    }
+
+    //build 方法 get set
+
+    void addPermission(String permission) {
+        permissionList.add(permission);
+    }
+
+    void addPermissions(List<String> permissions) {
+        permissionList.addAll(permissions);
     }
 
     void setRequestCode(int requestCode) {
@@ -143,51 +187,28 @@ public class PermissionRequest {
         return requestCode;
     }
 
-    public interface PermissionListener {
-        /**
-         * @param agreePermissions
-         * @param deniedPermissions
-         * @param request
-         * @return NEXT_STEP：直接下一步，不用等待
-         * STOP_STEP：直接停止，不执行下一步
-         * PAUSE_STEP：等待，等待命令唤起下一步
-         */
-        int onChecked(Set<String> agreePermissions, Set<String> deniedPermissions, PermissionRequest request);//检查结束
-
-        /**
-         * @param deniedPermissions
-         * @param alwaysDenied
-         * @param request
-         */
-        void onDenied(Set<String> deniedPermissions, boolean alwaysDenied, PermissionRequest request);
-
-        void onSuccess(PermissionRequest request);//权限完成
-
-        void onFailure(PermissionException exception);//失败
+    //对外的 get set
+    public boolean isOver23() {
+        return isOver23;
     }
 
+    public Context getContext() {
+        return activityWeakReference.get();
+    }
 
-    void onRequestPermissionsResult(String[] permissions, int[] grantResults) {
-        boolean alwaysDenied = false;
-        if (grantResults.length > 0) {
-            Set<String> deniedList = new HashSet<>();
-            //            List<String> agreeList = new ArrayList<>();
-            // 遍历所有申请的权限，把被拒绝的权限放入集合
-            for (int i = 0; i < grantResults.length; i++) {
-                int grantResult = grantResults[i];
-                if (grantResult != PackageManager.PERMISSION_GRANTED) {//没有授予权限
-                    //如果用户在过去拒绝了权限请求，并在权限请求系统对话框中选择了 Don't ask again 选项，此方法将返回 false。如果设备规范禁止应用具有该权限，此方法也会返回 false。
-                    if (!ActivityCompat.shouldShowRequestPermissionRationale(activityWeakReference.get(), permissions[i])) {
-                        alwaysDenied = true;
-                    }
-                    deniedList.add(permissions[i]);
-                }
-            }
-            if (!deniedList.isEmpty()) {
-                permissionListener.onDenied(deniedList, alwaysDenied, this);
-            } else {
-                permissionListener.onSuccess(this);
-            }
-        }
+    public Set<String> getPermissionList() {
+        return permissionList;
+    }
+
+    public boolean isAlwaysDenied() {
+        return alwaysDenied;
+    }
+
+    public Set<String> getAgreePermissionList() {
+        return agreePermissionList;
+    }
+
+    public Set<String> getDeniedPermissionList() {
+        return deniedPermissionList;
     }
 }

@@ -27,7 +27,6 @@ import com.ruoyun.permission.utils.AvoidOnResultManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import me.weyye.hipermission.HiPermission;
 import me.weyye.hipermission.PermissionAdapter;
@@ -222,8 +221,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                .addPermission(Manifest.permission.ACCESS_FINE_LOCATION)//
                 .checkPermission(new PermissionRequest.PermissionListener() {
                     @Override
-                    public int onChecked(Set<String> agreePermissions, Set<String> deniedPermissions, final PermissionRequest request) {
-                        Log.i("zyh", "onChecked: rejectList:" + deniedPermissions.size() + "agree:" + agreePermissions.size());
+                    public int onChecked(final PermissionRequest request) {
+                        Log.i("zyh", "onChecked: rejectList:" + request.getDeniedPermissionList().size() + "agree:" + request.getAgreePermissionList().size());
                         PermissionView contentView = new PermissionView(MainActivity.this);
                         contentView.setGridViewColum(3);
                         contentView.setTitle("标题");
@@ -267,9 +266,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
                     @Override
-                    public void onDenied(final Set<String> deniedPermissions, boolean alwaysDenied, final PermissionRequest request) {
+                    public void onDenied(final PermissionRequest request) {
+
+
                         StringBuilder sBuilder = new StringBuilder();
-                        for (String deniedPermission : deniedPermissions) {
+                        for (String deniedPermission : request.getDeniedPermissionList()) {
                             if (deniedPermission.equals(Manifest.permission.WRITE_CONTACTS)) {
                                 sBuilder.append("联系人");
                                 sBuilder.append(",");
@@ -283,14 +284,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             sBuilder.deleteCharAt(sBuilder.length() - 1);
                         }
                         //Toast.makeText(context, "获取" + sBuilder.toString() + "权限失败", Toast.LENGTH_SHORT).show();
-                        if (alwaysDenied) {
+                        if (request.isAlwaysDenied()) {
                             DialogUtil.showPermissionManagerDialog(MainActivity.this, sBuilder.toString());
                         } else {
                             new AlertDialog.Builder(MainActivity.this).setTitle("温馨提示").setMessage("我们需要这些权限才能正常使用该功能").setNegativeButton("取消", null).setPositiveButton("验证权限", new DialogInterface.OnClickListener() {
                                 @RequiresApi(api = Build.VERSION_CODES.M)
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    request.requestPermissionsAgain(deniedPermissions);
+                                    request.requestPermissionsAgain();
                                 }
                             }).setCancelable(false).show();
                         }

@@ -93,7 +93,7 @@ public class DefaultAction implements BaseAction {
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    request.requestPermissionsAgain(deniedPermissions);
+                    request.requestPermissionsAgain();
                 }
             }).setCancelable(false).show();
         }
