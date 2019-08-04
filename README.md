@@ -25,7 +25,7 @@ implementation 'vip.ruoyun.permission:miss-core:1.0.1'
 
 ### 使用方法
 
-##### PermissionRequest 方法说明
+#### PermissionRequest 方法说明
 
 ```java
 request.getPermissionList();//此请求的所有权限
@@ -37,7 +37,7 @@ request.isOver23();//sdk 是否超过 23 (6.0)
 request.requestPermissionsAgain();//再次请求权限
 ```
 
-##### 开始
+#### 开始
 
 ```java
 MissPermission.with(context)//
