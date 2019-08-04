@@ -6,7 +6,7 @@ android 权限库，超级简单好用！！
 
 ### 配置
 ```xml
-implementation 'vip.ruoyun.permission:miss-core:1.0.0'
+implementation 'vip.ruoyun.permission:miss-core:1.0.1'
 ```
 
 ### 准备工作
@@ -24,6 +24,20 @@ implementation 'vip.ruoyun.permission:miss-core:1.0.0'
 ```
 
 ### 使用方法
+
+##### PermissionRequest 方法说明
+
+```java
+request.getPermissionList();//此请求的所有权限
+request.getDeniedPermissionList();//拒绝的权限
+request.getAgreePermissionList();//同意的权限
+request.getContext();//上下文
+request.isAlwaysDenied();//是否总是拒绝
+request.isOver23();//sdk 是否超过 23 (6.0)
+request.requestPermissionsAgain();//再次请求权限
+```
+
+##### 开始
 
 ```java
 MissPermission.with(context)//
@@ -78,17 +92,6 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
     MissPermission.onRequestPermissionsResult(requestCode, permissions, grantResults);
 }
 ```
-### PermissionRequest 方法说明
-
-```java
-request.getPermissionList();//此请求的所有权限
-request.getDeniedPermissionList();//拒绝的权限
-request.getAgreePermissionList();//同意的权限
-request.getContext();//上下文
-request.isAlwaysDenied();//是否总是拒绝
-request.isOver23();//sdk 是否超过 23 (6.0)
-request.requestPermissionsAgain();//再次请求权限
-```
 
 ---
 
@@ -97,7 +100,7 @@ request.requestPermissionsAgain();//再次请求权限
 
 ### 配置
 ```xml
-implementation 'vip.ruoyun.permission:miss-helper:1.0.1'
+implementation 'vip.ruoyun.permission:miss-helper:1.0.0'
 ```
 
 ### 使用
