@@ -17,7 +17,7 @@
         android:layout_marginTop="25dp"
         android:gravity="center"
         android:text=""
-        android:textColor="@color/MissHelperColorGreen"
+        android:textColor="@color/MissPermissionHelperColorGreen"
         android:textSize="20dp" />
 
     <TextView
@@ -29,7 +29,7 @@
         android:layout_marginRight="10dp"
         android:gravity="center"
         android:text=""
-        android:textColor="@color/MissHelperColorGreen"
+        android:textColor="@color/MissPermissionHelperColorGreen"
         android:textSize="12dp" />
 
     <!--<LinearLayout-->

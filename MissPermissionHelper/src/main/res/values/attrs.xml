@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="MissHelperBackground" format="reference" />
-    <attr name="MissHelperTitleColor" format="color" />
-    <attr name="MissHelperMsgColor" format="color" />
-    <attr name="MissHelperItemTextColor" format="color" />
-    <attr name="MissHelperButtonTextColor" format="color" />
-    <attr name="MissHelperButtonBackground" format="reference" />
-    <attr name="MissHelperBgFilterColor" format="color" />
-    <attr name="MissHelperIconFilterColor" format="color" />
+    <attr name="MissPermissionHelperBackground" format="reference" />
+    <attr name="MissPermissionHelperTitleColor" format="color" />
+    <attr name="MissPermissionHelperMsgColor" format="color" />
+    <attr name="MissPermissionHelperItemTextColor" format="color" />
+    <attr name="MissPermissionHelperButtonTextColor" format="color" />
+    <attr name="MissPermissionHelperButtonBackground" format="reference" />
+    <attr name="MissPermissionHelperBgFilterColor" format="color" />
+    <attr name="MissPermissionHelperIconFilterColor" format="color" />
 </resources>

@@ -38,7 +38,7 @@ public class DefaultAction implements IAction {
         //这里没有使用RecyclerView，可以少引入一个库
         //用户没有设置，使用默认绿色主题
         int mStyleId = R.style.PermissionDefaultNormalStyle;
-        int mFilterColor = request.getContext().getResources().getColor(R.color.MissHelperColorGreen);
+        int mFilterColor = request.getContext().getResources().getColor(R.color.MissPermissionHelperColorGreen);
         contentView.setTitle(request.getTitle());
         contentView.setMsg(request.getMsg());
         contentView.setStyleId(mStyleId);
