@@ -1,4 +1,4 @@
-package vip.ruoyun.permission.helper.core;
+package vip.ruoyun.permission.helper.test;
 
 
 import android.Manifest;
@@ -12,22 +12,19 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.Window;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import vip.ruoyun.permission.core.PermissionRequest;
 import vip.ruoyun.permission.helper.R;
 import vip.ruoyun.permission.helper.ui.DialogUtil;
 import vip.ruoyun.permission.helper.ui.MissPermissionView;
-import vip.ruoyun.permission.helper.ui.PermissionAdapter;
 
-public class DefaultAction implements BaseAction {
+public class TDefaultAction implements IAction {
 
     private Dialog mDialog;
 
     @Override
-    public void checkedAction(final PermissionRequest request, Set<IChecker> iCheckers) {
+    public void checkedAction(final PermissionRequest request,List<PermissionGroup> permissionGroups) {
         if (request.getDeniedPermissionList().size() == 0) {
             request.next();
             return;
@@ -35,9 +32,9 @@ public class DefaultAction implements BaseAction {
 
         mDialog = new Dialog(request.getContext());
         MissPermissionView contentView = new MissPermissionView(request.getContext());
-        List<IChecker> permissionItems = new ArrayList<>(iCheckers);
-        contentView.setGridViewColum(permissionItems.size() < 3 ? permissionItems.size() : 3);
-        contentView.setGridViewAdapter(new PermissionAdapter(permissionItems));
+//        List<IChecker> permissionItems = new ArrayList<>(permissionGroups);
+//        contentView.setGridViewColum(permissionItems.size() < 3 ? permissionItems.size() : 3);
+//        contentView.setGridViewAdapter(new PermissionAdapter(permissionItems));
         contentView.setTitle("亲爱的上帝");
         contentView.setMsg("为了保护世界的和平，开启这些权限吧！\n你我一起拯救世界");
         //这里没有使用RecyclerView，可以少引入一个库

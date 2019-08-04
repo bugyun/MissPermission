@@ -217,6 +217,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .addPermission(Manifest.permission.SEND_SMS)//
                 .addPermission(Manifest.permission.RECEIVE_SMS)//
                 .addPermission(Manifest.permission.READ_SMS)//
+                .setRequestCode(1000)//默认值 9898
 //                .addPermission(Manifest.permission.READ_CONTACTS)//
 //                .addPermission(Manifest.permission.ACCESS_FINE_LOCATION)//
                 .checkPermission(new PermissionRequest.PermissionListener() {

@@ -52,7 +52,7 @@ public class MissPermission {
 
         private PermissionRequest request;
 
-        Builder(Activity activity) {
+        private Builder(Activity activity) {
             request = new PermissionRequest(activity);
         }
 

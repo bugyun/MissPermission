@@ -41,6 +41,7 @@ request.requestPermissionsAgain();//再次请求权限
 
 ```java
 MissPermission.with(context)//
+                .setRequestCode(9898)//默认值 9898
                 .addPermission(Manifest.permission.CAMERA)//添加请求权限
                 .addPermission(Manifest.permission.SEND_SMS)//添加请求权限
                 .addPermission(Manifest.permission.RECEIVE_SMS)//添加请求权限
