@@ -38,8 +38,8 @@ public class PermissionRequest implements AvoidOnResultHelper.PermissionsCallBac
     private boolean showPrompt;
     private String title;
     private String msg;
-    private int filterColor = 0;
-    private int styleResId = -1;
+    private int filterColor = R.color.MissPermissionHelperColorGreen;
+    private int styleResId = R.style.PermissionDefaultNormalStyle;
     private boolean isCheck;
     private IAction baseAction = new DefaultAction();
 

@@ -33,15 +33,12 @@ public class DefaultAction implements IAction {
         MissPermissionView contentView = new MissPermissionView(request.getContext());
         contentView.setGridViewColum(permissionGroups.size() < 3 ? permissionGroups.size() : 3);
         contentView.setGridViewAdapter(new PermissionAdapter(new ArrayList<>(permissionGroups)));
-        contentView.setTitle("亲爱的上帝");
-        contentView.setMsg("为了保护世界的和平，开启这些权限吧！\n你我一起拯救世界");
         //这里没有使用RecyclerView，可以少引入一个库
         //用户没有设置，使用默认绿色主题
-        int mStyleId = R.style.PermissionDefaultNormalStyle;
-        int mFilterColor = request.getContext().getResources().getColor(R.color.MissPermissionHelperColorGreen);
+        int mFilterColor = request.getContext().getResources().getColor(request.getFilterColor());
         contentView.setTitle(request.getTitle());
         contentView.setMsg(request.getMsg());
-        contentView.setStyleId(mStyleId);
+        contentView.setStyleId(request.getStyleResId());
         contentView.setFilterColor(mFilterColor);
         contentView.setBtnOnClickListener(new View.OnClickListener() {
             @Override
