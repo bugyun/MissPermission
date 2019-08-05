@@ -38,10 +38,10 @@ public class PermissionRequest implements AvoidOnResultHelper.PermissionsCallBac
     private boolean showPrompt;
     private String title;
     private String msg;
-    private int filterColor = R.color.MissPermissionHelperColorGreen;
-    private int styleResId = R.style.PermissionDefaultNormalStyle;
+//    private int filterColor = 0;
+    private int styleResId = R.style.MissPermissionHelperDefaultNormalStyle;
     private boolean isCheck;
-    private IAction baseAction = new DefaultAction();
+    private IAction action = new DefaultAction();
 
     PermissionRequest(FragmentActivity activity) {
         activityWeakReference = new WeakReference<>(activity);
@@ -86,7 +86,7 @@ public class PermissionRequest implements AvoidOnResultHelper.PermissionsCallBac
             //展示提示框,要请求的权限
             if (showPrompt) {
                 //判断权限组
-                baseAction.checkedAction(this, permissionGroups);
+                action.checkedAction(this, permissionGroups);
             } else {
                 next();
             }
@@ -114,7 +114,7 @@ public class PermissionRequest implements AvoidOnResultHelper.PermissionsCallBac
             if (permissionList.size() == agreePermissionList.size()) {
                 permissionListener.onSuccess(this); //所有权限都通过
             } else {
-                baseAction.deniedAction(this);
+                action.deniedAction(this);
                 permissionListener.onFailure(this);
             }
         }
@@ -157,7 +157,7 @@ public class PermissionRequest implements AvoidOnResultHelper.PermissionsCallBac
             }
             deniedPermissionList = deniedList;
             if (!deniedList.isEmpty()) {
-                baseAction.deniedAction(this);
+                action.deniedAction(this);
                 permissionListener.onFailure(this);
             } else {
                 permissionListener.onSuccess(this);
@@ -239,13 +239,13 @@ public class PermissionRequest implements AvoidOnResultHelper.PermissionsCallBac
         this.msg = msg;
     }
 
-    public int getFilterColor() {
-        return filterColor;
-    }
-
-    public void setFilterColor(int filterColor) {
-        this.filterColor = filterColor;
-    }
+//    public int getFilterColor() {
+//        return filterColor;
+//    }
+//
+//    public void setFilterColor(int filterColor) {
+//        this.filterColor = filterColor;
+//    }
 
     public int getStyleResId() {
         return styleResId;
@@ -263,11 +263,11 @@ public class PermissionRequest implements AvoidOnResultHelper.PermissionsCallBac
         this.isCheck = isCheck;
     }
 
-    public IAction getBaseAction() {
-        return baseAction;
+    public IAction getAction() {
+        return action;
     }
 
-    public void setBaseAction(IAction baseAction) {
-        this.baseAction = baseAction;
+    public void setAction(IAction action) {
+        this.action = action;
     }
 }

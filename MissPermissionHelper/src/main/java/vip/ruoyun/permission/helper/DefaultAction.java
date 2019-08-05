@@ -33,13 +33,13 @@ public class DefaultAction implements IAction {
         MissPermissionView contentView = new MissPermissionView(request.getContext());
         contentView.setGridViewColum(permissionGroups.size() < 3 ? permissionGroups.size() : 3);
         contentView.setGridViewAdapter(new PermissionAdapter(new ArrayList<>(permissionGroups)));
-        //这里没有使用RecyclerView，可以少引入一个库
-        //用户没有设置，使用默认绿色主题
-        int mFilterColor = request.getContext().getResources().getColor(request.getFilterColor());
+        if (request.getFilterColor() != 0) {
+            int mFilterColor = request.getContext().getResources().getColor(request.getFilterColor());
+            contentView.setFilterColor(mFilterColor);
+        }
         contentView.setTitle(request.getTitle());
         contentView.setMsg(request.getMsg());
         contentView.setStyleId(request.getStyleResId());
-        contentView.setFilterColor(mFilterColor);
         contentView.setBtnOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="PermissionDefaultNormalStyle">
-        <item name="MissPermissionHelperTitleColor">#737373</item>
-        <item name="MissPermissionHelperMsgColor">#737373</item>
-        <item name="MissPermissionHelperItemTextColor">#737373</item>
+    <style name="MissPermissionHelperDefaultNormalStyle">
+        <item name="MissPermissionHelperTitleColor">@android:color/black</item>
+        <item name="MissPermissionHelperMsgColor">@android:color/black</item>
+        <item name="MissPermissionHelperItemTextColor">@android:color/black</item>
         <item name="MissPermissionHelperButtonBackground">@drawable/miss_permission_shape_btn_next</item>
         <item name="MissPermissionHelperBackground">@drawable/miss_permission_shape_bg_white</item>
         <item name="MissPermissionHelperButtonTextColor">@android:color/white</item>
+        <item name="MissPermissionHelperIconFilterColor">@android:color/black</item>
     </style>
 </resources>

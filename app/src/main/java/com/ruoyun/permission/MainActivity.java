@@ -125,7 +125,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .addPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)//
                         .msg("为了您正常使用应用,需要以下权限")
                         .title("亲爱的用户")
-                        .showprompt(true)
+                        .showPrompt(true)
+//                        .filterColor(R.color.MissPermissionHelperGreenLight)
+                        .styleResId(R.style.MissPermissionHelperDefaultNormalStyle)
                         .checkPermission(new vip.ruoyun.permission.helper.PermissionRequest.PermissionListener() {
                             @Override
                             public void onSuccess(vip.ruoyun.permission.helper.PermissionRequest request) {

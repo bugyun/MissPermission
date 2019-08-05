@@ -3,6 +3,7 @@ package vip.ruoyun.permission.helper;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.annotation.StyleRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -59,8 +60,8 @@ public class MissPermissionHelper {
             request.start(listener);
         }
 
-        public Builder showprompt(boolean showprompt) {
-            request.setShowPrompt(showprompt);
+        public Builder showPrompt(boolean showPrompt) {
+            request.setShowPrompt(showPrompt);
             return this;
         }
 
@@ -74,12 +75,12 @@ public class MissPermissionHelper {
             return this;
         }
 
-        public Builder filterColor(int filterColor) {
-            request.setFilterColor(filterColor);
-            return this;
-        }
+//        public Builder filterColor(@ColorRes int filterColor) {
+//            request.setFilterColor(filterColor);
+//            return this;
+//        }
 
-        public Builder styleResId(int styleResId) {
+        public Builder styleResId(@StyleRes int styleResId) {
             request.setStyleResId(styleResId);
             return this;
         }
@@ -89,8 +90,8 @@ public class MissPermissionHelper {
             return this;
         }
 
-        public Builder isAction(IAction iAction) {
-            request.setBaseAction(iAction);
+        public Builder action(IAction iAction) {
+            request.setAction(iAction);
             return this;
         }
     }
