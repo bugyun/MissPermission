@@ -59,7 +59,7 @@ MissPermissionHelper.with(this)
 
 不需要添加回调方法，直接使用即可，开箱即用。
 
-![](media/15649864757464/15649891222334.jpg)
+![](https://github.com/bugyun/MissPermission/blob/develop/art/Screenshot_20190805-165801.jpg?raw=true)
 
 
 #### 样式
