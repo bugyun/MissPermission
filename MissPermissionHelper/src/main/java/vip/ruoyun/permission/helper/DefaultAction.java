@@ -33,10 +33,10 @@ public class DefaultAction implements IAction {
         MissPermissionView contentView = new MissPermissionView(request.getContext());
         contentView.setGridViewColum(permissionGroups.size() < 3 ? permissionGroups.size() : 3);
         contentView.setGridViewAdapter(new PermissionAdapter(new ArrayList<>(permissionGroups)));
-        if (request.getFilterColor() != 0) {
-            int mFilterColor = request.getContext().getResources().getColor(request.getFilterColor());
-            contentView.setFilterColor(mFilterColor);
-        }
+//        if (request.getFilterColor() != 0) {
+//            int mFilterColor = request.getContext().getResources().getColor(request.getFilterColor());
+//            contentView.setFilterColor(mFilterColor);
+//        }
         contentView.setTitle(request.getTitle());
         contentView.setMsg(request.getMsg());
         contentView.setStyleId(request.getStyleResId());
