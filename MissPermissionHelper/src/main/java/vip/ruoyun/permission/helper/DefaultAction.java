@@ -1,7 +1,6 @@
 package vip.ruoyun.permission.helper;
 
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -13,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 import vip.ruoyun.permission.helper.ui.DialogUtil;
@@ -66,20 +66,20 @@ public class DefaultAction implements IAction {
     @Override
     public void deniedAction(final PermissionRequest request) {
         StringBuilder sBuilder = new StringBuilder();
+        Set<PermissionGroup> permissionGroups = new HashSet<>();
         for (String deniedPermission : request.getDeniedPermissionList()) {
-            if (deniedPermission.equals(Manifest.permission.WRITE_CONTACTS)) {
-                sBuilder.append("联系人");
-                sBuilder.append(",");
+            PermissionGroup permissionGroup = PermissionGroup.permissionGroupHashMap.get(deniedPermission);
+            if (permissionGroup != null) {
+                permissionGroups.add(permissionGroup);
             }
-            if (deniedPermission.equals(Manifest.permission.READ_SMS)) {
-                sBuilder.append("短信");
-                sBuilder.append(",");
-            }
+        }
+        for (PermissionGroup permissionGroup : permissionGroups) {
+            sBuilder.append(permissionGroup.permissionName);
+            sBuilder.append(",");
         }
         if (sBuilder.length() > 0) {
             sBuilder.deleteCharAt(sBuilder.length() - 1);
         }
-        //Toast.makeText(context, "获取" + sBuilder.toString() + "权限失败", Toast.LENGTH_SHORT).show();
         if (request.isAlwaysDenied()) {
             DialogUtil.showPermissionManagerDialog(request.getContext(), sBuilder.toString());
         } else {
