@@ -10,7 +10,33 @@ android 权限库，超级简单好用！！
 implementation 'vip.ruoyun.permission:miss-helper:1.0.0'
 ```
 
+### 准备工作
+在 AndroidManifest.xml 文件中添加权限
+```xml
+<manifest>
+    ...
+    //添加自己要使用的权限，如果不添加，那么请求这个权限会一直不成功
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+
+    ...
+</manifest>
+```
+
 ### 使用
+
+#### PermissionRequest 方法说明
+
+```java
+request.getPermissionList();//此请求的所有权限
+request.getDeniedPermissionList();//拒绝的权限
+request.getAgreePermissionList();//同意的权限
+request.getContext();//上下文
+request.isAlwaysDenied();//是否总是拒绝
+request.isOver23();//sdk 是否超过 23 (6.0)
+request.requestPermissionsAgain();//再次请求权限
+```
 
 #### 单纯检查是否有权限
 ```java
@@ -108,7 +134,7 @@ MissPermissionHelper.with(this)
 ---
 
 ## MissPermission
-可以单独使用，如果配合 MissPermissionHelper 体验更佳~
+MissPermission 是MissPermissionHelper 精简版本。只有请求权限的简单功能。
 
 ### 配置
 ```xml
