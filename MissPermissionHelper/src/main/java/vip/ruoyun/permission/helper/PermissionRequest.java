@@ -1,10 +1,10 @@
-package vip.ruoyun.permission.core;
+package vip.ruoyun.permission.helper;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.PermissionChecker;
 
 import java.lang.ref.WeakReference;
@@ -12,26 +12,38 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import vip.ruoyun.helper.avoid.AvoidOnResultHelper;
+
 /**
  * Created by fanpu on 2017/8/4.
  * 权限请求
  */
-public class PermissionRequest {
+public class PermissionRequest implements AvoidOnResultHelper.PermissionsCallBack {
 
     //
     private Set<String> permissionList = new HashSet<>();//请求的权限
     private Set<String> agreePermissionList = new HashSet<>();//同意的权限
     private Set<String> deniedPermissionList = new HashSet<>();//拒绝的权限
+    private PermissionException exception;
+    private Set<PermissionGroup> permissionGroups = new HashSet<>();
 
     private boolean alwaysDenied = false;//是否总是拒绝
     private boolean isOver23;//是不是棉花糖，大于：true  小于 false Build.VERSION_CODES.M
 
     //
-    private int requestCode = 9898;
     private PermissionListener permissionListener;
-    private final WeakReference<Activity> activityWeakReference;
+    private final WeakReference<FragmentActivity> activityWeakReference;
 
-    PermissionRequest(Activity activity) {
+    //ui
+    private boolean showPrompt;
+    private String title;
+    private String msg;
+//    private int filterColor = 0;
+    private int styleResId = R.style.MissPermissionHelperDefaultNormalStyle;
+    private boolean isCheck;
+    private IAction action = new DefaultAction();
+
+    PermissionRequest(FragmentActivity activity) {
         activityWeakReference = new WeakReference<>(activity);
     }
 
@@ -47,14 +59,16 @@ public class PermissionRequest {
 
     private void checkPermission() {
         if (permissionList.isEmpty()) {
-            permissionListener.onFailure(new PermissionException("请求权限为空"));
+            exception = new PermissionException("请求权限为空");
+            permissionListener.onFailure(this);
             return;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             isOver23 = true;
             for (String permission : permissionList) {
                 if (activityWeakReference.get() == null) {
-                    permissionListener.onFailure(new PermissionException("activity 为空"));
+                    exception = new PermissionException("activity 为空");
+                    permissionListener.onFailure(this);
                     return;
                 }
                 //ContextCompat
@@ -63,16 +77,18 @@ public class PermissionRequest {
                     agreePermissionList.add(permission);
                 } else {//如果拒绝
                     deniedPermissionList.add(permission);
+                    PermissionGroup permissionGroup = PermissionGroup.permissionGroupHashMap.get(permission);
+                    if (permissionGroup != null) {
+                        permissionGroups.add(permissionGroup);
+                    }
                 }
             }
-            switch (permissionListener.onChecked(this)) {
-                case MissPermission.NEXT_STEP:
-                    next();
-                    break;
-                case MissPermission.STOP_STEP:
-                case MissPermission.WAIT_STEP:
-                default:
-                    break;
+            //展示提示框,要请求的权限
+            if (showPrompt) {
+                //判断权限组
+                action.checkedAction(this, permissionGroups);
+            } else {
+                next();
             }
         } else {
             isOver23 = false;
@@ -84,7 +100,8 @@ public class PermissionRequest {
              */
             for (String permission : permissionList) {
                 if (activityWeakReference.get() == null) {
-                    permissionListener.onFailure(new PermissionException("activity 为空"));
+                    exception = new PermissionException("activity 为空");
+                    permissionListener.onFailure(this);
                     return;
                 }
                 int checkSelfPermission = PermissionChecker.checkSelfPermission(activityWeakReference.get(), permission);
@@ -97,7 +114,8 @@ public class PermissionRequest {
             if (permissionList.size() == agreePermissionList.size()) {
                 permissionListener.onSuccess(this); //所有权限都通过
             } else {
-                permissionListener.onDenied(this);
+                action.deniedAction(this);
+                permissionListener.onFailure(this);
             }
         }
     }
@@ -113,38 +131,15 @@ public class PermissionRequest {
 
     public void requestPermissionsAgain() {
         if (activityWeakReference.get() == null) {
-            permissionListener.onFailure(new PermissionException("activity 为空"));
+            exception = new PermissionException("activity 为空");
+            permissionListener.onFailure(this);
             return;
         }
-//        ActivityCompat.requestPermissions(activityWeakReference.get(), permissionLists.toArray(new String[permissionLists.size()]), requestCode);
-        ActivityCompat.requestPermissions(activityWeakReference.get(), deniedPermissionList.toArray(new String[0]), requestCode);
+        AvoidOnResultHelper.requestPermissions(activityWeakReference.get(), deniedPermissionList.toArray(new String[0]), this);
     }
 
-
-    public interface PermissionListener {
-        /**
-         * @param request
-         * @return NEXT_STEP：直接下一步，不用等待
-         * STOP_STEP：直接停止，不执行下一步
-         * PAUSE_STEP：等待，等待命令唤起下一步
-         */
-        int onChecked(PermissionRequest request);//检查结束
-
-        /**
-         * @param request
-         */
-        void onDenied(PermissionRequest request);
-
-        void onSuccess(PermissionRequest request);//权限完成
-
-        void onFailure(PermissionException exception);//失败
-    }
-
-    /**
-     * @param permissions  请求的权限列表
-     * @param grantResults 请求权限的结果列表
-     */
-    void onRequestPermissionsResult(String[] permissions, int[] grantResults) {
+    @Override
+    public void onRequestPermissionsResult(@NonNull String[] permissions, @NonNull int[] grantResults) {
         if (grantResults.length > 0) {
             Set<String> deniedList = new HashSet<>();
             // 遍历所有申请的权限，把被拒绝的权限放入集合
@@ -162,11 +157,22 @@ public class PermissionRequest {
             }
             deniedPermissionList = deniedList;
             if (!deniedList.isEmpty()) {
-                permissionListener.onDenied(this);
+                action.deniedAction(this);
+                permissionListener.onFailure(this);
             } else {
                 permissionListener.onSuccess(this);
             }
         }
+    }
+
+
+    public interface PermissionListener {
+        /**
+         * @param request
+         */
+        void onSuccess(PermissionRequest request);//权限完成
+
+        void onFailure(PermissionRequest request);//失败
     }
 
     //build 方法 get set
@@ -179,20 +185,12 @@ public class PermissionRequest {
         permissionList.addAll(permissions);
     }
 
-    void setRequestCode(int requestCode) {
-        this.requestCode = requestCode;
-    }
-
-    int getRequestCode() {
-        return requestCode;
-    }
-
     //对外的 get set
     public boolean isOver23() {
         return isOver23;
     }
 
-    public Context getContext() {
+    public FragmentActivity getContext() {
         return activityWeakReference.get();
     }
 
@@ -210,5 +208,66 @@ public class PermissionRequest {
 
     public Set<String> getDeniedPermissionList() {
         return deniedPermissionList;
+    }
+
+    public PermissionException getException() {
+        return exception;
+    }
+
+
+    public boolean isShowPrompt() {
+        return showPrompt;
+    }
+
+    public void setShowPrompt(boolean showPrompt) {
+        this.showPrompt = showPrompt;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+//    public int getFilterColor() {
+//        return filterColor;
+//    }
+//
+//    public void setFilterColor(int filterColor) {
+//        this.filterColor = filterColor;
+//    }
+
+    public int getStyleResId() {
+        return styleResId;
+    }
+
+    public void setStyleResId(int styleResId) {
+        this.styleResId = styleResId;
+    }
+
+    public boolean isCheck() {
+        return isCheck;
+    }
+
+    public void setIsCheck(boolean isCheck) {
+        this.isCheck = isCheck;
+    }
+
+    public IAction getAction() {
+        return action;
+    }
+
+    public void setAction(IAction action) {
+        this.action = action;
     }
 }

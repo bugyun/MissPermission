@@ -10,19 +10,19 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import vip.ruoyun.permission.helper.PermissionGroup;
 import vip.ruoyun.permission.helper.R;
-import vip.ruoyun.permission.helper.core.IChecker;
 
 /**
  * Created by Administrator on 2017/5/10 0010.
  */
 
 public class PermissionAdapter extends BaseAdapter {
-    private List<IChecker> mData;
+    private List<PermissionGroup> mData;
     private int mTextColor;
     private int mFilterColor;
 
-    public PermissionAdapter(List<IChecker> data) {
+    public PermissionAdapter(List<PermissionGroup> data) {
         mData = data;
     }
 
@@ -43,7 +43,7 @@ public class PermissionAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        IChecker item = mData.get(position);
+        PermissionGroup item = mData.get(position);
         View view = View.inflate(parent.getContext(), R.layout.miss_permission_info_item, null);
         int blue = Color.blue(mFilterColor);
         int green = Color.green(mFilterColor);
@@ -60,8 +60,8 @@ public class PermissionAdapter extends BaseAdapter {
         TextView name = (TextView) view.findViewById(R.id.name);
         if (mTextColor != 0)
             name.setTextColor(mTextColor);
-        icon.setImageResource(item.getPermissionIconRes());
-        name.setText(item.getPermissionName());
+        icon.setImageResource(item.permissionIconRes);
+        name.setText(item.permissionName);
         return view;
     }
 

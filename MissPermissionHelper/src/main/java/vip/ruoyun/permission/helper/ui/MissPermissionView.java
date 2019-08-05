@@ -44,7 +44,7 @@ public class MissPermissionView extends FrameLayout {
     }
 
     private void initView() {
-        View permissionView = View.inflate(getContext(), R.layout.miss_dialog_request_permission, this);
+        View permissionView = View.inflate(getContext(), R.layout.miss_permission_dialog_request_permission, this);
         mTvTitle = (TextView) permissionView.findViewById(R.id.tvTitle);
         mLlRoot = (LinearLayout) permissionView.findViewById(R.id.llRoot);
         mTvDesc = (TextView) permissionView.findViewById(R.id.tvDesc);
@@ -77,15 +77,16 @@ public class MissPermissionView extends FrameLayout {
         if (styleId <= 0)
             return;
         int[] ints = {
-                R.attr.MissHelperMsgColor,
-                R.attr.MissHelperTitleColor,
-                R.attr.MissHelperItemTextColor,
-                R.attr.MissHelperButtonTextColor,
-                R.attr.MissHelperBackground,
-                R.attr.MissHelperButtonBackground,
-                R.attr.MissHelperBgFilterColor,
-                R.attr.MissHelperIconFilterColor
+                R.attr.MissPermissionHelperMsgColor,
+                R.attr.MissPermissionHelperTitleColor,
+                R.attr.MissPermissionHelperItemTextColor,
+                R.attr.MissPermissionHelperButtonTextColor,
+                R.attr.MissPermissionHelperBackground,
+                R.attr.MissPermissionHelperButtonBackground,
+                R.attr.MissPermissionHelperBgFilterColor,
+                R.attr.MissPermissionHelperIconFilterColor
         };
+
         Resources.Theme theme = getResources().newTheme();
         theme.applyStyle(styleId, true);
 

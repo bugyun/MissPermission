@@ -1,11 +1,11 @@
 package vip.ruoyun.permission.helper.check;
 
 import android.Manifest;
-import android.content.Context;
+import android.app.Activity;
+import android.os.Environment;
 
 import vip.ruoyun.permission.helper.R;
-import vip.ruoyun.permission.helper.core.IChecker;
-import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
+import vip.ruoyun.permission.helper.utils.AudioRecordManager;
 
 /**
  * Created by ruoyun on 2019-07-05.
@@ -13,33 +13,24 @@ import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
  * Mail:zyhdvlp@gmail.com
  * Depiction:
  */
-public class MicrophoneChecker implements IChecker {
+public class MicrophoneChecker {
+    private static final String TAG = "ContactsChecker";
 
-    public static final String PERMISSION_NAME = "日历";
+    public static final String PERMISSION_NAME = "录音";
 
-    static final int PERMISSION_ICONRES = R.drawable.miss_permission_ic_calendar;
+    public static final int PERMISSION_ICON_RES = R.drawable.miss_permission_ic_micro_phone;
 
     private final String[] NEED_PERMISSION = {
             Manifest.permission.RECORD_AUDIO,//
     };
 
-    @Override
-    public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
-        return true;
-    }
+    private static boolean checkRecordAudio(Activity activity) throws Exception {
+        AudioRecordManager recordManager = new AudioRecordManager();
 
-    @Override
-    public String getPermissionName() {
-        return "录音";
-    }
+        recordManager.startRecord(activity.getExternalFilesDir(Environment.DIRECTORY_RINGTONES) + "/" +
+                TAG + ".3gp");
+        recordManager.stopRecord();
 
-    @Override
-    public int getPermissionIconRes() {
-        return R.drawable.miss_permission_ic_micro_phone;
-    }
-
-    @Override
-    public String[] getPermissions() {
-        return NEED_PERMISSION;
+        return recordManager.getSuccess();
     }
 }

@@ -1,12 +1,9 @@
 package vip.ruoyun.permission.helper.check;
 
 import android.Manifest;
-import android.content.Context;
 import android.os.Build;
 
 import vip.ruoyun.permission.helper.R;
-import vip.ruoyun.permission.helper.core.IChecker;
-import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
 
 /**
  * Created by ruoyun on 2019-06-25.
@@ -14,11 +11,11 @@ import vip.ruoyun.permission.helper.core.MissHelperConfiguration;
  * Mail:zyhdvlp@gmail.com
  * Depiction:
  */
-public class StorageChecker implements IChecker {
+public class StorageChecker {
 
-    public static final String PERMISSION_NAME = "日历";
+    public static final String PERMISSION_NAME = "存储";
 
-    static final int PERMISSION_ICONRES = R.drawable.miss_permission_ic_calendar;
+    public static final int PERMISSION_ICON_RES = R.drawable.miss_permission_ic_storage;
 
     public static final String[] NEED_PERMISSION;
 
@@ -33,25 +30,5 @@ public class StorageChecker implements IChecker {
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,//
             };
         }
-    }
-
-    @Override
-    public boolean isCheckEnable(Context context, MissHelperConfiguration configuration) {
-        return true;
-    }
-
-    @Override
-    public String getPermissionName() {
-        return "存储";
-    }
-
-    @Override
-    public int getPermissionIconRes() {
-        return R.drawable.miss_permission_ic_storage;
-    }
-
-    @Override
-    public String[] getPermissions() {
-        return NEED_PERMISSION;
     }
 }
