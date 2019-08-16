@@ -7,7 +7,7 @@ android 权限库，超级简单好用！！
 
 ### 配置
 ```xml
-implementation 'vip.ruoyun.permission:miss-helper:1.0.0'
+implementation 'vip.ruoyun.permission:miss-helper:1.0.1'
 ```
 
 ### 准备工作
