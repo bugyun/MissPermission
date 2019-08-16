@@ -3,7 +3,9 @@ package com.ruoyun.permission;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -32,8 +34,10 @@ import me.weyye.hipermission.PermissionView;
 import vip.ruoyun.permission.core.MissPermission;
 import vip.ruoyun.permission.core.PermissionException;
 import vip.ruoyun.permission.core.PermissionRequest;
+import vip.ruoyun.permission.helper.DefaultAction;
 import vip.ruoyun.permission.helper.MissPermissionHelper;
 import vip.ruoyun.permission.helper.check.SMSChecker;
+import vip.ruoyun.screen.ScreenHelper;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -123,6 +127,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .addPermission(Manifest.permission.BODY_SENSORS)//
                         .addPermission(Manifest.permission.SEND_SMS)//
                         .addPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)//
+                        .action(new DefaultAction() {
+                            @Override
+                            public void onActivityResult(int resultCode, Intent data) {
+
+                            }
+                        })
                         .msg("为了您正常使用应用,需要以下权限")
                         .title("亲爱的用户")
                         .showPrompt(true)
@@ -131,12 +141,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .checkPermission(new vip.ruoyun.permission.helper.PermissionRequest.PermissionListener() {
                             @Override
                             public void onSuccess(vip.ruoyun.permission.helper.PermissionRequest request) {
+                                Log.e("zyh", "onSuccess");
 
                             }
 
                             @Override
                             public void onFailure(vip.ruoyun.permission.helper.PermissionRequest request) {
-
+                                Log.e("zyh", "onFailure");
                             }
                         });
 //                testDPermission();
@@ -410,6 +421,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //            // other 'case' lines to check for other
         //            // permissions this app might request
         //        }
+    }
+
+    public Resources getResources() {
+        return ScreenHelper.applyAdapt(super.getResources(), 375f, ScreenHelper.ScreenMode.WIDTH_DP);
     }
 
 }

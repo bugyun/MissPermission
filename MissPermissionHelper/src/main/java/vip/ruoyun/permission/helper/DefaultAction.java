@@ -1,27 +1,25 @@
 package vip.ruoyun.permission.helper;
 
 
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AlertDialog;
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.Settings;
 import android.view.View;
-import android.view.Window;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import vip.ruoyun.permission.helper.ui.DialogUtil;
-import vip.ruoyun.permission.helper.ui.MissPermissionView;
-import vip.ruoyun.permission.helper.ui.PermissionAdapter;
+import vip.ruoyun.helper.avoid.AvoidOnResultHelper;
+import vip.ruoyun.permission.helper.ui.AgainRequestDialog;
+import vip.ruoyun.permission.helper.ui.AlwaysDeniedDialog;
+import vip.ruoyun.permission.helper.ui.RequestPromptDialog;
+
 
 public class DefaultAction implements IAction {
 
-    private Dialog mDialog;
+    private RequestPromptDialog requestPromptDialog;
+    private AlwaysDeniedDialog alwaysDeniedDialog;
+    private AgainRequestDialog againRequestDialog;
 
     @Override
     public void checkedAction(final PermissionRequest request, Set<PermissionGroup> permissionGroups) {
@@ -29,38 +27,22 @@ public class DefaultAction implements IAction {
             request.next();
             return;
         }
-        mDialog = new Dialog(request.getContext());
-        MissPermissionView contentView = new MissPermissionView(request.getContext());
-        contentView.setGridViewColum(permissionGroups.size() < 3 ? permissionGroups.size() : 3);
-        contentView.setGridViewAdapter(new PermissionAdapter(new ArrayList<>(permissionGroups)));
-//        if (request.getFilterColor() != 0) {
-//            int mFilterColor = request.getContext().getResources().getColor(request.getFilterColor());
-//            contentView.setFilterColor(mFilterColor);
-//        }
-        contentView.setTitle(request.getTitle());
-        contentView.setMsg(request.getMsg());
-        contentView.setStyleId(request.getStyleResId());
-        contentView.setBtnOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mDialog != null && mDialog.isShowing()) {
-                    mDialog.dismiss();
+        if (requestPromptDialog == null) {
+            requestPromptDialog = RequestPromptDialog.getRequestPromptDialog(request.getContext());
+            requestPromptDialog.setTitleAndMsg(request.getTitle(), request.getMsg());
+            requestPromptDialog.setBtnOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (requestPromptDialog != null && requestPromptDialog.isShowing()) {
+                        requestPromptDialog.dismiss();
+                    }
+                    request.next();
                 }
-                request.next();
-            }
-        });
-        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        mDialog.setContentView(contentView);
-
-        mDialog.setCanceledOnTouchOutside(false);
-        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        mDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                dialog.dismiss();
-            }
-        });
-        mDialog.show();
+            });
+        }
+        requestPromptDialog.setPermissionGroups(permissionGroups);
+        requestPromptDialog.setStyleId(request.getStyleResId());
+        requestPromptDialog.show();
     }
 
     @Override
@@ -81,17 +63,44 @@ public class DefaultAction implements IAction {
             sBuilder.deleteCharAt(sBuilder.length() - 1);
         }
         if (request.isAlwaysDenied()) {
-            DialogUtil.showPermissionManagerDialog(request.getContext(), sBuilder.toString());
+            if (alwaysDeniedDialog == null) {
+                alwaysDeniedDialog = AlwaysDeniedDialog.getAlwaysDeniedDialog(request.getContext());
+                alwaysDeniedDialog.setStyleId(request.getStyleResId());
+                alwaysDeniedDialog.setSettingClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (alwaysDeniedDialog != null && alwaysDeniedDialog.isShowing()) {
+                            alwaysDeniedDialog.dismiss();
+                        }
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        intent.setData(Uri.parse("package:" + v.getContext().getPackageName()));
+                        AvoidOnResultHelper.startActivityForResult(request.getContext(), intent, DefaultAction.this);
+                    }
+                });
+            }
+            alwaysDeniedDialog.setTitleAndMsg("温馨提示", "获取" + sBuilder.toString() + "权限被禁用" + "\n请在 设置-应用管理-权限管理 (将权限打开)");
+            alwaysDeniedDialog.show();
         } else {
-            new AlertDialog.Builder(request.getContext()).setTitle("温馨提示").setMessage("我们需要这些权限才能正常使用该功能").setNegativeButton("取消", null).setPositiveButton("验证权限", new DialogInterface.OnClickListener() {
-                @RequiresApi(api = Build.VERSION_CODES.M)
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    request.requestPermissionsAgain();
-                }
-            }).setCancelable(false).show();
+            if (againRequestDialog == null) {
+                againRequestDialog = AgainRequestDialog.getAlwaysDeniedDialog(request.getContext());
+                againRequestDialog.setStyleId(request.getStyleResId());
+                againRequestDialog.setSettingClickListener("验证权限", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        request.requestPermissionsAgain();
+                        if (againRequestDialog != null && againRequestDialog.isShowing()) {
+                            againRequestDialog.dismiss();
+                        }
+                    }
+                });
+                againRequestDialog.setTitleAndMsg("温馨提示", "我们需要这些权限才能正常使用该功能");
+            }
+            againRequestDialog.show();
         }
     }
 
+    @Override
+    public void onActivityResult(int resultCode, Intent data) {
 
+    }
 }

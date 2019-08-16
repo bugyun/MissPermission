@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llRoot"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginLeft="16.0dip"
+    android:layout_marginRight="16.0dip"
+    android:background="@drawable/miss_permission_shape_bg_white"
+    android:clipChildren="false"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/MissPermissionHelperColorGreen"
+        android:textSize="20dp"
+        tools:text="温馨提示" />
+
+    <TextView
+        android:id="@+id/tvDesc"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dip"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="20dip"
+        android:gravity="center"
+        android:textColor="@color/MissPermissionHelperColorGreen"
+        android:textSize="15dp"
+        tools:text="获取权限被禁用,请在 设置-应用管理权限管理将权限打开" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dip"
+        android:layout_marginTop="12dip"
+        android:layout_marginRight="20dip"
+        android:layout_marginBottom="12dip"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/mBtSetting"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"
+            android:background="@drawable/miss_permission_shape_btn_next"
+            android:text="@string/miss_permission_go_to_setting"
+            android:textColor="@android:color/white"
+            android:textSize="16.0dp" />
+
+        <Button
+            android:id="@+id/mBtCancel"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/miss_permission_shape_btn_next"
+            android:text="@string/miss_permission_cancel"
+            android:textColor="@android:color/white"
+            android:textSize="16.0dp" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
