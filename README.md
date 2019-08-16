@@ -134,6 +134,42 @@ MissPermissionHelper.with(this)
 </style>
 ```
 
+## 自定义弹出效果
+
+DefaultAction 为默认的弹框操作,如果你想监听打开权限界面之后,再回到界面的 onActivityResult ,那么只要重写这个方法即可.
+代码如下
+
+```java
+MissPermissionHelper.with(this)
+    .action(new DefaultAction() {//添加显示样式
+        @Override
+        public void onActivityResult(int resultCode, Intent data) {
+
+        }
+    })
+    ...
+```
+
+如果你不想使用本库的弹出效果,那么你可以自定义 IAction,本库使用了 https://github.com/bugyun/AvoidOnResultHelper 来简化操作.
+```java
+public interface IAction extends AvoidOnResultHelper.ActivityCallback {
+
+    /**
+     * 检测权限后,触发的事件
+     * @param request 权限请求
+     * @param permissionGroups 需要请求的权限集合
+     */
+    void checkedAction(PermissionRequest request, Set<PermissionGroup> permissionGroups);
+
+    /**
+     * 拒绝触发的事件
+     * @param request 权限请求
+     */
+    void deniedAction(PermissionRequest request);
+}
+```
+
+
 ## 版本变化
 
 - 1.0.1 : 优化显示效果,https://github.com/bugyun/ScreenHelper 适配界面,修复之前的屏幕适配问题

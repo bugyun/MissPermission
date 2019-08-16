@@ -3,6 +3,7 @@ package com.ruoyun.permission;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -33,6 +34,7 @@ import me.weyye.hipermission.PermissionView;
 import vip.ruoyun.permission.core.MissPermission;
 import vip.ruoyun.permission.core.PermissionException;
 import vip.ruoyun.permission.core.PermissionRequest;
+import vip.ruoyun.permission.helper.DefaultAction;
 import vip.ruoyun.permission.helper.MissPermissionHelper;
 import vip.ruoyun.permission.helper.check.SMSChecker;
 import vip.ruoyun.screen.ScreenHelper;
@@ -125,6 +127,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .addPermission(Manifest.permission.BODY_SENSORS)//
                         .addPermission(Manifest.permission.SEND_SMS)//
                         .addPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)//
+                        .action(new DefaultAction() {
+                            @Override
+                            public void onActivityResult(int resultCode, Intent data) {
+
+                            }
+                        })
                         .msg("为了您正常使用应用,需要以下权限")
                         .title("亲爱的用户")
                         .showPrompt(true)
