@@ -123,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .addPermission(Manifest.permission.BODY_SENSORS)//
                         .addPermission(Manifest.permission.SEND_SMS)//
                         .addPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)//
+                        .styleResId(R.style.MissPermissionHelperDefaultNormalStyle)//设置样式
                         .msg("为了您正常使用应用,需要以下权限")
                         .title("亲爱的用户")
                         .showprompt(true)
