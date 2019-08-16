@@ -86,6 +86,8 @@ MissPermissionHelper.with(this)
 不需要添加回调方法，直接使用即可，开箱即用。
 
 ![](https://github.com/bugyun/MissPermission/blob/develop/art/Screenshot_20190805-165801.jpg?raw=true)
+![](https://github.com/bugyun/MissPermission/blob/develop/art/Screenshot_20190816-233942.jpg?raw=true)
+![](https://github.com/bugyun/MissPermission/blob/develop/art/Screenshot_20190816-233958.jpg?raw=true)
 
 
 #### 样式
@@ -131,6 +133,12 @@ MissPermissionHelper.with(this)
         <item name="MissPermissionHelperIconFilterColor">@android:color/black</item>
 </style>
 ```
+
+## 版本变化
+
+- 1.0.1 : 优化显示效果,https://github.com/bugyun/ScreenHelper 适配界面,修复之前的屏幕适配问题
+- 1.0.0 : 正式版
+
 ---
 
 ## MissPermission
