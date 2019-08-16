@@ -7,6 +7,7 @@
     android:layout_marginLeft="16.0dip"
     android:layout_marginRight="16.0dip"
     android:background="@drawable/miss_permission_shape_bg_white"
+    android:clipChildren="false"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -50,15 +51,15 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dip"
         android:layout_marginTop="24dip"
-        android:verticalSpacing="10dp"
         android:layout_marginRight="24dip"
-        android:numColumns="3" />
+        android:numColumns="3"
+        android:verticalSpacing="10dp" />
 
-<!--    <View-->
-<!--    android:layout_width="fill_parent"-->
-<!--    android:layout_height="1.0dip"-->
-<!--    android:layout_marginTop="30.0dip"-->
-<!--    android:src="#ffdddddd"/>-->
+    <!--    <View-->
+    <!--    android:layout_width="fill_parent"-->
+    <!--    android:layout_height="1.0dip"-->
+    <!--    android:layout_marginTop="30.0dip"-->
+    <!--    android:src="#ffdddddd"/>-->
 
     <Button
         android:id="@+id/goto_settings"

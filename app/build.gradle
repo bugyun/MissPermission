@@ -32,4 +32,6 @@ dependencies {
     implementation project(':MissPermissionHelper')
 
     implementation 'me.weyye.hipermission:library:1.0.7'
+
+    implementation 'vip.ruoyun.helper:screen-helper:1.0.1'
 }

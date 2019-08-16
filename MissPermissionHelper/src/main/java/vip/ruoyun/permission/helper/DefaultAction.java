@@ -1,19 +1,19 @@
 package vip.ruoyun.permission.helper;
 
 
-import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import vip.ruoyun.helper.avoid.AvoidOnResultHelper;
 import vip.ruoyun.permission.helper.ui.AgainRequestDialog;
 import vip.ruoyun.permission.helper.ui.AlwaysDeniedDialog;
 import vip.ruoyun.permission.helper.ui.RequestPromptDialog;
+
 
 public class DefaultAction implements IAction {
 
@@ -30,7 +30,6 @@ public class DefaultAction implements IAction {
         if (requestPromptDialog == null) {
             requestPromptDialog = RequestPromptDialog.getRequestPromptDialog(request.getContext());
             requestPromptDialog.setTitleAndMsg(request.getTitle(), request.getMsg());
-            requestPromptDialog.setStyleId(request.getStyleResId());
             requestPromptDialog.setBtnOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -42,22 +41,23 @@ public class DefaultAction implements IAction {
             });
         }
         requestPromptDialog.setPermissionGroups(permissionGroups);
-        requestPromptDialog.setFilterColor(request.getFilterColor());
+        requestPromptDialog.setStyleId(request.getStyleResId());
         requestPromptDialog.show();
     }
 
     @Override
     public void deniedAction(final PermissionRequest request) {
         StringBuilder sBuilder = new StringBuilder();
+        Set<PermissionGroup> permissionGroups = new HashSet<>();
         for (String deniedPermission : request.getDeniedPermissionList()) {
-            if (deniedPermission.equals(Manifest.permission.WRITE_CONTACTS)) {
-                sBuilder.append("联系人");
-                sBuilder.append(",");
+            PermissionGroup permissionGroup = PermissionGroup.permissionGroupHashMap.get(deniedPermission);
+            if (permissionGroup != null) {
+                permissionGroups.add(permissionGroup);
             }
-            if (deniedPermission.equals(Manifest.permission.READ_SMS)) {
-                sBuilder.append("短信");
-                sBuilder.append(",");
-            }
+        }
+        for (PermissionGroup permissionGroup : permissionGroups) {
+            sBuilder.append(permissionGroup.permissionName);
+            sBuilder.append(",");
         }
         if (sBuilder.length() > 0) {
             sBuilder.deleteCharAt(sBuilder.length() - 1);
@@ -69,18 +69,16 @@ public class DefaultAction implements IAction {
                 alwaysDeniedDialog.setSettingClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (alwaysDeniedDialog != null && alwaysDeniedDialog.isShowing()) {
+                            alwaysDeniedDialog.dismiss();
+                        }
                         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                         intent.setData(Uri.parse("package:" + v.getContext().getPackageName()));
-                        AvoidOnResultHelper.startActivityForResult(request.getContext(), intent, new AvoidOnResultHelper.ActivityCallback() {
-                            @Override
-                            public void onActivityResult(int resultCode, Intent data) {
-                                Log.e("DialogUtil", "返回值为" + resultCode);
-                            }
-                        });
+                        AvoidOnResultHelper.startActivityForResult(request.getContext(), intent, DefaultAction.this);
                     }
                 });
             }
-            alwaysDeniedDialog.setTitleAndMsg("微信提示", "获取" + sBuilder.toString() + "权限被禁用" + "请在 设置-应用管理-权限管理 (将权限打开)");
+            alwaysDeniedDialog.setTitleAndMsg("温馨提示", "获取" + sBuilder.toString() + "权限被禁用" + "\n请在 设置-应用管理-权限管理 (将权限打开)");
             alwaysDeniedDialog.show();
         } else {
             if (againRequestDialog == null) {
@@ -90,13 +88,19 @@ public class DefaultAction implements IAction {
                     @Override
                     public void onClick(View v) {
                         request.requestPermissionsAgain();
+                        if (againRequestDialog != null && againRequestDialog.isShowing()) {
+                            againRequestDialog.dismiss();
+                        }
                     }
                 });
-                againRequestDialog.setTitleAndMsg("微信提示", "我们需要这些权限才能正常使用该功能");
+                againRequestDialog.setTitleAndMsg("温馨提示", "我们需要这些权限才能正常使用该功能");
             }
             againRequestDialog.show();
         }
     }
 
+    @Override
+    public void onActivityResult(int resultCode, Intent data) {
 
+    }
 }
