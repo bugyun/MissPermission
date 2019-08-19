@@ -7,12 +7,6 @@ android 权限库，超级简单好用！！
 
 ![](https://github.com/bugyun/MissPermission/blob/e39e20e4a748c1d8e0a333096287d95ddad1ab80/art/0dcc4-xa8pr1.gif?raw=true)
 
-![](https://github.com/bugyun/MissPermission/blob/develop/art/Screenshot_20190805-165801.jpg?raw=true)
-
-![](https://github.com/bugyun/MissPermission/blob/develop/art/Screenshot_20190816-233942.jpg?raw=true)
-
-![](https://github.com/bugyun/MissPermission/blob/develop/art/Screenshot_20190816-233958.jpg?raw=true)
-
 ### 配置
 ```xml
 implementation 'vip.ruoyun.permission:miss-helper:1.0.1'
@@ -92,6 +86,10 @@ MissPermissionHelper.with(this)
 #### 说明
 
 不需要添加回调方法，直接使用即可，开箱即用。
+![](https://github.com/bugyun/MissPermission/blob/develop/art/Screenshot_20190805-165801.jpg?raw=true)
+
+![](https://github.com/bugyun/MissPermission/blob/develop/art/Screenshot_20190816-233942.jpg?raw=true)
+![](https://github.com/bugyun/MissPermission/blob/develop/art/Screenshot_20190816-233958.jpg?raw=true)
 
 #### 样式
 字段说明
