@@ -86,6 +86,7 @@ MissPermissionHelper.with(this)
 #### 说明
 
 不需要添加回调方法，直接使用即可，开箱即用。
+
 ![](https://github.com/bugyun/MissPermission/blob/develop/art/Screenshot_20190805-165801.jpg?raw=true)
 
 ![](https://github.com/bugyun/MissPermission/blob/develop/art/Screenshot_20190816-233942.jpg?raw=true)
