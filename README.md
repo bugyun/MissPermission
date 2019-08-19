@@ -7,6 +7,10 @@ android 权限库，超级简单好用！！
 
 ![](https://github.com/bugyun/MissPermission/blob/e39e20e4a748c1d8e0a333096287d95ddad1ab80/art/0dcc4-xa8pr1.gif?raw=true)
 
+### 下载apk
+
+![](https://github.com/bugyun/MissPermission/blob/290070eb42ae59c46b15cb46c7d8f0f5e10b4315/art/down.png?raw=true)
+
 ### 配置
 ```xml
 implementation 'vip.ruoyun.permission:miss-helper:1.0.1'
