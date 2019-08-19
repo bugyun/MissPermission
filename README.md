@@ -5,12 +5,7 @@ android 权限库，超级简单好用！！
 ## MissPermissionHelper
 简化操作帮助类，很少的代码就可以获取权限。
 
-
-<video id="video" controls="" preload="none" poster="http://om2bks7xs.bkt.clouddn.com/2017-08-26-Markdown-Advance-Video.jpg">
-      <source id="mp4" src="http://om2bks7xs.bkt.clouddn.com/2017-08-26-Markdown-Advance-Video.mp4" type="video/mp4">
-</video>
-
-
+![](https://github.com/bugyun/MissPermission/blob/e39e20e4a748c1d8e0a333096287d95ddad1ab80/art/0dcc4-xa8pr1.gif?raw=true)
 
 ### 配置
 ```xml
