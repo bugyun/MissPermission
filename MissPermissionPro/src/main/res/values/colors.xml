@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="MissPermissionColorGreen">#41c236</color>
+    <color name="MissPermissionColorWhite">#ffffff</color>
+    <color name="MissPermissionGreenLight">#44A49C</color>
+    <color name="MissPermissionBgColorBlue">#ee447AA4</color>
+</resources>

@@ -1,4 +1,4 @@
-package vip.ruoyun.permission.helper;
+package vip.ruoyun.permission.pro;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -8,22 +8,21 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.PermissionChecker;
-
 import java.util.Arrays;
 import java.util.List;
 
-public class MissPermissionHelper {
+public class MissPermission {
 
     private static class SingletonHolder {
 
-        private static final MissPermissionHelper INSTANCE = new MissPermissionHelper();
+        private static final MissPermission INSTANCE = new MissPermission();
     }
 
-    private static MissPermissionHelper getInstance() {
+    private static MissPermission getInstance() {
         return SingletonHolder.INSTANCE;
     }
 
-    private MissPermissionHelper() {
+    private MissPermission() {
     }
 
     public static Builder with(FragmentActivity activity) {

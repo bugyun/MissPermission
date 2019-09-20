@@ -2,7 +2,7 @@
 android 权限库，超级简单好用！！
 ---
 
-## MissPermissionHelper
+## MissPermission pro版
 简化操作帮助类，很少的代码就可以获取权限。
 
 ![](https://github.com/bugyun/MissPermission/blob/e39e20e4a748c1d8e0a333096287d95ddad1ab80/art/0dcc4-xa8pr1.gif?raw=true)
@@ -13,7 +13,7 @@ android 权限库，超级简单好用！！
 
 ### 配置
 ```xml
-implementation 'vip.ruoyun.permission:miss-helper:1.0.1'
+implementation 'vip.ruoyun.permission:miss-helper:1.0.2'
 ```
 
 ### 准备工作
@@ -46,7 +46,7 @@ request.requestPermissionsAgain();//再次请求权限
 
 #### 单纯检查是否有权限
 ```java
-boolean isHasReadCalendarPermission = MissPermissionHelper.check(this, new String[]{Manifest.permission.READ_CALENDAR});
+boolean isHasReadCalendarPermission = MissPermission.check(this, new String[]{Manifest.permission.READ_CALENDAR});
 if (isHasReadCalendarPermission) {
     //有权限
 } else {
@@ -56,7 +56,7 @@ if (isHasReadCalendarPermission) {
 
 #### 回调方法
 ```java
-MissPermissionHelper.with(this)
+MissPermission.with(this)
             .addPermission(Manifest.permission.SEND_SMS)//
             .addPermission(Manifest.permission.RECEIVE_SMS)//
             .addPermission(Manifest.permission.READ_SMS)//

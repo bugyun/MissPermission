@@ -1,4 +1,4 @@
-package vip.ruoyun.permission.helper;
+package vip.ruoyun.permission.pro;
 
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -6,12 +6,10 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.PermissionChecker;
-
 import java.lang.ref.WeakReference;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import vip.ruoyun.helper.avoid.AvoidOnResultHelper;
 
 /**
@@ -38,7 +36,7 @@ public class PermissionRequest implements AvoidOnResultHelper.PermissionsCallBac
     private boolean showPrompt;
     private String title;
     private String msg;
-    private int styleResId = R.style.MissPermissionHelperDefaultNormalStyle;
+    private int styleResId = R.style.MissPermissionDefaultNormalStyle;
 
     private boolean isCheck;
     private IAction action ;

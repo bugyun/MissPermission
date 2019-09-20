@@ -10,10 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
-import vip.ruoyun.permission.core.MissPermission;
 import vip.ruoyun.permission.helper.DefaultAction;
-import vip.ruoyun.permission.helper.MissPermissionHelper;
+import vip.ruoyun.permission.helper.MissPermission;
 import vip.ruoyun.permission.helper.PermissionRequest;
 import vip.ruoyun.permission.helper.check.SMSChecker;
 import vip.ruoyun.screen.ScreenHelper;
@@ -43,12 +41,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonCamera:
-                if (MissPermissionHelper.check(this, SMSChecker.NEED_PERMISSION)) {
+                if (MissPermission.check(this, SMSChecker.NEED_PERMISSION)) {
                     Log.e(TAG, "有权限");
                 } else {
                     Log.e(TAG, "没有权限");
                 }
-                MissPermissionHelper.with(this)
+                MissPermission.with(this)
 //                        .addPermission(Manifest.permission.SEND_SMS)//
 //                        .addPermission(Manifest.permission.RECEIVE_SMS)//
 //                        .addPermission(Manifest.permission.READ_SMS)//
@@ -93,7 +91,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        MissPermission.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     public Resources getResources() {
