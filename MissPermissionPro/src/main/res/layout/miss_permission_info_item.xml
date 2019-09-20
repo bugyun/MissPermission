@@ -16,6 +16,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50.0dip"
         android:gravity="center"
-        android:textColor="@color/MissPermissionHelperColorGreen"
+        android:textColor="@color/MissPermissionColorGreen"
         android:textSize="13dp" />
 </FrameLayout>
