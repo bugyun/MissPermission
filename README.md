@@ -74,7 +74,7 @@ MissPermission.with(this)
             .msg("为了您正常使用应用,需要以下权限")
             .title("亲爱的用户")
             .prompt(true)//展示提示
-            .styleResId(R.style.MissPermissionDefaultNormalStyle)//设置样式
+            .style(R.style.MissPermissionDefaultNormalStyle)//设置样式
             .check(new PermissionListener() {
                 @Override
                 public void onSuccess(PermissionRequest request) {
@@ -128,7 +128,7 @@ MissPermission.with(this)
 </resources>
 ```
 
-自定义样式
+自定义样式, 继承 parent="MissPermissionDefaultNormalStyle"
 ```xml
 <style name="MyStyle" parent="MissPermissionDefaultNormalStyle">
         <item name="MissPermissionTitleColor">@android:color/black</item>

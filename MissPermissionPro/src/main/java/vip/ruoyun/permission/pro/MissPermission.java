@@ -103,7 +103,7 @@ public class MissPermission {
         /**
          * 设置显示 ui
          */
-        public Builder styleResId(@StyleRes int styleResId) {
+        public Builder style(@StyleRes int styleResId) {
             request.setStyleResId(styleResId);
             return this;
         }

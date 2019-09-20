@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .msg("为了您正常使用应用,需要以下权限")
                         .title("亲爱的用户")
                         .prompt(true)
-                        .styleResId(R.style.MissPermissionDefaultNormalStyle)
+                        .style(R.style.MissPermissionDefaultNormalStyle)
                         .check(new PermissionRequest.PermissionListener() {
                             @Override
                             public void onSuccess(PermissionRequest request) {
