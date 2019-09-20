@@ -13,6 +13,12 @@ import java.util.ArrayList;
 import java.util.Set;
 import vip.ruoyun.permission.pro.PermissionGroup;
 
+/**
+ * Created by ruoyun on 2019-07-09.
+ * Author:若云
+ * Mail:zyhdvlp@gmail.com
+ * Depiction:
+ */
 public class RequestPromptDialog extends Dialog {
 
     private MissPermissionView contentView;

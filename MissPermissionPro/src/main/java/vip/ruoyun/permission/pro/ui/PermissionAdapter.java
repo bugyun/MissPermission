@@ -12,9 +12,11 @@ import vip.ruoyun.permission.pro.PermissionGroup;
 import vip.ruoyun.permission.pro.R;
 
 /**
- * Created by Administrator on 2017/5/10 0010.
+ * Created by ruoyun on 2019-07-09.
+ * Author:若云
+ * Mail:zyhdvlp@gmail.com
+ * Depiction:
  */
-
 public class PermissionAdapter extends BaseAdapter {
     private List<PermissionGroup> mData;
     private int mTextColor;
