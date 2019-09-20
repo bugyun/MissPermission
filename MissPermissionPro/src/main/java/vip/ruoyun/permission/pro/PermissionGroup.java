@@ -1,19 +1,17 @@
-package vip.ruoyun.permission.helper;
+package vip.ruoyun.permission.pro;
 
 import android.Manifest;
 import android.os.Build;
-
 import java.util.HashMap;
-
-import vip.ruoyun.permission.helper.check.CalendarChecker;
-import vip.ruoyun.permission.helper.check.CameraChecker;
-import vip.ruoyun.permission.helper.check.ContactsChecker;
-import vip.ruoyun.permission.helper.check.LocationChecker;
-import vip.ruoyun.permission.helper.check.MicrophoneChecker;
-import vip.ruoyun.permission.helper.check.PhoneChecker;
-import vip.ruoyun.permission.helper.check.SMSChecker;
-import vip.ruoyun.permission.helper.check.SensorsChecker;
-import vip.ruoyun.permission.helper.check.StorageChecker;
+import vip.ruoyun.permission.pro.check.CalendarChecker;
+import vip.ruoyun.permission.pro.check.CameraChecker;
+import vip.ruoyun.permission.pro.check.ContactsChecker;
+import vip.ruoyun.permission.pro.check.LocationChecker;
+import vip.ruoyun.permission.pro.check.MicrophoneChecker;
+import vip.ruoyun.permission.pro.check.PhoneChecker;
+import vip.ruoyun.permission.pro.check.SMSChecker;
+import vip.ruoyun.permission.pro.check.SensorsChecker;
+import vip.ruoyun.permission.pro.check.StorageChecker;
 
 public class PermissionGroup {
 

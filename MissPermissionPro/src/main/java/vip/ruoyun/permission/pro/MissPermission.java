@@ -1,4 +1,4 @@
-package vip.ruoyun.permission.helper;
+package vip.ruoyun.permission.pro;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -11,18 +11,18 @@ import android.support.v4.content.PermissionChecker;
 import java.util.Arrays;
 import java.util.List;
 
-public class MissPermissionHelper {
+public class MissPermission {
 
     private static class SingletonHolder {
 
-        private static final MissPermissionHelper INSTANCE = new MissPermissionHelper();
+        private static final MissPermission INSTANCE = new MissPermission();
     }
 
-    private static MissPermissionHelper getInstance() {
+    private static MissPermission getInstance() {
         return SingletonHolder.INSTANCE;
     }
 
-    private MissPermissionHelper() {
+    private MissPermission() {
     }
 
     public static Builder with(FragmentActivity activity) {
@@ -44,7 +44,7 @@ public class MissPermissionHelper {
         /**
          * 添加权限
          */
-        public Builder addPermission(String permission) {
+        public Builder permission(String permission) {
             request.addPermission(permission);
             return this;
         }
@@ -52,7 +52,7 @@ public class MissPermissionHelper {
         /**
          * 添加权限
          */
-        public Builder addPermissions(List<String> permissions) {
+        public Builder permissions(List<String> permissions) {
             request.addPermissions(permissions);
             return this;
         }
@@ -60,7 +60,7 @@ public class MissPermissionHelper {
         /**
          * 添加权限
          */
-        public Builder addPermissions(String[] permissions) {
+        public Builder permissions(String[] permissions) {
             request.addPermissions(Arrays.asList(permissions));
             return this;
         }
@@ -68,7 +68,7 @@ public class MissPermissionHelper {
         /**
          * 设置请求回调，并开始请求权限
          */
-        public void checkPermission(PermissionRequest.PermissionListener listener) {
+        public void check(PermissionRequest.PermissionListener listener) {
             //检查
             if (null == request.getAction()) {
                 request.setAction(new DefaultAction());
@@ -79,7 +79,7 @@ public class MissPermissionHelper {
         /**
          * 是否显示弹框
          */
-        public Builder showPrompt(boolean showPrompt) {
+        public Builder prompt(boolean showPrompt) {
             request.setShowPrompt(showPrompt);
             return this;
         }
@@ -103,7 +103,7 @@ public class MissPermissionHelper {
         /**
          * 设置显示 ui
          */
-        public Builder styleResId(@StyleRes int styleResId) {
+        public Builder style(@StyleRes int styleResId) {
             request.setStyleResId(styleResId);
             return this;
         }
