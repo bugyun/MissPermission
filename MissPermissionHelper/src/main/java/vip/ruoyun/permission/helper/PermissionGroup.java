@@ -25,8 +25,11 @@ public class PermissionGroup {
         this.permissionIconRes = permissionIconRes;
     }
 
-    static HashMap<String, PermissionGroup> permissionGroupHashMap = new HashMap<>();
+    static HashMap<String, PermissionGroup> permissionGroupHashMap = new HashMap<>(35);
 
+    /**
+     * 添加图标
+     */
     static {
         //CalendarChecker
         PermissionGroup calendarGroup = new PermissionGroup(CalendarChecker.PERMISSION_NAME, CalendarChecker.PERMISSION_ICON_RES);

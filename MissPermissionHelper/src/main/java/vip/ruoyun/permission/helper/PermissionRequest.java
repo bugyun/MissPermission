@@ -34,14 +34,14 @@ public class PermissionRequest implements AvoidOnResultHelper.PermissionsCallBac
     private PermissionListener permissionListener;
     private final WeakReference<FragmentActivity> activityWeakReference;
 
-    //ui
+    //弹出 ui 样式
     private boolean showPrompt;
     private String title;
     private String msg;
-//    private int filterColor = 0;
     private int styleResId = R.style.MissPermissionHelperDefaultNormalStyle;
+
     private boolean isCheck;
-    private IAction action = new DefaultAction();
+    private IAction action ;
 
     PermissionRequest(FragmentActivity activity) {
         activityWeakReference = new WeakReference<>(activity);

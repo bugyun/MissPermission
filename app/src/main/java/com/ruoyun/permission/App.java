@@ -9,6 +9,6 @@ public class App extends Application {
 
     @Override
     public Resources getResources() {
-        return ScreenHelper.applyAdapt(super.getResources(), 375f, ScreenHelper.ScreenMode.WIDTH_DP);
+        return ScreenHelper.applyAdapt(super.getResources(), 375f, ScreenHelper.WIDTH_DP);
     }
 }

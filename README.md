@@ -128,7 +128,7 @@ MissPermissionHelper.with(this)
 ```
 
 自定义样式
-```
+```xml
 <style name="MyStyle" parent="MissPermissionHelperDefaultNormalStyle">
         <item name="MissPermissionHelperTitleColor">@android:color/black</item>
         <item name="MissPermissionHelperMsgColor">@android:color/black</item>
