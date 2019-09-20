@@ -58,24 +58,24 @@ if (isHasReadCalendarPermission) {
 #### 回调方法
 ```java
 MissPermission.with(this)
-            .addPermission(Manifest.permission.SEND_SMS)//
-            .addPermission(Manifest.permission.RECEIVE_SMS)//
-            .addPermission(Manifest.permission.READ_SMS)//
-            .addPermission(Manifest.permission.ACCESS_FINE_LOCATION)//
-            .addPermission(Manifest.permission.CAMERA)//
-            .addPermission(Manifest.permission.READ_CONTACTS)//
-            .addPermission(Manifest.permission.WRITE_CALENDAR)//
-            .addPermission(Manifest.permission.READ_CALL_LOG)//
-            .addPermission(Manifest.permission.READ_CONTACTS)//
-            .addPermission(Manifest.permission.RECORD_AUDIO)//
-            .addPermission(Manifest.permission.BODY_SENSORS)//
-            .addPermission(Manifest.permission.SEND_SMS)//
-            .addPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)//
+            .permission(Manifest.permission.SEND_SMS)//
+            .permission(Manifest.permission.RECEIVE_SMS)//
+            .permission(Manifest.permission.READ_SMS)//
+            .permission(Manifest.permission.ACCESS_FINE_LOCATION)//
+            .permission(Manifest.permission.CAMERA)//
+            .permission(Manifest.permission.READ_CONTACTS)//
+            .permission(Manifest.permission.WRITE_CALENDAR)//
+            .permission(Manifest.permission.READ_CALL_LOG)//
+            .permission(Manifest.permission.READ_CONTACTS)//
+            .permission(Manifest.permission.RECORD_AUDIO)//
+            .permission(Manifest.permission.BODY_SENSORS)//
+            .permission(Manifest.permission.SEND_SMS)//
+            .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE)//
             .msg("为了您正常使用应用,需要以下权限")
             .title("亲爱的用户")
-            .showPrompt(true)//展示提示
+            .prompt(true)//展示提示
             .styleResId(R.style.MissPermissionDefaultNormalStyle)//设置样式
-            .checkPermission(new PermissionListener() {
+            .check(new PermissionListener() {
                 @Override
                 public void onSuccess(PermissionRequest request) {
 
@@ -179,8 +179,7 @@ public interface IAction extends AvoidOnResultHelper.ActivityCallback {
 
 ## 版本变化
 
-- 1.0.1 : 优化显示效果,https://github.com/bugyun/ScreenHelper 适配界面,修复之前的屏幕适配问题
-- 1.0.0 : 正式版
+- 1.0.0 : 优化代码
 
 ---
 

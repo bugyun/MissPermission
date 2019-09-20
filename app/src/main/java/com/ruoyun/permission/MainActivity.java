@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -17,9 +16,11 @@ import vip.ruoyun.permission.pro.check.SMSChecker;
 import vip.ruoyun.screen.ScreenHelper;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
     private static final String TAG = MainActivity.class.getSimpleName();
 
     Button buttonCamera;
+
     Button buttonAll;
 
     @Override
@@ -47,18 +48,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Log.e(TAG, "没有权限");
                 }
                 MissPermission.with(this)
-//                        .addPermission(Manifest.permission.SEND_SMS)//
-//                        .addPermission(Manifest.permission.RECEIVE_SMS)//
-//                        .addPermission(Manifest.permission.READ_SMS)//
-                        .addPermission(Manifest.permission.ACCESS_FINE_LOCATION)//
-                        .addPermission(Manifest.permission.CAMERA)//
-                        .addPermission(Manifest.permission.READ_CONTACTS)//
-                        .addPermission(Manifest.permission.WRITE_CALENDAR)//
-//                        .addPermission(Manifest.permission.READ_CALL_LOG)//
-                        .addPermission(Manifest.permission.READ_CONTACTS)//
-                        .addPermission(Manifest.permission.RECORD_AUDIO)//
-//                        .addPermission(Manifest.permission.BODY_SENSORS)//
-                        .addPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)//
+//                        .permission(Manifest.permission.SEND_SMS)//
+//                        .permission(Manifest.permission.RECEIVE_SMS)//
+//                        .permission(Manifest.permission.READ_SMS)//
+                        .permission(Manifest.permission.ACCESS_FINE_LOCATION)//
+                        .permission(Manifest.permission.CAMERA)//
+                        .permission(Manifest.permission.READ_CONTACTS)//
+                        .permission(Manifest.permission.WRITE_CALENDAR)//
+//                        .permission(Manifest.permission.READ_CALL_LOG)//
+                        .permission(Manifest.permission.READ_CONTACTS)//
+                        .permission(Manifest.permission.RECORD_AUDIO)//
+//                        .permission(Manifest.permission.BODY_SENSORS)//
+                        .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE)//
                         .action(new DefaultAction() {
                             @Override
                             public void onActivityResult(int resultCode, Intent data) {
@@ -67,9 +68,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         })
                         .msg("为了您正常使用应用,需要以下权限")
                         .title("亲爱的用户")
-                        .showPrompt(true)
-                        .styleResId(R.style.MissPermissionHelperDefaultNormalStyle)
-                        .checkPermission(new PermissionRequest.PermissionListener() {
+                        .prompt(true)
+                        .styleResId(R.style.MissPermissionDefaultNormalStyle)
+                        .check(new PermissionRequest.PermissionListener() {
                             @Override
                             public void onSuccess(PermissionRequest request) {
                                 Toast.makeText(MainActivity.this, "获取权限成功", Toast.LENGTH_SHORT).show();
@@ -86,11 +87,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.buttonAll:
                 break;
         }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     public Resources getResources() {

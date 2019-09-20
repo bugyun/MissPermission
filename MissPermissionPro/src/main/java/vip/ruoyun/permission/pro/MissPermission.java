@@ -44,7 +44,7 @@ public class MissPermission {
         /**
          * 添加权限
          */
-        public Builder addPermission(String permission) {
+        public Builder permission(String permission) {
             request.addPermission(permission);
             return this;
         }
@@ -52,7 +52,7 @@ public class MissPermission {
         /**
          * 添加权限
          */
-        public Builder addPermissions(List<String> permissions) {
+        public Builder permissions(List<String> permissions) {
             request.addPermissions(permissions);
             return this;
         }
@@ -60,7 +60,7 @@ public class MissPermission {
         /**
          * 添加权限
          */
-        public Builder addPermissions(String[] permissions) {
+        public Builder permissions(String[] permissions) {
             request.addPermissions(Arrays.asList(permissions));
             return this;
         }
@@ -68,7 +68,7 @@ public class MissPermission {
         /**
          * 设置请求回调，并开始请求权限
          */
-        public void checkPermission(PermissionRequest.PermissionListener listener) {
+        public void check(PermissionRequest.PermissionListener listener) {
             //检查
             if (null == request.getAction()) {
                 request.setAction(new DefaultAction());
@@ -79,7 +79,7 @@ public class MissPermission {
         /**
          * 是否显示弹框
          */
-        public Builder showPrompt(boolean showPrompt) {
+        public Builder prompt(boolean showPrompt) {
             request.setShowPrompt(showPrompt);
             return this;
         }
