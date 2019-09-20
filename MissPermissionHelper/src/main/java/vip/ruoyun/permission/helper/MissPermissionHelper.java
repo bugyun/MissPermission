@@ -11,18 +11,18 @@ import android.support.v4.content.PermissionChecker;
 import java.util.Arrays;
 import java.util.List;
 
-public class MissPermission {
+public class MissPermissionHelper {
 
     private static class SingletonHolder {
 
-        private static final MissPermission INSTANCE = new MissPermission();
+        private static final MissPermissionHelper INSTANCE = new MissPermissionHelper();
     }
 
-    private static MissPermission getInstance() {
+    private static MissPermissionHelper getInstance() {
         return SingletonHolder.INSTANCE;
     }
 
-    private MissPermission() {
+    private MissPermissionHelper() {
     }
 
     public static Builder with(FragmentActivity activity) {

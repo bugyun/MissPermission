@@ -10,10 +10,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-import vip.ruoyun.permission.helper.DefaultAction;
-import vip.ruoyun.permission.helper.MissPermission;
-import vip.ruoyun.permission.helper.PermissionRequest;
-import vip.ruoyun.permission.helper.check.SMSChecker;
+import vip.ruoyun.permission.pro.DefaultAction;
+import vip.ruoyun.permission.pro.MissPermission;
+import vip.ruoyun.permission.pro.PermissionRequest;
+import vip.ruoyun.permission.pro.check.SMSChecker;
 import vip.ruoyun.screen.ScreenHelper;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {

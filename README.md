@@ -1,6 +1,7 @@
 # MissPermission
 android 权限库，超级简单好用！！
 ---
+注：原 MissPermissionHelper 不在维护，但是可以继续使用，可以升级到 Pro 版本
 
 ## MissPermission pro版
 简化操作帮助类，很少的代码就可以获取权限。
@@ -13,7 +14,7 @@ android 权限库，超级简单好用！！
 
 ### 配置
 ```xml
-implementation 'vip.ruoyun.permission:miss-helper:1.0.2'
+implementation 'vip.ruoyun.permission:miss-pro:1.0.0'
 ```
 
 ### 准备工作
@@ -73,7 +74,7 @@ MissPermission.with(this)
             .msg("为了您正常使用应用,需要以下权限")
             .title("亲爱的用户")
             .showPrompt(true)//展示提示
-            .styleResId(R.style.MissPermissionHelperDefaultNormalStyle)//设置样式
+            .styleResId(R.style.MissPermissionDefaultNormalStyle)//设置样式
             .checkPermission(new PermissionListener() {
                 @Override
                 public void onSuccess(PermissionRequest request) {
@@ -100,14 +101,14 @@ MissPermission.with(this)
 字段说明
 ```xml
 <resources>
-    <attr name="MissPermissionHelperTitleColor" format="color" />           <!--标题文字颜色-->
-    <attr name="MissPermissionHelperMsgColor" format="color" />             <!--描述文字颜色-->
-    <attr name="MissPermissionHelperItemTextColor" format="color" />        <!--权限文字颜色-->
-    <attr name="MissPermissionHelperButtonTextColor" format="color" />      <!--按钮文字颜色-->
-    <attr name="MissPermissionHelperButtonBackground" format="reference" /> <!--按钮背景-->
-    <attr name="MissPermissionHelperBackground" format="reference" />       <!--对话框背景-->
-    <attr name="MissPermissionHelperBgFilterColor" format="color" />        <!--背景过滤色-->
-    <attr name="MissPermissionHelperIconFilterColor" format="color" />      <!--图标颜色-->
+    <attr name="MissPermissionTitleColor" format="color" />           <!--标题文字颜色-->
+    <attr name="MissPermissionMsgColor" format="color" />             <!--描述文字颜色-->
+    <attr name="MissPermissionItemTextColor" format="color" />        <!--权限文字颜色-->
+    <attr name="MissPermissionButtonTextColor" format="color" />      <!--按钮文字颜色-->
+    <attr name="MissPermissionButtonBackground" format="reference" /> <!--按钮背景-->
+    <attr name="MissPermissionBackground" format="reference" />       <!--对话框背景-->
+    <attr name="MissPermissionBgFilterColor" format="color" />        <!--背景过滤色-->
+    <attr name="MissPermissionIconFilterColor" format="color" />      <!--图标颜色-->
 </resources>
 ```
 
@@ -115,28 +116,28 @@ MissPermission.with(this)
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="MissPermissionHelperDefaultNormalStyle">
-        <item name="MissPermissionHelperTitleColor">@android:color/black</item>
-        <item name="MissPermissionHelperMsgColor">@android:color/black</item>
-        <item name="MissPermissionHelperItemTextColor">@android:color/black</item>
-        <item name="MissPermissionHelperButtonBackground">@drawable/miss_permission_shape_btn_next</item>
-        <item name="MissPermissionHelperBackground">@drawable/miss_permission_shape_bg_white</item>
-        <item name="MissPermissionHelperButtonTextColor">@android:color/white</item>
-        <item name="MissPermissionHelperIconFilterColor">@android:color/black</item>
+    <style name="MissPermissionDefaultNormalStyle">
+        <item name="MissPermissionTitleColor">@android:color/black</item>
+        <item name="MissPermissionMsgColor">@android:color/black</item>
+        <item name="MissPermissionItemTextColor">@android:color/black</item>
+        <item name="MissPermissionButtonBackground">@drawable/miss_permission_shape_btn_next</item>
+        <item name="MissPermissionBackground">@drawable/miss_permission_shape_bg_white</item>
+        <item name="MissPermissionButtonTextColor">@android:color/white</item>
+        <item name="MissPermissionIconFilterColor">@android:color/black</item>
     </style>
 </resources>
 ```
 
 自定义样式
 ```xml
-<style name="MyStyle" parent="MissPermissionHelperDefaultNormalStyle">
-        <item name="MissPermissionHelperTitleColor">@android:color/black</item>
-        <item name="MissPermissionHelperMsgColor">@android:color/black</item>
-        <item name="MissPermissionHelperItemTextColor">@android:color/black</item>
-        <item name="MissPermissionHelperButtonBackground">@drawable/miss_permission_shape_btn_next</item>
-        <item name="MissPermissionHelperBackground">@drawable/miss_permission_shape_bg_white</item>
-        <item name="MissPermissionHelperButtonTextColor">@android:color/white</item>
-        <item name="MissPermissionHelperIconFilterColor">@android:color/black</item>
+<style name="MyStyle" parent="MissPermissionDefaultNormalStyle">
+        <item name="MissPermissionTitleColor">@android:color/black</item>
+        <item name="MissPermissionMsgColor">@android:color/black</item>
+        <item name="MissPermissionItemTextColor">@android:color/black</item>
+        <item name="MissPermissionButtonBackground">@drawable/miss_permission_shape_btn_next</item>
+        <item name="MissPermissionBackground">@drawable/miss_permission_shape_bg_white</item>
+        <item name="MissPermissionButtonTextColor">@android:color/white</item>
+        <item name="MissPermissionIconFilterColor">@android:color/black</item>
 </style>
 ```
 
@@ -146,7 +147,7 @@ DefaultAction 为默认的弹框操作,如果你想监听打开权限界面之�
 代码如下
 
 ```java
-MissPermissionHelper.with(this)
+MissPermission.with(this)
     .action(new DefaultAction() {//添加显示样式
         @Override
         public void onActivityResult(int resultCode, Intent data) {
@@ -184,7 +185,7 @@ public interface IAction extends AvoidOnResultHelper.ActivityCallback {
 ---
 
 ## MissPermission
-MissPermission 是MissPermissionHelper 精简版本。只有请求权限的简单功能。
+MissPermission 是精简版本。只有请求权限的简单功能。
 
 ### 配置
 ```xml
