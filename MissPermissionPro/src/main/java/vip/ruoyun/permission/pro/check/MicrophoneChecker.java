@@ -1,10 +1,7 @@
 package vip.ruoyun.permission.pro.check;
 
 import android.Manifest;
-import android.app.Activity;
-import android.os.Environment;
 import vip.ruoyun.permission.pro.R;
-import vip.ruoyun.permission.pro.utils.AudioRecordManager;
 
 /**
  * Created by ruoyun on 2019-07-05.
@@ -13,6 +10,7 @@ import vip.ruoyun.permission.pro.utils.AudioRecordManager;
  * Depiction:
  */
 public class MicrophoneChecker {
+
     private static final String TAG = "ContactsChecker";
 
     public static final String PERMISSION_NAME = "录音";
@@ -22,14 +20,4 @@ public class MicrophoneChecker {
     private final String[] NEED_PERMISSION = {
             Manifest.permission.RECORD_AUDIO,//
     };
-
-    private static boolean checkRecordAudio(Activity activity) throws Exception {
-        AudioRecordManager recordManager = new AudioRecordManager();
-
-        recordManager.startRecord(activity.getExternalFilesDir(Environment.DIRECTORY_RINGTONES) + "/" +
-                TAG + ".3gp");
-        recordManager.stopRecord();
-
-        return recordManager.getSuccess();
-    }
 }

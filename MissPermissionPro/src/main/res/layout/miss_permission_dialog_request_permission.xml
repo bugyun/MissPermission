@@ -18,7 +18,7 @@
         android:layout_marginTop="25dp"
         android:gravity="center"
         android:text=""
-        android:textColor="@color/MissPermissionHelperColorGreen"
+        android:textColor="@color/MissPermissionColorGreen"
         android:textSize="20dp" />
 
     <TextView
@@ -30,7 +30,7 @@
         android:layout_marginRight="10dp"
         android:gravity="center"
         android:text=""
-        android:textColor="@color/MissPermissionHelperColorGreen"
+        android:textColor="@color/MissPermissionColorGreen"
         android:textSize="12dp" />
 
     <!--<LinearLayout-->
@@ -45,7 +45,7 @@
     <!--android:orientation="horizontal"-->
     <!--android:showDividers="middle"/>-->
 
-    <vip.ruoyun.permission.helper.ui.WrapHeightGridView
+    <vip.ruoyun.permission.pro.ui.WrapHeightGridView
         android:id="@+id/gvPermission"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

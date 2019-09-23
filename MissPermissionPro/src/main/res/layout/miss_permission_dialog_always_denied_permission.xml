@@ -19,7 +19,7 @@
         android:layout_marginTop="25dp"
         android:gravity="center"
         android:text=""
-        android:textColor="@color/MissPermissionHelperColorGreen"
+        android:textColor="@color/MissPermissionColorGreen"
         android:textSize="20dp"
         tools:text="温馨提示" />
 
@@ -31,7 +31,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginRight="20dip"
         android:gravity="center"
-        android:textColor="@color/MissPermissionHelperColorGreen"
+        android:textColor="@color/MissPermissionColorGreen"
         android:textSize="15dp"
         tools:text="获取权限被禁用,请在 设置-应用管理权限管理将权限打开" />
 

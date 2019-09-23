@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.PermissionChecker;
 import java.util.Arrays;
 import java.util.List;
+import vip.ruoyun.permission.pro.check.PermissionsChecker;
 
 public class MissPermission {
 
@@ -148,4 +149,12 @@ public class MissPermission {
         }
         return isHasPermission;
     }
+
+    /**
+     * 真实权限的检查,使用这个权限 来检测这个权限是否可用
+     */
+    public static boolean realCheck(Context context, String permission) {
+        return PermissionsChecker.isPermissionGranted(context, permission);
+    }
+
 }

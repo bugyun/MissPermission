@@ -51,7 +51,7 @@ public class PermissionRequest implements AvoidOnResultHelper.PermissionsCallBac
         checkPermission();
     }
 
-    public void next() {
+    public void nextStep() {
         requestPermission();
     }
 
@@ -86,7 +86,7 @@ public class PermissionRequest implements AvoidOnResultHelper.PermissionsCallBac
                 //判断权限组
                 action.checkedAction(this, permissionGroups);
             } else {
-                next();
+                nextStep();
             }
         } else {
             isOver23 = false;

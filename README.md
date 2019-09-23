@@ -1,7 +1,7 @@
 # MissPermission
 android 权限库，超级简单好用！！
 ---
-注：原 MissPermissionHelper 不在维护，但是可以继续使用，可以升级到 Pro 版本
+注：原 MissPermissionHelper 不在维护，但是可以继续使用，可以升级到 pro 版本
 
 ## MissPermission pro版
 简化操作帮助类，很少的代码就可以获取权限。
@@ -14,7 +14,7 @@ android 权限库，超级简单好用！！
 
 ### 配置
 ```xml
-implementation 'vip.ruoyun.permission:miss-pro:1.0.0'
+implementation 'vip.ruoyun.permission:miss-pro:1.0.1'
 ```
 
 ### 准备工作
@@ -42,6 +42,7 @@ request.getAgreePermissionList();//同意的权限
 request.getContext();//上下文
 request.isAlwaysDenied();//是否总是拒绝
 request.isOver23();//sdk 是否超过 23 (6.0)
+request.nextStep();//下一步请求权限。实质是请求权限
 request.requestPermissionsAgain();//再次请求权限
 ```
 
@@ -54,6 +55,18 @@ if (isHasReadCalendarPermission) {
     //没有权限
 }
 ```
+
+真实的检测权限，实际调用该权限对应的功能来确定是否可以使用该权限。
+```java
+boolean isHasPermission = MissPermission.realCheck(this, Manifest.permission.READ_SMS);
+if (isHasPermission) {
+    //有权限
+} else {
+    //没有权限
+}
+```
+
+
 
 #### 回调方法
 ```java
@@ -71,9 +84,9 @@ MissPermission.with(this)
             .permission(Manifest.permission.BODY_SENSORS)//
             .permission(Manifest.permission.SEND_SMS)//
             .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE)//
+            .prompt(true)//展示提示
             .msg("为了您正常使用应用,需要以下权限")
             .title("亲爱的用户")
-            .prompt(true)//展示提示
             .style(R.style.MissPermissionDefaultNormalStyle)//设置样式
             .check(new PermissionListener() {
                 @Override
@@ -223,48 +236,48 @@ request.requestPermissionsAgain();//再次请求权限
 
 ```java
 MissPermission.with(context)//
-                .setRequestCode(9898)//默认值 9898
-                .addPermission(Manifest.permission.CAMERA)//添加请求权限
-                .addPermission(Manifest.permission.SEND_SMS)//添加请求权限
-                .addPermission(Manifest.permission.RECEIVE_SMS)//添加请求权限
-                .checkPermission(new PermissionRequest.PermissionListener() {
-                    /**
-                       为了适应每种机型弹框提示需要。
-                       request.getAgreePermissionList();//同意的权限
-                       request.getDeniedPermissionList();//拒绝的权限
-                    */
-                    @Override
-                    public int onChecked(PermissionRequest request) {
-                        //3 种返回方式，
-                        //MissPermission.NEXT_STEP  直接下一步，不用等待
-                        //MissPermission.STOP_STEP  直接停止，不执行下一步
-                        //MissPermission.WAIT_STEP  可以做弹出框等操作，然后在按钮点击事件的时候，执行 request.next(); 进行后续操作
-                        return MissPermission.WAIT_STEP;
+            .setRequestCode(9898)//默认值 9898
+            .addPermission(Manifest.permission.CAMERA)//添加请求权限
+            .addPermission(Manifest.permission.SEND_SMS)//添加请求权限
+            .addPermission(Manifest.permission.RECEIVE_SMS)//添加请求权限
+            .checkPermission(new PermissionRequest.PermissionListener() {
+                /**
+                   为了适应每种机型弹框提示需要。
+                   request.getAgreePermissionList();//同意的权限
+                   request.getDeniedPermissionList();//拒绝的权限
+                */
+                @Override
+                public int onChecked(PermissionRequest request) {
+                    //3 种返回方式，
+                    //MissPermission.NEXT_STEP  直接下一步，不用等待
+                    //MissPermission.STOP_STEP  直接停止，不执行下一步
+                    //MissPermission.WAIT_STEP  可以做弹出框等操作，然后在按钮点击事件的时候，执行 request.next(); 进行后续操作
+                    return MissPermission.WAIT_STEP;
+                }
+
+                /**
+                   拒绝权限 可以进行提示操作
+                   request.isOver23: SDK是否是大约 M
+                   request.deniedPermissions: 拒绝的权限
+                   request.alwaysDenied: 是否总是拒绝
+                */
+                @Override
+                public void onDenied(PermissionRequest request) {
+                    if (request.isAlwaysDenied()) {//是否总是拒绝
                     }
 
-                    /**
-                       拒绝权限 可以进行提示操作
-                       request.isOver23: SDK是否是大约 M
-                       request.deniedPermissions: 拒绝的权限
-                       request.alwaysDenied: 是否总是拒绝
-                    */
-                    @Override
-                    public void onDenied(PermissionRequest request) {
-                        if (request.isAlwaysDenied()) {//是否总是拒绝
-                        }
+                }
 
-                    }
+                @Override
+                public void onSuccess(PermissionRequest request) {
+                    Log.i("zyh", "成功");
+                }
 
-                    @Override
-                    public void onSuccess(PermissionRequest request) {
-                        Log.i("zyh", "成功");
-                    }
-
-                    @Override
-                    public void onFailure(PermissionException exception) {
-                        Log.i("zyh", exception.getMessage());
-                    }
-                });
+                @Override
+                public void onFailure(PermissionException exception) {
+                    Log.i("zyh", exception.getMessage());
+                }
+            });
 ```
 
 需要在 使用方法的 Activity 中重写如下方法:
