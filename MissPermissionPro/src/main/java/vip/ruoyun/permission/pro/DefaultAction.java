@@ -22,7 +22,7 @@ public class DefaultAction implements IAction {
     @Override
     public void checkedAction(final PermissionRequest request, Set<PermissionGroup> permissionGroups) {
         if (request.getDeniedPermissionList().size() == 0) {
-            request.next();
+            request.nextStep();
             return;
         }
         if (requestPromptDialog == null) {
@@ -34,7 +34,7 @@ public class DefaultAction implements IAction {
                     if (requestPromptDialog != null && requestPromptDialog.isShowing()) {
                         requestPromptDialog.dismiss();
                     }
-                    request.next();
+                    request.nextStep();
                 }
             });
         }
