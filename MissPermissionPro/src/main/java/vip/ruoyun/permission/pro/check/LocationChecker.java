@@ -1,10 +1,7 @@
 package vip.ruoyun.permission.pro.check;
 
 import android.Manifest;
-import android.content.Context;
-import android.location.LocationManager;
 import android.os.Build;
-import android.util.Log;
 import vip.ruoyun.permission.pro.R;
 
 /**
@@ -14,6 +11,7 @@ import vip.ruoyun.permission.pro.R;
  * Depiction:
  */
 public class LocationChecker {
+
     public static final String PERMISSION_NAME = "定位";
 
     public static final int PERMISSION_ICON_RES = R.drawable.miss_permission_ic_location;
@@ -34,25 +32,5 @@ public class LocationChecker {
                     Manifest.permission.ACCESS_COARSE_LOCATION,//
             };
         }
-    }
-
-    /**
-     * 检测权限
-     * true:有权限，false :没有此权限
-     *
-     * @return 是否有权限
-     */
-    public static boolean check(Context context) {
-        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        boolean ok = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);//GPS定位服务是否开启
-        if (!ok) {
-            Log.e("zyh", "GPS定位服务未开启，请打开定位服务");
-            return false;
-        }
-
-//        boolean ok = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-
-        return false;
     }
 }

@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     Log.e(TAG, "没有权限");
                 }
+
+                MissPermission.realCheck(this, Manifest.permission.READ_SMS);
                 MissPermission.with(this)
 //                        .permission(Manifest.permission.SEND_SMS)//
 //                        .permission(Manifest.permission.RECEIVE_SMS)//
