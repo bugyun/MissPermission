@@ -5,6 +5,8 @@ android 权限库，超级简单好用！！
 
 ## MissPermission pro版
 简化操作帮助类，很少的代码就可以获取权限。
+不混淆 30K 代码体积！~
+混淆之后 18K 代码体积！~
 
 ![](https://github.com/bugyun/MissPermission/blob/e39e20e4a748c1d8e0a333096287d95ddad1ab80/art/0dcc4-xa8pr1.gif?raw=true)
 
