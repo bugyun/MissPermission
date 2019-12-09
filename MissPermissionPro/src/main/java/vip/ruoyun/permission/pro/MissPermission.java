@@ -14,15 +14,6 @@ import vip.ruoyun.permission.pro.check.PermissionsChecker;
 
 public class MissPermission {
 
-    private static class SingletonHolder {
-
-        private static final MissPermission INSTANCE = new MissPermission();
-    }
-
-    private static MissPermission getInstance() {
-        return SingletonHolder.INSTANCE;
-    }
-
     private MissPermission() {
     }
 
