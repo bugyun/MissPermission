@@ -17,9 +17,15 @@ android 权限库，超级简单好用！！
 
 ![](https://github.com/bugyun/MissPermission/blob/master/art/down.png?raw=true)
 
+## 版本变化
+
+- 1.0.0 : 优化代码
+- 1.0.1 : 优化流程，增加真实检测权限方法，优化不必要的代码
+- 1.0.2 : 优化图片大小，体积减小50%
+
 ### 配置
 ```xml
-implementation 'vip.ruoyun.permission:miss-pro:1.0.1'
+implementation 'vip.ruoyun.permission:miss-pro:1.0.2'
 ```
 
 ### 准备工作
@@ -193,11 +199,6 @@ public interface IAction extends AvoidOnResultHelper.ActivityCallback {
     void deniedAction(PermissionRequest request);
 }
 ```
-
-
-## 版本变化
-
-- 1.0.0 : 优化代码
 
 ---
 

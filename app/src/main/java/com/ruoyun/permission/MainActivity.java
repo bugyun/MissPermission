@@ -42,19 +42,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonCamera:
-                if (MissPermission.check(this, SMSChecker.NEED_PERMISSION)) {
-                    Log.e(TAG, "有权限");
-                } else {
-                    Log.e(TAG, "没有权限");
-                }
-
-                if (MissPermission.realCheck(this, Manifest.permission.READ_SMS)) {
-                    Log.e(TAG, "有短信权限");
-
-                } else {
-                    Log.e(TAG, "没有短信权限");
-                }
-
                 MissPermission.with(this)
 //                        .permission(Manifest.permission.SEND_SMS)//
 //                        .permission(Manifest.permission.RECEIVE_SMS)//
@@ -93,6 +80,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.buttonAll:
+                if (MissPermission.check(this, SMSChecker.NEED_PERMISSION)) {
+                    Log.e(TAG, "有权限");
+                } else {
+                    Log.e(TAG, "没有权限");
+                }
+
+                if (MissPermission.realCheck(this, Manifest.permission.READ_SMS)) {
+                    Log.e(TAG, "有短信权限");
+
+                } else {
+                    Log.e(TAG, "没有短信权限");
+                }
                 break;
         }
     }
