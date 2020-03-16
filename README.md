@@ -14,7 +14,8 @@ android 权限库，超级简单好用！！
 
 ### 下载apk
 
-![](https://github.com/bugyun/MissPermission/blob/290070eb42ae59c46b15cb46c7d8f0f5e10b4315/art/down.png?raw=true)
+
+![](https://github.com/bugyun/MissPermission/blob/master/art/down.png?raw=true)
 
 ### 配置
 ```xml
