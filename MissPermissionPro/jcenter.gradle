@@ -12,7 +12,7 @@ publish {
     userOrg = 'bugyun'        //bintray.com用户名
     groupId = 'vip.ruoyun.permission'    //jcenter group
     artifactId = 'miss-pro'   //项目名称 name
-    publishVersion = '1.0.1'//版本号 version
+    publishVersion = '1.0.2'//版本号 version
     desc = 'Android 权限请求库 MissPermission pro版'//描述
     website = 'https://github.com/bugyun/MissPermission' // github 网址
 }
