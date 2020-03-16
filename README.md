@@ -10,11 +10,12 @@ android 权限库，超级简单好用！！
 
 混淆之后 18K 代码体积！👍~
 
-![](https://github.com/bugyun/MissPermission/blob/e39e20e4a748c1d8e0a333096287d95ddad1ab80/art/0dcc4-xa8pr1.gif?raw=true)
+![](https://github.com/bugyun/MissPermission/blob/master/art/0dcc4-xa8pr1.gif?raw=true)
 
 ### 下载apk
 
-![](https://github.com/bugyun/MissPermission/blob/290070eb42ae59c46b15cb46c7d8f0f5e10b4315/art/down.png?raw=true)
+
+![](https://github.com/bugyun/MissPermission/blob/master/art/down.png?raw=true)
 
 ### 配置
 ```xml
@@ -109,10 +110,10 @@ MissPermission.with(this)
 
 不需要添加回调方法，直接使用即可，开箱即用。
 
-![](https://github.com/bugyun/MissPermission/blob/develop/art/Screenshot_20190805-165801.jpg?raw=true)
+![](https://github.com/bugyun/MissPermission/blob/master/art/Screenshot_20190805-165801.jpg?raw=true)
 
-![](https://github.com/bugyun/MissPermission/blob/develop/art/Screenshot_20190816-233942.jpg?raw=true)
-![](https://github.com/bugyun/MissPermission/blob/develop/art/Screenshot_20190816-233958.jpg?raw=true)
+![](https://github.com/bugyun/MissPermission/blob/master/art/Screenshot_20190816-233942.jpg?raw=true)
+![](https://github.com/bugyun/MissPermission/blob/master/art/Screenshot_20190816-233958.jpg?raw=true)
 
 #### 样式
 字段说明
