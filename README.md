@@ -10,7 +10,7 @@ android 权限库，超级简单好用！！
 
 混淆之后 18K 代码体积！👍~
 
-![](https://github.com/bugyun/MissPermission/blob/master/art/art/0dcc4-xa8pr1.gif?raw=true)
+![](https://github.com/bugyun/MissPermission/blob/master/art/0dcc4-xa8pr1.gif?raw=true)
 
 ### 下载apk
 
