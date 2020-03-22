@@ -3,6 +3,8 @@ android 权限库，超级简单好用！！
 ---
 注：原 MissPermissionHelper 不在维护，但是可以继续使用，可以升级到 pro 版本
 
+[简化版](https://github.com/bugyun/MissPermission/blob/master/MissPermission/README.md)
+
 ## MissPermission pro版
 简化操作帮助类，很少的代码就可以获取权限。
 
