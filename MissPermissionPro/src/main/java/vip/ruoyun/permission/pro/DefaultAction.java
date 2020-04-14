@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
 import android.view.View;
+
 import java.util.HashSet;
 import java.util.Set;
+
 import vip.ruoyun.helper.avoid.AvoidOnResultHelper;
 import vip.ruoyun.permission.pro.ui.AgainRequestDialog;
 import vip.ruoyun.permission.pro.ui.AlwaysDeniedDialog;
@@ -27,6 +29,7 @@ public class DefaultAction implements IAction {
         }
         if (requestPromptDialog == null) {
             requestPromptDialog = RequestPromptDialog.getRequestPromptDialog(request.getContext());
+            onCreateRequestPromptDialog(requestPromptDialog);
             requestPromptDialog.setTitleAndMsg(request.getTitle(), request.getMsg());
             requestPromptDialog.setBtnOnClickListener(new View.OnClickListener() {
                 @Override
@@ -63,6 +66,7 @@ public class DefaultAction implements IAction {
         if (request.isAlwaysDenied()) {
             if (alwaysDeniedDialog == null) {
                 alwaysDeniedDialog = AlwaysDeniedDialog.getAlwaysDeniedDialog(request.getContext());
+                onCreateAlwaysDeniedDialog(alwaysDeniedDialog);
                 alwaysDeniedDialog.setStyleId(request.getStyleResId());
                 alwaysDeniedDialog.setSettingClickListener(new View.OnClickListener() {
                     @Override
@@ -81,6 +85,7 @@ public class DefaultAction implements IAction {
         } else {
             if (againRequestDialog == null) {
                 againRequestDialog = AgainRequestDialog.getAlwaysDeniedDialog(request.getContext());
+                onCreateAgainRequestDialog(againRequestDialog);
                 againRequestDialog.setStyleId(request.getStyleResId());
                 againRequestDialog.setSettingClickListener("验证权限", new View.OnClickListener() {
                     @Override
@@ -100,5 +105,29 @@ public class DefaultAction implements IAction {
     @Override
     public void onActivityResult(int resultCode, Intent data) {
 
+    }
+
+    /**
+     * 初始化请求dialog的时候，可以设置参数
+     *
+     * @param requestPromptDialog 请求弹窗，可以通过此方法设置监听
+     */
+    public void onCreateRequestPromptDialog(RequestPromptDialog requestPromptDialog) {
+    }
+
+    /**
+     * 初始化请求dialog的时候，可以设置参数
+     *
+     * @param getAlwaysDeniedDialog 当用户点击了总是拒绝此权限时的弹窗，可以通过此方法设置监听
+     */
+    public void onCreateAlwaysDeniedDialog(AlwaysDeniedDialog getAlwaysDeniedDialog) {
+    }
+
+    /**
+     * 初始化请求dialog的时候，可以设置参数
+     *
+     * @param getAgainRequestDialog 再次请求权限的弹窗，可以通过此方法设置监听
+     */
+    public void onCreateAgainRequestDialog(AgainRequestDialog getAgainRequestDialog) {
     }
 }

@@ -24,10 +24,11 @@ android 权限库，超级简单好用！！
 - 1.0.0 : 优化代码
 - 1.0.1 : 优化流程，增加真实检测权限方法，优化不必要的代码
 - 1.0.2 : 优化图片大小，体积减小50%
+- 1.0.3 : 增加设置显示的dialog的回调方法，方便设置监听
 
 ### 配置
 ```xml
-implementation 'vip.ruoyun.permission:miss-pro:1.0.2'
+implementation 'vip.ruoyun.permission:miss-pro:1.0.3'
 ```
 
 ### 准备工作
@@ -120,6 +121,21 @@ MissPermission.with(this)
                     //监听打开权限界面返回来的回调
                     //可以在这里进行权限的再次判断，判断是否用户已经同意了权限
                 }
+
+                //可选，初始化请求弹窗的时候，可以通过此方法设置监听
+                @Override
+                public void onCreateRequestPromptDialog(RequestPromptDialog requestPromptDialog) {
+                }
+
+                //可选，初始化总是拒绝此权限时的弹窗的时候，可以通过此方法设置监听
+                @Override
+                public void onCreateAlwaysDeniedDialog(AlwaysDeniedDialog getAlwaysDeniedDialog) {
+                }
+
+                //可选，初始化再次请求权限的弹窗的时候，可以通过此方法设置监听
+                @Override
+                public void onCreateAgainRequestDialog(AgainRequestDialog getAgainRequestDialog) {
+                }
             })
             .check(new PermissionListener() {
                 @Override
@@ -192,14 +208,30 @@ MissPermission.with(this)
 ## 自定义弹出效果
 
 DefaultAction 为默认的弹框操作,如果你想监听打开权限界面之后,再回到界面的 onActivityResult ,那么只要重写这个方法即可.
-代码如下
 
+可以通过重写 onCreateXXXXDialog 函数，在创建的时候设置一些监听，或者在弹出的时候，修改显示的内容
+
+代码如下
 ```java
 MissPermission.with(this)
     .action(new DefaultAction() {//添加显示样式
         @Override
         public void onActivityResult(int resultCode, Intent data) {
 
+        }
+        //可选，初始化请求弹窗的时候，可以通过此方法设置监听
+        @Override
+        public void onCreateRequestPromptDialog(RequestPromptDialog requestPromptDialog) {
+        }
+
+        //可选，初始化总是拒绝此权限时的弹窗的时候，可以通过此方法设置监听
+        @Override
+        public void onCreateAlwaysDeniedDialog(AlwaysDeniedDialog getAlwaysDeniedDialog) {
+        }
+
+        //可选，初始化再次请求权限的弹窗的时候，可以通过此方法设置监听
+        @Override
+        public void onCreateAgainRequestDialog(AgainRequestDialog getAgainRequestDialog) {
         }
     })
     ...
