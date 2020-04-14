@@ -9,10 +9,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
 import vip.ruoyun.permission.pro.DefaultAction;
 import vip.ruoyun.permission.pro.MissPermission;
 import vip.ruoyun.permission.pro.PermissionRequest;
 import vip.ruoyun.permission.pro.check.SMSChecker;
+import vip.ruoyun.permission.pro.ui.AgainRequestDialog;
+import vip.ruoyun.permission.pro.ui.AlwaysDeniedDialog;
+import vip.ruoyun.permission.pro.ui.RequestPromptDialog;
 import vip.ruoyun.screen.ScreenHelper;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -59,6 +63,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             @Override
                             public void onActivityResult(int resultCode, Intent data) {
 
+                            }
+
+                            //可选，初始化请求弹窗的时候，可以通过此方法设置监听
+                            @Override
+                            public void onCreateRequestPromptDialog(RequestPromptDialog requestPromptDialog) {
+                            }
+
+                            //可选，初始化总是拒绝此权限时的弹窗的时候，可以通过此方法设置监听
+                            @Override
+                            public void onCreateAlwaysDeniedDialog(AlwaysDeniedDialog getAlwaysDeniedDialog) {
+                            }
+
+                            //可选，初始化再次请求权限的弹窗的时候，可以通过此方法设置监听
+                            @Override
+                            public void onCreateAgainRequestDialog(AgainRequestDialog getAgainRequestDialog) {
                             }
                         })
                         .msg("为了您正常使用应用,需要以下权限")
