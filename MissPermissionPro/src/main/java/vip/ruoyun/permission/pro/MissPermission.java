@@ -1,18 +1,65 @@
 package vip.ruoyun.permission.pro;
 
+import android.app.Activity;
+import android.app.Application;
+import android.app.ApplicationErrorReport;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.PermissionChecker;
+import android.util.Log;
+
+import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.List;
+
 import vip.ruoyun.permission.pro.check.PermissionsChecker;
 
 public class MissPermission {
+
+    private static WeakReference<FragmentActivity> activityWeakReference;
+
+    public static void init(Application app) {
+        app.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+                if (activity instanceof FragmentActivity) {
+                    activityWeakReference = new WeakReference<FragmentActivity>((FragmentActivity) activity);
+                }
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+//                activityWeakReference.clear();
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+            }
+        });
+
+    }
 
     private MissPermission() {
     }
@@ -25,12 +72,20 @@ public class MissPermission {
         return with(fragment.getActivity());
     }
 
+    public static Builder with() {
+        return new Builder(activityWeakReference);
+    }
+
     public static class Builder {
 
         private PermissionRequest request;
 
         private Builder(FragmentActivity activity) {
             request = new PermissionRequest(activity);
+        }
+
+        private Builder(WeakReference<FragmentActivity> activityWeakReference) {
+            request = new PermissionRequest(activityWeakReference);
         }
 
         /**
@@ -97,14 +152,6 @@ public class MissPermission {
          */
         public Builder style(@StyleRes int styleResId) {
             request.setStyleResId(styleResId);
-            return this;
-        }
-
-        /**
-         * 保留属性，是否需要检测
-         */
-        public Builder isCheck(boolean isCheck) {
-            request.setIsCheck(isCheck);
             return this;
         }
 

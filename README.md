@@ -25,10 +25,11 @@ android 权限库，超级简单好用！！
 - 1.0.1 : 优化流程，增加真实检测权限方法，优化不必要的代码
 - 1.0.2 : 优化图片大小，体积减小50%
 - 1.0.3 : 增加设置显示的dialog的回调方法，方便设置监听
+- 1.0.4 : 增加不用传递上下文的with()方法，需要先初始化，兼容以前的版本
 
 ### 配置
 ```xml
-implementation 'vip.ruoyun.permission:miss-pro:1.0.3'
+implementation 'vip.ruoyun.permission:miss-pro:1.0.4'
 ```
 
 ### 准备工作
@@ -87,6 +88,7 @@ if (isHasPermission) {
 #### 回调方法
 
 - with(context) 函数，构建请求
+- with() 函数，构建请求，需要 `MissPermission.init(application)`
 - permission(string) 来添加请求权限
 - prompt(boolean) 是否要显示提示
 - title(strint) 提示框标题
@@ -95,7 +97,7 @@ if (isHasPermission) {
 - action(IAction) 修改提示框的流程，可以自定义，DefaultAction为默认弹框流程
 - check(PermissionListener) 权限监听回调
 
-
+通过with(context)来构建
 ```java
 MissPermission.with(this)
             .permission(Manifest.permission.SEND_SMS)//
@@ -150,6 +152,59 @@ MissPermission.with(this)
             });
 ```
 
+通过with()来构建，不需要传递上下文，需要先初始化`MissPermission.init(application)`
+如果没有传递，会在 `onFailure(PermissionRequest request)` 中提示：上下文为空
+```java
+public class App extends Application {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        MissPermission.init(this);
+    }
+}
+
+//使用
+MissPermission.with()
+            .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE)//
+            .prompt(true)    //是否要显示提示
+            .msg("为了您正常使用应用,需要以下权限")
+            .title("亲爱的用户")
+            .style(R.style.MissPermissionDefaultNormalStyle)//设置样式
+            .action(new DefaultAction() {//修改权限弹框的动作
+                @Override
+                public void onActivityResult(int resultCode, Intent data) {
+                    //监听打开权限界面返回来的回调
+                    //可以在这里进行权限的再次判断，判断是否用户已经同意了权限
+                }
+
+                //可选，初始化请求弹窗的时候，可以通过此方法设置监听
+                @Override
+                public void onCreateRequestPromptDialog(RequestPromptDialog requestPromptDialog) {
+                }
+
+                //可选，初始化总是拒绝此权限时的弹窗的时候，可以通过此方法设置监听
+                @Override
+                public void onCreateAlwaysDeniedDialog(AlwaysDeniedDialog getAlwaysDeniedDialog) {
+                }
+
+                //可选，初始化再次请求权限的弹窗的时候，可以通过此方法设置监听
+                @Override
+                public void onCreateAgainRequestDialog(AgainRequestDialog getAgainRequestDialog) {
+                }
+            })
+            .check(new PermissionListener() {
+                @Override
+                public void onSuccess(PermissionRequest request) {
+
+                }
+
+                @Override
+                public void onFailure(PermissionRequest request) {
+
+                }
+            });
+```
 
 
 #### 说明
