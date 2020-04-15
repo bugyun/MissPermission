@@ -6,10 +6,12 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.PermissionChecker;
+
 import java.lang.ref.WeakReference;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import vip.ruoyun.helper.avoid.AvoidOnResultHelper;
 
 /**
@@ -38,11 +40,14 @@ public class PermissionRequest implements AvoidOnResultHelper.PermissionsCallBac
     private String msg;
     private int styleResId = R.style.MissPermissionDefaultNormalStyle;
 
-    private boolean isCheck;
-    private IAction action ;
+    private IAction action;
 
     PermissionRequest(FragmentActivity activity) {
         activityWeakReference = new WeakReference<>(activity);
+    }
+
+    PermissionRequest(WeakReference<FragmentActivity> activityWeakReference) {
+        this.activityWeakReference = activityWeakReference;
     }
 
     //开始
@@ -64,7 +69,7 @@ public class PermissionRequest implements AvoidOnResultHelper.PermissionsCallBac
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             isOver23 = true;
             for (String permission : permissionList) {
-                if (activityWeakReference.get() == null) {
+                if (activityWeakReference == null || activityWeakReference.get() == null) {
                     exception = new PermissionException("activity 为空");
                     permissionListener.onFailure(this);
                     return;
@@ -242,14 +247,6 @@ public class PermissionRequest implements AvoidOnResultHelper.PermissionsCallBac
 
     public void setStyleResId(int styleResId) {
         this.styleResId = styleResId;
-    }
-
-    public boolean isCheck() {
-        return isCheck;
-    }
-
-    public void setIsCheck(boolean isCheck) {
-        this.isCheck = isCheck;
     }
 
     public IAction getAction() {

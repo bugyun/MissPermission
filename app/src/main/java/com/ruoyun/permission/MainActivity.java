@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonCamera:
-                MissPermission.with(this)
+                MissPermission.with()
 //                        .permission(Manifest.permission.SEND_SMS)//
 //                        .permission(Manifest.permission.RECEIVE_SMS)//
 //                        .permission(Manifest.permission.READ_SMS)//
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             @Override
                             public void onFailure(PermissionRequest request) {
 //                                Toast.makeText(MainActivity.this, "获取权限失败", Toast.LENGTH_SHORT).show();
-                                Log.e("zyh", "onFailure");
+                                Log.e("zyh", "onFailure : " + request.getException().getMessage());
                             }
                         });
 
@@ -105,12 +105,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Log.e(TAG, "没有权限");
                 }
 
-                if (MissPermission.realCheck(this, Manifest.permission.READ_SMS)) {
-                    Log.e(TAG, "有短信权限");
-
-                } else {
-                    Log.e(TAG, "没有短信权限");
-                }
+//                if (MissPermission.realCheck(this, Manifest.permission.READ_SMS)) {
+//                    Log.e(TAG, "有短信权限");
+//
+//                } else {
+//                    Log.e(TAG, "没有短信权限");
+//                }
+                startActivity(new Intent(this, MainActivity.class));
                 break;
         }
     }
