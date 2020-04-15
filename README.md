@@ -152,8 +152,7 @@ MissPermission.with(this)
             });
 ```
 
-通过with()来构建，不需要传递上下文，需要先初始化`MissPermission.init(application)`
-如果没有传递，会在 `onFailure(PermissionRequest request)` 中提示：上下文为空
+通过with()来构建，不需要传递上下文，需要先初始化`MissPermission.init(application)`，如果没有初始化，会在 `onFailure(PermissionRequest request)` 中提示：上下文为空
 ```java
 public class App extends Application {
 
