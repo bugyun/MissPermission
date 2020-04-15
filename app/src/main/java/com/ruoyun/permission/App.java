@@ -21,7 +21,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-//        MissPermission.init(this);
+        MissPermission.register(this);
 //        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
 //
 ////            MissPermission.

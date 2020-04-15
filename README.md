@@ -88,7 +88,7 @@ if (isHasPermission) {
 #### 回调方法
 
 - with(context) 函数，构建请求
-- with() 函数，构建请求，需要 `MissPermission.init(application)`
+- with() 函数，构建请求，需要 `MissPermission.register(application)`
 - permission(string) 来添加请求权限
 - prompt(boolean) 是否要显示提示
 - title(strint) 提示框标题
@@ -152,14 +152,14 @@ MissPermission.with(this)
             });
 ```
 
-通过with()来构建，不需要传递上下文，需要先初始化`MissPermission.init(application)`，如果没有初始化，会在 `onFailure(PermissionRequest request)` 中提示：上下文为空
+通过with()来构建，不需要传递上下文，需要先初始化`MissPermission.register(application)`，如果没有初始化，会在 `onFailure(PermissionRequest request)` 中提示：上下文为空
 ```java
 public class App extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
-        MissPermission.init(this);
+        MissPermission.register(this);
     }
 }
 

@@ -24,7 +24,7 @@ public class MissPermission {
 
     private static WeakReference<FragmentActivity> activityWeakReference;
 
-    public static void init(Application app) {
+    public static void register(Application app) {
         app.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
