@@ -25,7 +25,7 @@ android 权限库，超级简单好用！！
 - 1.0.1 : 优化流程，增加真实检测权限方法，优化不必要的代码
 - 1.0.2 : 优化图片大小，体积减小50%
 - 1.0.3 : 增加设置显示的dialog的回调方法，方便设置监听
-- 1.0.4 : 增加不用传递上下文的with()方法，需要先初始化，兼容以前的版本
+- 1.0.4 : 增加不用传递上下文的with()方法，需要先注册，兼容以前的版本
 
 ### 配置
 ```xml
@@ -152,7 +152,7 @@ MissPermission.with(this)
             });
 ```
 
-通过with()来构建，不需要传递上下文，需要先初始化`MissPermission.register(application)`，如果没有初始化，会在 `onFailure(PermissionRequest request)` 中提示：上下文为空
+通过with()来构建，不需要传递上下文，需要先注册`MissPermission.register(application)`，如果没有注册，会在 `onFailure(PermissionRequest request)` 中提示：上下文为空
 ```java
 public class App extends Application {
 
